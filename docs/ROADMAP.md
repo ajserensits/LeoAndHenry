@@ -1,0 +1,97 @@
+# Development Roadmap
+
+## Current playable foundation
+
+- Native SwiftUI iPhone app targeting iOS 17.
+- Eight-by-eight match-three board with tap and swipe controls.
+- Cascades and move-limited collection goals.
+- Row and column rockets from four-piece matches.
+- Rainbow paw from a straight five-piece match.
+- Garden bomb from an L- or T-shaped match.
+- Unlimited lives, shuffle, water, and hint helpers.
+- Ten-level opening map with saved progression.
+- Portrait and landscape layouts.
+- Chapter One garden background and character-driven map styling.
+
+The current ten levels mainly vary the target expression, quantity, and move count. The story events and objective varieties below remain future implementation work.
+
+## Gameplay variety plan
+
+| Objective | Player action | Possible story use |
+|---|---|---|
+| Collect | Match a specified Leo expression or story item | Follow Leo's trail or gather comfort objects |
+| Clear blockers | Match beside layered obstacles to remove them | Bags, cans, garden clutter, or vacuum dust |
+| Drop items | Clear space beneath an item until it reaches the bottom | Return a toy, biscuit, bug, bowl, or parcel |
+| Rescue Leo | Clear or match around Leo's hiding place | Help Leo come out from under the bed |
+| Guide Henry | Open a connected route across the board | Reach Leo without crossing the pool edge or mower path |
+| Spread comfort | Make matches adjacent to spread a warm blanket or safe-light effect | Thunderstorm and vacuum stories |
+| Find clues | Reveal hidden clue tiles under grass, leaves, or furniture | Find Mom or trace stolen-item pawprints |
+| Protect | Clear approaching nuisance tiles before they reach a protected area | Delivery knock, storm puddles, or noisy objects |
+| Multi-goal | Combine two simple goals in one level | Recover the item and help Leo feel safe |
+
+Avoid real-time timers as the default difficulty tool. Difficulty should come from board layout, move planning, layered goals, and satisfying power-up choices.
+
+## Development access versus player progression
+
+The release experience should require the player to complete levels in order. Development builds need a separate testing path so new mechanics can be reviewed without replaying the entire story.
+
+Implement a `#if DEBUG` developer menu that can:
+
+- Open any level without altering the player's genuine saved progress.
+- Preview every objective and obstacle type.
+- Reset or seed progress deliberately.
+- Grant a chosen power-up for testing.
+- Display board and save-state diagnostics.
+
+Never expose this menu in Release or TestFlight builds intended for normal play.
+
+## Recommended milestone order
+
+### Milestone 1: Chapter One vertical slice
+
+- Convert three existing levels into three genuinely different objectives.
+- Add one layered blocker, one drop-item goal, and one route or rescue goal.
+- Add short pre-level and post-level story cards.
+- Add the DEBUG-only level picker.
+- Preserve existing save data through a versioned save model.
+
+### Milestone 2: Fear-event mechanics
+
+- Vacuum behavior and dust blockers.
+- Under-the-bed rescue board.
+- Thunderstorm comfort-spreading mechanic.
+- Lawnmower route hazard.
+- Bags and cans as movable or layered blockers.
+
+### Milestone 3: Story systems
+
+- Reusable story-panel presentation.
+- Chapter and scene data separated from gameplay code.
+- Per-chapter art, palette, music, and map metadata.
+- “Find Mom,” pool day, delivery, and birthday finale scenes.
+
+### Milestone 4: Polish and accessibility
+
+- VoiceOver labels and logical focus order.
+- Reduce Motion alternatives.
+- Color-independent piece identification.
+- Adjustable sound and music levels.
+- Haptic settings.
+- Larger-text testing for menus and story cards.
+- Performance and memory testing on an older supported iPhone.
+
+### Milestone 5: Distribution
+
+- Final app icon and launch presentation.
+- Privacy manifest and App Store metadata.
+- TestFlight build and family playtesting.
+- Difficulty tuning from actual completion data stored locally and shared voluntarily.
+
+## Technical direction
+
+- Keep gameplay rules separate from SwiftUI presentation.
+- Move level definitions from hard-coded initializers toward Codable data.
+- Version persistent progress before the level model changes substantially.
+- Give each objective and obstacle deterministic unit tests.
+- Keep all normal content playable offline.
+- Do not introduce ads, consumable lives, tracking, or required accounts.

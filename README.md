@@ -16,6 +16,15 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 - On-device progress saving
 - No ads, accounts, timers, tracking, or purchases
 
+## Project guides
+
+- [Story Bible](docs/STORY_BIBLE.md) — character canon, emotional rules, and the proposed ten-part story arc
+- [Art Bible](docs/ART_BIBLE.md) — visual language, asset specifications, naming, and the artwork queue
+- [Development Roadmap](docs/ROADMAP.md) — gameplay varieties and the path from prototype to complete chapters
+- [Claude Handoff](CLAUDE.md) — repository-specific instructions for anyone continuing the implementation or artwork
+
+The current ten levels are a polished gameplay prototype for Chapter One. The broader fear-and-rescue story and the distinct objective types in the documents above are planned work, not all implemented yet.
+
 ## Run it on an iPhone
 
 1. Open `HenrysGardenChase.xcodeproj` in Xcode 15.4 or newer.
