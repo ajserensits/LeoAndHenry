@@ -1,0 +1,384 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */; };
+		1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F186D3BAA33C371B5D9E9106 /* GameModel.swift */; };
+		2C6A4CC6FB0FD8C799B43E41 /* leo-lick.png in Resources */ = {isa = PBXBuildFile; fileRef = 75F1962D5CC71EE060E5734C /* leo-lick.png */; };
+		45AC493C43E2BBC0121B3D31 /* leo-excited.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312EA7F985878D50D4461E3 /* leo-excited.png */; };
+		5F8B118CF46B2214365D1DDD /* leo-henry-garden-chase.png in Resources */ = {isa = PBXBuildFile; fileRef = 4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */; };
+		669F420AD0C180D235D2CCE8 /* leo-side-eye.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */; };
+		66E69415744920F6D037E2CF /* VeggieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */; };
+		7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59D290CA682A7C220C2BB08 /* ContentView.swift */; };
+		85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */ = {isa = PBXBuildFile; fileRef = B78A90852C6887B27854472A /* henry-map-marker.png */; };
+		B3D5516BE3A28B6ABEFA2704 /* SproutAndSmilesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */; };
+		B7FC63443AD33350026501C6 /* chapter-one-garden.png in Resources */ = {isa = PBXBuildFile; fileRef = 45EA98EFD288773DEA44B783 /* chapter-one-garden.png */; };
+		B99465CC4BECECEC3A752EE8 /* leo-happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C766664A10B7B8F39CEA06 /* leo-happy.png */; };
+		C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */; };
+		C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */; };
+		FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-side-eye.png"; sourceTree = "<group>"; };
+		0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-grumpy.png"; sourceTree = "<group>"; };
+		1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeggieView.swift; sourceTree = "<group>"; };
+		32C766664A10B7B8F39CEA06 /* leo-happy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-happy.png"; sourceTree = "<group>"; };
+		4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-henry-garden-chase.png"; sourceTree = "<group>"; };
+		45EA98EFD288773DEA44B783 /* chapter-one-garden.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-one-garden.png"; sourceTree = "<group>"; };
+		5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-expression-sheet.png"; sourceTree = "<group>"; };
+		6312EA7F985878D50D4461E3 /* leo-excited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-excited.png"; sourceTree = "<group>"; };
+		6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-guilty.png"; sourceTree = "<group>"; };
+		75F1962D5CC71EE060E5734C /* leo-lick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-lick.png"; sourceTree = "<group>"; };
+		943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterMapView.swift; sourceTree = "<group>"; };
+		B78A90852C6887B27854472A /* henry-map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "henry-map-marker.png"; sourceTree = "<group>"; };
+		CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HenrysGardenChase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F186D3BAA33C371B5D9E9106 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		F59D290CA682A7C220C2BB08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SproutAndSmilesApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		221A4050B786BC67B8FE3B13 = {
+			isa = PBXGroup;
+			children = (
+				6DA0318BB56D75320849B513 /* SproutAndSmiles */,
+				34EA68CC98D95972D02772B0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		34EA68CC98D95972D02772B0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6DA0318BB56D75320849B513 /* SproutAndSmiles */ = {
+			isa = PBXGroup;
+			children = (
+				943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */,
+				F59D290CA682A7C220C2BB08 /* ContentView.swift */,
+				F186D3BAA33C371B5D9E9106 /* GameModel.swift */,
+				FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */,
+				1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */,
+				726125BF8F1A5A26854F637D /* Artwork */,
+			);
+			path = SproutAndSmiles;
+			sourceTree = "<group>";
+		};
+		726125BF8F1A5A26854F637D /* Artwork */ = {
+			isa = PBXGroup;
+			children = (
+				45EA98EFD288773DEA44B783 /* chapter-one-garden.png */,
+				B78A90852C6887B27854472A /* henry-map-marker.png */,
+				5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */,
+				4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */,
+				9144EF00766C5A9982D45C66 /* LeoPieces */,
+			);
+			path = Artwork;
+			sourceTree = "<group>";
+		};
+		9144EF00766C5A9982D45C66 /* LeoPieces */ = {
+			isa = PBXGroup;
+			children = (
+				6312EA7F985878D50D4461E3 /* leo-excited.png */,
+				0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */,
+				6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */,
+				32C766664A10B7B8F39CEA06 /* leo-happy.png */,
+				75F1962D5CC71EE060E5734C /* leo-lick.png */,
+				0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */,
+			);
+			path = LeoPieces;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CA8AF26BA3C20BDFBC808241 /* HenrysGardenChase */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 542529F6814CB690E0FCDF7C /* Build configuration list for PBXNativeTarget "HenrysGardenChase" */;
+			buildPhases = (
+				728906FBB3E3E1EB9A131252 /* Sources */,
+				827F70D2821BB96E7726C405 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HenrysGardenChase;
+			packageProductDependencies = (
+			);
+			productName = HenrysGardenChase;
+			productReference = CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		67DA2B280D20B6FF421AE3C5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					CA8AF26BA3C20BDFBC808241 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 285A5CA5E9B86F8FA5D3F65C /* Build configuration list for PBXProject "HenrysGardenChase" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 221A4050B786BC67B8FE3B13;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 56;
+			productRefGroup = 34EA68CC98D95972D02772B0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CA8AF26BA3C20BDFBC808241 /* HenrysGardenChase */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		827F70D2821BB96E7726C405 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7FC63443AD33350026501C6 /* chapter-one-garden.png in Resources */,
+				85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */,
+				45AC493C43E2BBC0121B3D31 /* leo-excited.png in Resources */,
+				C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */,
+				FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */,
+				C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */,
+				B99465CC4BECECEC3A752EE8 /* leo-happy.png in Resources */,
+				5F8B118CF46B2214365D1DDD /* leo-henry-garden-chase.png in Resources */,
+				2C6A4CC6FB0FD8C799B43E41 /* leo-lick.png in Resources */,
+				669F420AD0C180D235D2CCE8 /* leo-side-eye.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		728906FBB3E3E1EB9A131252 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */,
+				7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */,
+				1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */,
+				B3D5516BE3A28B6ABEFA2704 /* SproutAndSmilesApp.swift in Sources */,
+				66E69415744920F6D037E2CF /* VeggieView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8EAF1FF45323540E69049CB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		9F6CC2637B181F917F7F16F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F7D94F5AF940CE0601876F18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Henry's Chase";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sproutandsmiles.garden;
+				PRODUCT_NAME = "Henry's Garden Chase";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FC9C7CEC06AFF183986EB9B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Henry's Chase";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sproutandsmiles.garden;
+				PRODUCT_NAME = "Henry's Garden Chase";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		285A5CA5E9B86F8FA5D3F65C /* Build configuration list for PBXProject "HenrysGardenChase" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F6CC2637B181F917F7F16F1 /* Debug */,
+				8EAF1FF45323540E69049CB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		542529F6814CB690E0FCDF7C /* Build configuration list for PBXNativeTarget "HenrysGardenChase" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC9C7CEC06AFF183986EB9B8 /* Debug */,
+				F7D94F5AF940CE0601876F18 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 67DA2B280D20B6FF421AE3C5 /* Project object */;
+}

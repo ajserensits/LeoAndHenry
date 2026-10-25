@@ -1,0 +1,20 @@
+# Xcode user data and build output
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# macOS
+.DS_Store
+
+# Local signing and environment files
+*.mobileprovision
+*.cer
+*.p12
+*.env
