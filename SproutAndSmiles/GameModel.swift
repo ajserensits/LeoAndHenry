@@ -106,6 +106,8 @@ struct Level {
     var clueDepth: Int = 1
     var splashCount: Int = 0
     var splashEvery: Int = 0
+    var parcelCount: Int = 0
+    var knockEvery: Int = 0
 
     var clearsDust: Bool { dustCells > 0 }
     var wakesLeo: Bool { sleepingCells > 0 }
@@ -115,6 +117,7 @@ struct Level {
     var quietsNoise: Bool { canCells + bagCells > 0 }
     var findsClues: Bool { clueCells > 0 }
     var keepsLeoDry: Bool { splashCount > 0 }
+    var deliversParcels: Bool { parcelCount > 0 }
 }
 
 struct Chapter: Identifiable {
@@ -216,7 +219,18 @@ final class GameModel: ObservableObject {
         .init(goal: .tomato, amount: 0, moves: 23, title: "Pool Toy Parade", stolenItem: "floating duck", clue: "Pool toys bob by and splash the deck. Keep Leo's towel dry.", chapterIndex: 7, splashCount: 9, splashEvery: 2),
         .init(goal: .carrot, amount: 0, moves: 23, title: "Between Leo and the Water", stolenItem: "path to Mom's chair", clue: "Henry walks on the pool side so Leo can walk on the dry side.", chapterIndex: 7, quietRouteSteps: 12),
         .init(goal: .onion, amount: 0, moves: 23, title: "The Big Splash", stolenItem: "Mom's sun hat", clue: "Mom dives in! Clear the big wave of splashes before it reaches Leo.", chapterIndex: 7, splashCount: 11, splashEvery: 2),
-        .init(goal: .pea, amount: 0, moves: 25, title: "Dry and Proud", stolenItem: "shared pool ring", clue: "One last splash wave, then Leo hands Henry's ring back beside Mom's chair.", chapterIndex: 7, splashCount: 12, splashEvery: 2)
+        .init(goal: .pea, amount: 0, moves: 25, title: "Dry and Proud", stolenItem: "shared pool ring", clue: "One last splash wave, then Leo hands Henry's ring back beside Mom's chair.", chapterIndex: 7, splashCount: 12, splashEvery: 2),
+
+        .init(goal: .tomato, amount: 22, moves: 25, title: "Squeak at the Door", stolenItem: "Henry's red squeaky bug", clue: "Leo carried Henry's toy to the front door—just as someone unfamiliar arrived.", chapterIndex: 8, knockEvery: 4),
+        .init(goal: .carrot, amount: 0, moves: 25, title: "A Box on the Mat", stolenItem: "first parcel", clue: "Clear matches beneath each parcel so it can travel safely down to the doormat.", chapterIndex: 8, parcelCount: 2, knockEvery: 4),
+        .init(goal: .onion, amount: 0, moves: 24, title: "Knock, Knock!", stolenItem: "couch-cushion hideout", clue: "The knock startles Leo. Henry gives a gentle bark from their cozy viewing spot.", chapterIndex: 8, sleepingCells: 7, knockEvery: 3),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "Bring It Inside", stolenItem: "three little parcels", clue: "Make room below the boxes while Henry keeps watch by the door.", chapterIndex: 8, parcelCount: 3, knockEvery: 3),
+        .init(goal: .eggplant, amount: 0, moves: 24, title: "The Cozy Viewing Spot", stolenItem: "safe route behind the couch", clue: "Henry shows Leo where they can watch without standing near the visitor.", chapterIndex: 8, quietRouteSteps: 9, knockEvery: 4),
+        .init(goal: .pea, amount: 0, moves: 23, title: "Another Delivery", stolenItem: "stack of boxes", clue: "More parcels wait outside. Clear beneath them and bring every one to the mat.", chapterIndex: 8, parcelCount: 4, knockEvery: 3),
+        .init(goal: .tomato, amount: 0, moves: 23, title: "Henry Stays Close", stolenItem: "shared couch blanket", clue: "Henry settles beside Leo until the footsteps at the door sound less scary.", chapterIndex: 8, comfortCells: 22, knockEvery: 3),
+        .init(goal: .carrot, amount: 0, moves: 23, title: "Packages in the Hall", stolenItem: "five safe parcels", clue: "The hallway fills with boxes, but Henry knows exactly where each one belongs.", chapterIndex: 8, parcelCount: 5, knockEvery: 2),
+        .init(goal: .onion, amount: 0, moves: 23, title: "The Visitor Leaves", stolenItem: "quiet front step", clue: "The footsteps fade. Henry checks the familiar clues that mean everything is safe.", chapterIndex: 8, clueCells: 8, clueDepth: 2, knockEvery: 4),
+        .init(goal: .pea, amount: 0, moves: 25, title: "Special Delivery", stolenItem: "shared squeaky bug", clue: "Bring in the last parcels, then Henry and Leo can share the toy by the sunny door.", chapterIndex: 8, parcelCount: 6, knockEvery: 2)
     ]
 
     static let chapters: [Chapter] = [
@@ -227,7 +241,8 @@ final class GameModel: ObservableObject {
         .init(id: 4, title: "The Lawnmower Loop", subtitle: "Henry leads Leo around the quiet side of the yard.", backgroundName: "chapter-05-lawnmower-loop", symbol: "leaf.arrow.triangle.circlepath", levelRange: 40..<50),
         .init(id: 5, title: "Bags, Cans, and Courage", subtitle: "Henry clears the noisy porch one clatter at a time.", backgroundName: "chapter-06-bags-and-cans", symbol: "bag.fill", levelRange: 50..<60),
         .init(id: 6, title: "Where Is Mom?", subtitle: "Henry follows familiar clues and keeps Leo close.", backgroundName: "chapter-07-where-is-mom", symbol: "heart.text.clipboard.fill", levelRange: 60..<70),
-        .init(id: 7, title: "Pool Day", subtitle: "Henry keeps Leo on the dry side of the pool.", backgroundName: "chapter-08-pool-day", symbol: "drop.fill", levelRange: 70..<80)
+        .init(id: 7, title: "Pool Day", subtitle: "Henry keeps Leo on the dry side of the pool.", backgroundName: "chapter-08-pool-day", symbol: "drop.fill", levelRange: 70..<80),
+        .init(id: 8, title: "Special Delivery", subtitle: "Henry keeps watch while Leo waits somewhere cozy.", backgroundName: "chapter-09-special-delivery", symbol: "shippingbox.fill", levelRange: 80..<90)
     ]
 
     @Published var board: [[Tile]] = []
@@ -263,6 +278,10 @@ final class GameModel: ObservableObject {
     @Published private(set) var splashesCleared = 0
     @Published var dryBursts = Set<Position>()
     @Published var nudgeBursts = Set<Position>()
+    @Published var parcels = Set<Position>()
+    @Published private(set) var parcelsDelivered = 0
+    @Published var parcelBursts = Set<Position>()
+    @Published var doorKnock = false
     private var movesMade = 0
     @Published var mapChapterIndex = 0
     @Published var selected: Position?
@@ -292,6 +311,7 @@ final class GameModel: ObservableObject {
         if level.quietsNoise { return initialNoise }
         if level.findsClues { return initialClueCount }
         if level.keepsLeoDry { return level.splashCount }
+        if level.deliversParcels { return level.parcelCount }
         return level.amount
     }
     var objectiveProgress: Int {
@@ -303,6 +323,7 @@ final class GameModel: ObservableObject {
         if level.quietsNoise { return initialNoise - remainingNoise }
         if level.findsClues { return initialClueCount - hiddenClues.count }
         if level.keepsLeoDry { return splashesCleared }
+        if level.deliversParcels { return parcelsDelivered }
         return collected
     }
     var objectiveComplete: Bool {
@@ -314,6 +335,7 @@ final class GameModel: ObservableObject {
         if level.quietsNoise { return noisyObjects.isEmpty }
         if level.findsClues { return hiddenClues.isEmpty }
         if level.keepsLeoDry { return splashesCleared >= level.splashCount }
+        if level.deliversParcels { return parcelsDelivered >= level.parcelCount }
         return collected >= level.amount
     }
     var objectiveLabel: String {
@@ -325,6 +347,7 @@ final class GameModel: ObservableObject {
         if level.quietsNoise { return "HUSH THE NOISE" }
         if level.findsClues { return "FIND MOM'S CLUES" }
         if level.keepsLeoDry { return "KEEP LEO DRY" }
+        if level.deliversParcels { return "DELIVER PARCELS" }
         return "COLLECT"
     }
     var objectiveInstruction: String {
@@ -336,6 +359,7 @@ final class GameModel: ObservableObject {
         if level.quietsNoise { return "Match on or beside cans and bags to quiet them." }
         if level.findsClues { return "Match on or beside leafy patches to reveal clues." }
         if level.keepsLeoDry { return "Match on or beside splashes before they reach Leo's towel." }
+        if level.deliversParcels { return "Clear pieces beneath parcels to bring them to the mat." }
         return level.goal.name
     }
 
@@ -393,6 +417,10 @@ final class GameModel: ObservableObject {
         dryBursts.removeAll()
         nudgeBursts.removeAll()
         if level.keepsLeoDry { for _ in 0..<min(3, level.splashCount) { spawnSplash() } }
+        parcels = freshParcels()
+        parcelsDelivered = 0
+        parcelBursts.removeAll()
+        doorKnock = false
         movesMade = 0
         mapChapterIndex = level.chapterIndex
         message = level.clue
@@ -493,6 +521,12 @@ final class GameModel: ObservableObject {
             candidates = hiddenClues.keys.shuffled().prefix(3)
         } else if level.keepsLeoDry {
             candidates = splashes.shuffled().prefix(3)
+        } else if level.deliversParcels {
+            candidates = parcels
+                .filter { $0.row < Self.size - 1 }
+                .map { Position(row: $0.row + 1, col: $0.col) }
+                .shuffled()
+                .prefix(3)
         } else {
             candidates = positions(of: level.goal).shuffled().prefix(5)
         }
@@ -568,6 +602,9 @@ final class GameModel: ObservableObject {
         else if level.splashEvery > 0, movesMade.isMultiple(of: level.splashEvery) {
             creepSplashes()
         }
+        else if level.knockEvery > 0, movesMade.isMultiple(of: level.knockEvery) {
+            ringDoorbell()
+        }
         if !objectiveComplete, moves <= 0 {
             moves += 10
             message = "Ten extra moves, on the house!"
@@ -597,7 +634,11 @@ final class GameModel: ObservableObject {
             let hushed = hushNoise(near: removed)
             let cluesFound = revealClues(near: removed)
             let dried = drySplashes(near: removed)
-            if dried > 0 {
+            let delivered = dropParcels(afterClearing: removed)
+            if delivered > 0 {
+                message = objectiveComplete ? "All the parcels are safe inside. The visitor is gone!" : "Thump! \(delivered) parcel\(delivered == 1 ? "" : "s") reached the doormat."
+                haptic(.success)
+            } else if dried > 0 {
                 message = objectiveComplete ? "Not a drop on Leo! The brothers trot over to Mom." : "Henry shook off \(dried) splash\(dried == 1 ? "" : "es"). Leo's paws stay dry."
                 haptic(.success)
             } else if cluesFound > 0 {
@@ -654,7 +695,8 @@ final class GameModel: ObservableObject {
         let hushed = hushNoise(near: clearSet)
         let cluesFound = revealClues(near: clearSet)
         let dried = drySplashes(near: clearSet)
-        message = dried > 0 ? "Power-up sunshine! \(dried) splash\(dried == 1 ? "" : "es") dried up!" : cluesFound > 0 ? "Power-up search! Henry uncovered \(cluesFound) clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
+        let delivered = dropParcels(afterClearing: clearSet)
+        message = delivered > 0 ? "Power-up delivery! \(delivered) parcel\(delivered == 1 ? "" : "s") reached the mat!" : dried > 0 ? "Power-up sunshine! \(dried) splash\(dried == 1 ? "" : "es") dried up!" : cluesFound > 0 ? "Power-up search! Henry uncovered \(cluesFound) clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
             ? "Rainbow paw! Every matching Leo joins the chase!"
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
@@ -677,7 +719,8 @@ final class GameModel: ObservableObject {
         let hushed = hushNoise(near: Set(positions))
         let cluesFound = revealClues(near: Set(positions))
         let dried = drySplashes(near: Set(positions))
-        message = dried > 0 ? "Henry soaked up \(dried) splash\(dried == 1 ? "" : "es") with a towel." : cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
+        let delivered = dropParcels(afterClearing: Set(positions))
+        message = delivered > 0 ? "The water swept \(delivered) parcel\(delivered == 1 ? "" : "s") down to the mat!" : dried > 0 ? "Henry soaked up \(dried) splash\(dried == 1 ? "" : "es") with a towel." : cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
@@ -912,6 +955,47 @@ final class GameModel: ObservableObject {
         splashesSpawned += 1
     }
 
+    /// Parcels ride downward with cleared spaces in their columns and are delivered at the bottom row.
+    private func dropParcels(afterClearing positions: Set<Position>) -> Int {
+        guard level.deliversParcels else { return 0 }
+        var next = Set<Position>()
+        var deliveredAt = Set<Position>()
+        for parcel in parcels {
+            let spacesBelow = positions.filter { $0.col == parcel.col && $0.row > parcel.row }.count
+            let target = Position(row: min(Self.size - 1, parcel.row + spacesBelow), col: parcel.col)
+            if target.row == Self.size - 1 {
+                deliveredAt.insert(target)
+            } else {
+                next.insert(target)
+            }
+        }
+        parcels = next
+        parcelsDelivered += deliveredAt.count
+        parcelBursts.formUnion(deliveredAt)
+        if !deliveredAt.isEmpty {
+            Task {
+                try? await Task.sleep(for: .milliseconds(800))
+                parcelBursts.subtract(deliveredAt)
+            }
+        }
+        return deliveredAt.count
+    }
+
+    private func ringDoorbell() {
+        let lines = [
+            "Knock, knock! Leo ducks low. Henry stays beside him.",
+            "The doorbell rings. Henry checks the door while Leo watches from the couch.",
+            "Footsteps on the mat! Henry shows Leo there is nothing to fear."
+        ]
+        message = lines[(movesMade / max(1, level.knockEvery) - 1) % lines.count]
+        doorKnock = true
+        haptic(.soft)
+        Task {
+            try? await Task.sleep(for: .milliseconds(600))
+            doorKnock = false
+        }
+    }
+
     /// Leafy patches may take one or two nearby matches. Revealed objects stay visible briefly.
     private func revealClues(near positions: Set<Position>) -> Int {
         guard level.findsClues else { return 0 }
@@ -1098,6 +1182,12 @@ final class GameModel: ObservableObject {
             result[position] = .init(kind: ClueKind.allCases[index % ClueKind.allCases.count], cover: max(1, level.clueDepth))
         }
         return result
+    }
+
+    private func freshParcels() -> Set<Position> {
+        guard level.deliversParcels else { return [] }
+        let columns = [1, 6, 3, 4, 0, 7]
+        return Set(columns.prefix(level.parcelCount).map { Position(row: 0, col: $0) })
     }
 
     private func matchInfo() -> MatchInfo {

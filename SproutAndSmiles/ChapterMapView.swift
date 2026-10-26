@@ -278,6 +278,8 @@ struct ChapterMapView: View {
             ClueGoalIcon(size: 28)
         } else if GameModel.levels[index].keepsLeoDry {
             SplashGoalIcon(size: 28)
+        } else if GameModel.levels[index].deliversParcels {
+            ParcelGoalIcon(size: 28)
         } else {
             VeggieView(veggie: GameModel.levels[index].goal, size: 28)
         }
@@ -360,6 +362,8 @@ private struct DeveloperConsoleView: View {
                                             ClueGoalIcon(size: 34)
                                         } else if level.keepsLeoDry {
                                             SplashGoalIcon(size: 34)
+                                        } else if level.deliversParcels {
+                                            ParcelGoalIcon(size: 34)
                                         } else {
                                             VeggieView(veggie: level.goal, size: 34)
                                         }

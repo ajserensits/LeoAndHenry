@@ -86,7 +86,7 @@ struct ContentView: View {
         .onChange(of: showingIntro) { _, isShowingIntro in
             MapMusicPlayer.shared.setPlaying(game.soundOn && !isShowingIntro)
         }
-        .alert(game.levelIndex == GameModel.levels.count - 1 ? "The brothers made it home!" : "Henry got it back!", isPresented: $game.showingWin) {
+        .alert(game.levelIndex == GameModel.levels.count - 1 ? "\(game.chapter.title) complete!" : "Henry got it back!", isPresented: $game.showingWin) {
             Button("Follow Leo") {
                 game.continueGarden()
                 withAnimation { showingMap = true }
@@ -195,6 +195,8 @@ struct ContentView: View {
                         ClueGoalIcon(size: 32)
                     } else if game.level.keepsLeoDry {
                         SplashGoalIcon(size: 32)
+                    } else if game.level.deliversParcels {
+                        ParcelGoalIcon(size: 32)
                     } else {
                         VeggieView(veggie: game.level.goal, size: 32)
                     }
@@ -364,6 +366,8 @@ struct ContentView: View {
                     ClueGoalIcon(size: 37)
                 } else if game.level.keepsLeoDry {
                     SplashGoalIcon(size: 37)
+                } else if game.level.deliversParcels {
+                    ParcelGoalIcon(size: 37)
                 } else {
                     VeggieView(veggie: game.level.goal, size: 37)
                 }
@@ -424,6 +428,8 @@ struct ContentView: View {
                         splash: game.splashes.contains(position),
                         dryBurst: game.dryBursts.contains(position),
                         nudgeBurst: game.nudgeBursts.contains(position),
+                        parcel: game.parcels.contains(position),
+                        parcelBurst: game.parcelBursts.contains(position),
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -437,6 +443,7 @@ struct ContentView: View {
             .overlay(RoundedRectangle(cornerRadius: 24).stroke(Color(red: 0.76, green: 0.66, blue: 0.48), lineWidth: 8))
             .shadow(color: Color(red: 0.32, green: 0.26, blue: 0.17).opacity(0.28), radius: 0, y: 7)
             .overlay { ThunderGlow(active: game.thunderFlash).frame(width: side, height: side) }
+            .overlay { DoorKnockGlow(active: game.doorKnock).frame(width: side, height: side) }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }.aspectRatio(1, contentMode: .fit)
     }
@@ -479,6 +486,8 @@ struct GameTileCell: View {
     let splash: Bool
     let dryBurst: Bool
     let nudgeBurst: Bool
+    let parcel: Bool
+    let parcelBurst: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -520,6 +529,8 @@ struct GameTileCell: View {
             if let revealedClue { ClueRevealBurst(kind: revealedClue, size: size) }
             if splash { SplashOverlay(size: size) }
             if dryBurst || nudgeBurst { HenryDryBurst(text: nudgeBurst ? "BACK YOU GO!" : "DRY!", size: size) }
+            if parcel { ParcelOverlay(size: size) }
+            if parcelBurst { ParcelDeliveryBurst(size: size) }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -666,6 +677,26 @@ struct SplashGoalIcon: View {
     }
 }
 
+struct ParcelGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.72, green: 0.48, blue: 0.27).gradient)
+            Image(systemName: "shippingbox.fill")
+                .font(.system(size: size * 0.43, weight: .bold))
+                .foregroundStyle(.white)
+            Image(systemName: "arrow.down")
+                .font(.system(size: size * 0.17, weight: .black))
+                .foregroundStyle(Color.yellow)
+                .offset(x: size * 0.18, y: size * 0.18)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
 /// Leo's striped beach towel along the bottom edge, drawn beneath the piece.
 private struct PoolTowelOverlay: View {
     let size: CGFloat
@@ -748,6 +779,69 @@ private struct HenryDryBurst: View {
         .frame(width: size * 0.94, height: size * 0.94)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
+    }
+}
+
+/// A parcel rides with the piece while leaving Leo's face clear and readable.
+private struct ParcelOverlay: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    Color(red: 0.82, green: 0.57, blue: 0.30).opacity(0.95),
+                    style: StrokeStyle(lineWidth: size * 0.075, lineCap: .round, dash: [size * 0.14, size * 0.045])
+                )
+
+            Image(systemName: "shippingbox.fill")
+                .font(.system(size: size * 0.20, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: size * 0.40, height: size * 0.40)
+                .background(Color(red: 0.67, green: 0.42, blue: 0.23), in: Circle())
+                .overlay(Circle().stroke(.white, lineWidth: 2))
+                .offset(x: size * 0.29, y: -size * 0.28)
+
+            Image(systemName: "arrow.down")
+                .font(.system(size: size * 0.16, weight: .black))
+                .foregroundStyle(Color(red: 0.57, green: 0.32, blue: 0.17))
+                .padding(size * 0.06)
+                .background(.white.opacity(0.90), in: Circle())
+                .offset(x: -size * 0.30, y: size * 0.29)
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel("Parcel; clear pieces below it")
+    }
+}
+
+private struct ParcelDeliveryBurst: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            if let portrait = UIImage(named: "henry-map-marker") {
+                Image(uiImage: portrait)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size * 0.34, height: size * 0.34)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 2))
+                    .offset(x: -size * 0.30, y: -size * 0.28)
+            }
+            Text("DELIVERED!")
+                .font(.system(size: size * 0.095, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.54, green: 0.31, blue: 0.18))
+                .padding(.horizontal, size * 0.07)
+                .padding(.vertical, size * 0.035)
+                .background(.white, in: Capsule())
+                .overlay(Capsule().stroke(Color.orange, lineWidth: 1.5))
+                .offset(y: size * 0.31)
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .transition(.scale(scale: 0.55).combined(with: .opacity))
+        .allowsHitTesting(false)
+        .accessibilityLabel("Parcel delivered to the doormat")
     }
 }
 
@@ -1251,6 +1345,35 @@ private struct ThunderGlow: View {
                     .scaleEffect(active ? 1 : 0.7)
             }
             .animation(.easeInOut(duration: 0.35), value: active)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+    }
+}
+
+/// A gentle doorbell cue for Chapter Nine. It never flashes rapidly or changes progress.
+private struct DoorKnockGlow: View {
+    let active: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 24)
+            .fill(Color(red: 1.00, green: 0.82, blue: 0.45))
+            .opacity(active && !reduceMotion ? 0.13 : 0)
+            .overlay(alignment: .top) {
+                HStack(spacing: 5) {
+                    Image(systemName: "door.left.hand.closed")
+                    Text("KNOCK KNOCK")
+                }
+                .font(.system(size: 11, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.42, green: 0.27, blue: 0.17))
+                .padding(.horizontal, 11)
+                .padding(.vertical, 7)
+                .background(.white.opacity(0.90), in: Capsule())
+                .offset(y: -12)
+                .opacity(active ? 1 : 0)
+                .scaleEffect(active && !reduceMotion ? 1.04 : 1)
+            }
+            .animation(.easeInOut(duration: 0.30), value: active)
             .allowsHitTesting(false)
             .accessibilityHidden(true)
     }
