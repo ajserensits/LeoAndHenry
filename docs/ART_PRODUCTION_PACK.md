@@ -132,7 +132,7 @@ When an asset is approved, add a row below so the generation prompt, crop, dimen
 |---|---|---|---|---|
 | `chapter-02-vacuum-hallway.png` | Yes (2026-10-25) | `ArtworkSource/prompts/backgrounds/` (`_common.txt` + chapter file) | Generated 1536×1024, scaled to 1672 wide, center-cropped to 1672×941 | Chapter 2 gameplay backdrop and map (multi-chapter support not implemented) |
 | `chapter-03-under-the-bed.png` | Yes (2026-10-25) | same | same | Chapter 3 backdrop (planned) |
-| `chapter-04-thunder-tomatoes.png` | Yes (2026-10-25) | same | same | Chapter 4 backdrop (planned) |
+| `chapter-04-thunder-tomatoes.png` | Yes (2026-10-25) | same | same | Chapter 4 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
 | `chapter-05-lawnmower-loop.png` | Yes (2026-10-25) | same | same | Chapter 5 backdrop (planned) |
 | `chapter-06-bags-and-cans.png` | Yes (2026-10-25) | same | same; bright bag sits behind the pause button, accepted | Chapter 6 backdrop (planned) |
 | `chapter-07-where-is-mom.png` | Yes (2026-10-25) | same | same | Chapter 7 backdrop (planned) |

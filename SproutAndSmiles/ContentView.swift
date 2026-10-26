@@ -185,6 +185,8 @@ struct ContentView: View {
                         SleepGoalIcon(size: 32)
                     } else if game.level.guidesHenry {
                         RescueGoalIcon(size: 32)
+                    } else if game.level.spreadsComfort {
+                        ComfortGoalIcon(size: 32)
                     } else {
                         VeggieView(veggie: game.level.goal, size: 32)
                     }
@@ -219,7 +221,7 @@ struct ContentView: View {
         }
         .shadow(color: Color.black.opacity(0.16), radius: 8, y: 4)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(game.moves) moves left. \(game.level.clearsDust ? "Dust cleared" : game.level.goal.name) \(game.objectiveProgress) of \(game.objectiveAmount).")
+        .accessibilityLabel("\(game.moves) moves left. \(game.objectiveLabel == "COLLECT" ? game.level.goal.name : game.objectiveLabel.capitalized) \(game.objectiveProgress) of \(game.objectiveAmount).")
     }
 
     private var pauseOverlay: some View {
@@ -344,6 +346,8 @@ struct ContentView: View {
                     SleepGoalIcon(size: 37)
                 } else if game.level.guidesHenry {
                     RescueGoalIcon(size: 37)
+                } else if game.level.spreadsComfort {
+                    ComfortGoalIcon(size: 37)
                 } else {
                     VeggieView(veggie: game.level.goal, size: 37)
                 }
@@ -386,6 +390,8 @@ struct ContentView: View {
                         rescueProgress: game.rescueProgress,
                         rescueTotal: game.rescuePath.count,
                         rescueBurst: game.rescueBursts.contains(position),
+                        cozy: game.cozyCells.contains(position),
+                        comfortBurst: game.comfortBursts.contains(position),
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -398,6 +404,7 @@ struct ContentView: View {
             .background(Color(red: 0.42, green: 0.58, blue: 0.39)).clipShape(RoundedRectangle(cornerRadius: 24))
             .overlay(RoundedRectangle(cornerRadius: 24).stroke(Color(red: 0.76, green: 0.66, blue: 0.48), lineWidth: 8))
             .shadow(color: Color(red: 0.32, green: 0.26, blue: 0.17).opacity(0.28), radius: 0, y: 7)
+            .overlay { ThunderGlow(active: game.thunderFlash).frame(width: side, height: side) }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }.aspectRatio(1, contentMode: .fit)
     }
@@ -423,6 +430,8 @@ struct GameTileCell: View {
     let rescueProgress: Int
     let rescueTotal: Int
     let rescueBurst: Bool
+    let cozy: Bool
+    let comfortBurst: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -431,7 +440,9 @@ struct GameTileCell: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
+            if cozy { CozyBlanketOverlay(size: size) }
             VeggieView(veggie: veggie, size: size)
+            if cozy { CozyRimOverlay(bursting: comfortBurst, size: size) }
             if let powerUp { PowerUpBadge(powerUp: powerUp, size: size * 0.43) }
             if dustLayers > 0 { DustTileOverlay(layers: dustLayers, size: size) }
             if sleeping { SleepingLeoOverlay(size: size) }
@@ -634,6 +645,113 @@ private struct HenryBarkBurst: View {
         .transition(.scale(scale: 0.45).combined(with: .opacity))
         .allowsHitTesting(false)
         .accessibilityLabel("Henry barks and wakes Leo")
+    }
+}
+
+struct ComfortGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.86, green: 0.47, blue: 0.27).gradient)
+            Image(systemName: "heart.fill")
+                .font(.system(size: size * 0.42, weight: .bold))
+                .foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+/// The blanket lies under the piece: a warm knit cell with a stitched edge, so the Leo face stays clear.
+private struct CozyBlanketOverlay: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.18)
+                .fill(
+                    RadialGradient(
+                        colors: [Color(red: 1.00, green: 0.86, blue: 0.62).opacity(0.55), Color(red: 0.91, green: 0.58, blue: 0.36).opacity(0.85)],
+                        center: .center,
+                        startRadius: size * 0.20,
+                        endRadius: size * 0.62
+                    )
+                )
+                .overlay {
+                    RoundedRectangle(cornerRadius: size * 0.18)
+                        .strokeBorder(
+                            Color(red: 0.99, green: 0.93, blue: 0.80).opacity(0.95),
+                            style: StrokeStyle(lineWidth: size * 0.045, lineCap: .round, dash: [size * 0.07, size * 0.05])
+                        )
+                        .padding(size * 0.04)
+                }
+        }
+        .frame(width: size * 1.02, height: size * 1.02)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+/// Sits on top of a cozy piece: a warm rim and a small heart badge, keeping the center clear.
+private struct CozyRimOverlay: View {
+    let bursting: Bool
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(Color(red: 0.95, green: 0.60, blue: 0.30).opacity(0.92), lineWidth: size * 0.065)
+
+            Image(systemName: "heart.fill")
+                .font(.system(size: size * 0.15, weight: .black))
+                .foregroundStyle(Color(red: 0.84, green: 0.36, blue: 0.24))
+                .padding(size * 0.05)
+                .background(.white.opacity(0.84), in: Circle())
+                .offset(x: -size * 0.31, y: size * 0.29)
+
+            if bursting {
+                Text("SNUG!")
+                    .font(.system(size: size * 0.11, weight: .black, design: .rounded))
+                    .foregroundStyle(Color(red: 0.45, green: 0.22, blue: 0.12))
+                    .padding(.horizontal, size * 0.07)
+                    .padding(.vertical, size * 0.035)
+                    .background(.white, in: Capsule())
+                    .overlay(Capsule().stroke(Color.orange, lineWidth: 1.5))
+                    .offset(y: -size * 0.31)
+                    .transition(.scale.combined(with: .opacity))
+            }
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel("Cozy blanket")
+    }
+}
+
+/// A slow, soft brightening for thunder. Never a strobe; skipped entirely with Reduce Motion.
+private struct ThunderGlow: View {
+    let active: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 24)
+            .fill(Color(red: 0.88, green: 0.90, blue: 1.00))
+            .opacity(active && !reduceMotion ? 0.22 : 0)
+            .overlay(alignment: .top) {
+                Image(systemName: "cloud.bolt.rain.fill")
+                    .font(.system(size: 30, weight: .bold))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(Color(red: 0.42, green: 0.47, blue: 0.62), Color(red: 0.98, green: 0.78, blue: 0.20), Color(red: 0.36, green: 0.62, blue: 0.92))
+                    .padding(10)
+                    .background(.white.opacity(0.85), in: Circle())
+                    .offset(y: -16)
+                    .opacity(active ? 1 : 0)
+                    .scaleEffect(active ? 1 : 0.7)
+            }
+            .animation(.easeInOut(duration: 0.35), value: active)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
     }
 }
 

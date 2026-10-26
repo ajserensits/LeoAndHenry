@@ -268,6 +268,8 @@ struct ChapterMapView: View {
             SleepGoalIcon(size: 28)
         } else if GameModel.levels[index].guidesHenry {
             RescueGoalIcon(size: 28)
+        } else if GameModel.levels[index].spreadsComfort {
+            ComfortGoalIcon(size: 28)
         } else {
             VeggieView(veggie: GameModel.levels[index].goal, size: 28)
         }
@@ -300,7 +302,7 @@ private struct DeveloperConsoleView: View {
                         Label("Development build only", systemImage: "ladybug.fill")
                             .font(.headline)
                             .foregroundStyle(.yellow)
-                        Text("Previewing bypasses locks and never changes the real saved journey. Chapters 1, 2, and 3 are available below.")
+                        Text("Previewing bypasses locks and never changes the real saved journey. Every chapter is available below.")
                             .font(.subheadline)
                             .foregroundStyle(.white.opacity(0.75))
                     }
@@ -340,6 +342,8 @@ private struct DeveloperConsoleView: View {
                                             SleepGoalIcon(size: 34)
                                         } else if level.guidesHenry {
                                             RescueGoalIcon(size: 34)
+                                        } else if level.spreadsComfort {
+                                            ComfortGoalIcon(size: 34)
                                         } else {
                                             VeggieView(veggie: level.goal, size: 34)
                                         }

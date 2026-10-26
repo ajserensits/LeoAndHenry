@@ -4,10 +4,11 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 
 ## What is in the playable build
 
-- Three ten-level chapters with chapter-specific storybook maps
+- Four ten-level chapters with chapter-specific storybook maps
 - Chapter Two's first new objective: one- and two-layer vacuum dust tiles
 - Sleeping-Leo objectives where nearby matches trigger Henry's wake-up bark
 - Under-the-bed rescue routes that move Henry toward Leo one pawstep at a time
+- Thunderstorm comfort levels where matches beside the blanket spread it across the board
 - Original title artwork based on the supplied photos of Leo and Henry
 - Distinct illustrated Leo expression pieces and a Henry map portrait
 - Portrait and landscape play, including a full-height centered landscape board
@@ -26,7 +27,7 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 - [Development Roadmap](docs/ROADMAP.md) — gameplay varieties and the path from prototype to complete chapters
 - [Claude Handoff](CLAUDE.md) — repository-specific instructions for anyone continuing the implementation or artwork
 
-Chapter One contains the original collection levels. Chapter Two, **The Vacuum Awakens**, adds a hallway setting, layered dust-clearing levels, and sleeping-Leo wake-up levels. Chapter Three, **Under the Bed**, adds sequential rescue routes that guide Henry to Leo. Drop-item, comfort, clue, protection, and story-card systems remain planned work.
+Chapter One contains the original collection levels. Chapter Two, **The Vacuum Awakens**, adds a hallway setting, layered dust-clearing levels, and sleeping-Leo wake-up levels. Chapter Three, **Under the Bed**, adds sequential rescue routes that guide Henry to Leo. Chapter Four, **Thunder over the Tomatoes**, adds a stormy sunroom, comfort-spreading blanket levels, and gentle thunder rumbles that never undo progress. Drop-item, clue, protection, and story-card systems remain planned work.
 
 ## Run it on an iPhone
 

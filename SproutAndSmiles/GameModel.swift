@@ -77,10 +77,13 @@ struct Level {
     var dustDepth: Int = 0
     var sleepingCells: Int = 0
     var rescueSteps: Int = 0
+    var comfortCells: Int = 0
+    var thunderEvery: Int = 0
 
     var clearsDust: Bool { dustCells > 0 }
     var wakesLeo: Bool { sleepingCells > 0 }
     var guidesHenry: Bool { rescueSteps > 0 }
+    var spreadsComfort: Bool { comfortCells > 0 }
 }
 
 struct Chapter: Identifiable {
@@ -127,13 +130,25 @@ final class GameModel: ObservableObject {
         .init(goal: .tomato, amount: 24, moves: 22, title: "The Ladybug Clue", stolenItem: "red plush ladybug", clue: "Henry spots a flash of red beside Leo's fluffy paw.", chapterIndex: 2),
         .init(goal: .carrot, amount: 0, moves: 22, title: "Almost There, Leo", stolenItem: "shared blanket", clue: "Only a few more careful pawsteps to reach Leo.", chapterIndex: 2, rescueSteps: 12),
         .init(goal: .onion, amount: 0, moves: 22, title: "A Gentle Wake-Up", stolenItem: "cozy hiding place", clue: "A few quiet woofs let Leo know Henry is close.", chapterIndex: 2, sleepingCells: 8),
-        .init(goal: .pea, amount: 0, moves: 24, title: "Out From Under", stolenItem: "red plush ladybug", clue: "Guide Henry all the way to Leo, then bring the ladybug into the light.", chapterIndex: 2, rescueSteps: 13)
+        .init(goal: .pea, amount: 0, moves: 24, title: "Out From Under", stolenItem: "red plush ladybug", clue: "Guide Henry all the way to Leo, then bring the ladybug into the light.", chapterIndex: 2, rescueSteps: 13),
+
+        .init(goal: .eggplant, amount: 20, moves: 25, title: "The Cozy Spot Thief", stolenItem: "cozy blanket spot", clue: "Leo has claimed Henry's blanket spot—just as the first thunder rumbles.", chapterIndex: 3, thunderEvery: 6),
+        .init(goal: .tomato, amount: 0, moves: 25, title: "Tuck In, Leo", stolenItem: "warm blanket", clue: "Match beside the blanket to spread it over Leo's shivery side.", chapterIndex: 3, comfortCells: 10, thunderEvery: 6),
+        .init(goal: .carrot, amount: 0, moves: 24, title: "Henry Brings a Slipper", stolenItem: "Mom's slipper", clue: "Henry fetches a slipper that smells like Mom. The blanket grows.", chapterIndex: 3, comfortCells: 16, thunderEvery: 5),
+        .init(goal: .onion, amount: 0, moves: 24, title: "Ladybug Delivery", stolenItem: "red plush ladybug", clue: "Guide Henry across the sunroom to bring Leo his favorite ladybug.", chapterIndex: 3, rescueSteps: 8, thunderEvery: 5),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "Rain on the Windows", stolenItem: "quiet corner", clue: "Raindrops drum on the glass. Keep the blanket spreading.", chapterIndex: 3, comfortCells: 22, thunderEvery: 5),
+        .init(goal: .pea, amount: 26, moves: 23, title: "A Snack for Courage", stolenItem: "storm snack", clue: "Leo is too nervous to eat—unless Henry shares his snack.", chapterIndex: 3, thunderEvery: 5),
+        .init(goal: .eggplant, amount: 0, moves: 23, title: "The Loudest Clap", stolenItem: "brave moment", clue: "The biggest boom yet. Henry pulls the blanket wider.", chapterIndex: 3, comfortCells: 28, thunderEvery: 4),
+        .init(goal: .tomato, amount: 0, moves: 22, title: "Every Comfort Thing", stolenItem: "pile of toys", clue: "Henry carries every favorite toy to Leo, one trip at a time.", chapterIndex: 3, rescueSteps: 11, thunderEvery: 4),
+        .init(goal: .carrot, amount: 0, moves: 22, title: "Rumbles Fading", stolenItem: "sleepy calm", clue: "The thunder rolls farther away. Just a little more blanket.", chapterIndex: 3, comfortCells: 34, thunderEvery: 6),
+        .init(goal: .pea, amount: 0, moves: 24, title: "Sharing the Blanket", stolenItem: "shared blanket", clue: "The storm passes. Spread the blanket wide enough for two.", chapterIndex: 3, comfortCells: 40, thunderEvery: 8)
     ]
 
     static let chapters: [Chapter] = [
         .init(id: 0, title: "The Bug in the Beans", subtitle: "Henry follows Leo's pawprints through the garden.", backgroundName: "chapter-one-garden", symbol: "leaf.fill", levelRange: 0..<10),
         .init(id: 1, title: "The Vacuum Awakens", subtitle: "Henry clears a safe path through the hallway.", backgroundName: "chapter-02-vacuum-hallway", symbol: "wind", levelRange: 10..<20),
-        .init(id: 2, title: "Under the Bed", subtitle: "Henry follows Leo into the coziest hiding place.", backgroundName: "chapter-03-under-the-bed", symbol: "bed.double.fill", levelRange: 20..<30)
+        .init(id: 2, title: "Under the Bed", subtitle: "Henry follows Leo into the coziest hiding place.", backgroundName: "chapter-03-under-the-bed", symbol: "bed.double.fill", levelRange: 20..<30),
+        .init(id: 3, title: "Thunder over the Tomatoes", subtitle: "Henry keeps Leo cozy until the storm rolls past.", backgroundName: "chapter-04-thunder-tomatoes", symbol: "cloud.bolt.rain.fill", levelRange: 30..<40)
     ]
 
     @Published var board: [[Tile]] = []
@@ -147,6 +162,11 @@ final class GameModel: ObservableObject {
     @Published var rescuePath: [Position] = []
     @Published var rescueProgress = 0
     @Published var rescueBursts = Set<Position>()
+    @Published var cozyCells = Set<Position>()
+    @Published private(set) var initialCozyCells = 0
+    @Published var comfortBursts = Set<Position>()
+    @Published var thunderFlash = false
+    private var movesMade = 0
     @Published var mapChapterIndex = 0
     @Published var selected: Position?
     @Published var popping = Set<Position>()
@@ -168,30 +188,35 @@ final class GameModel: ObservableObject {
         if level.clearsDust { return initialDustLayers }
         if level.wakesLeo { return level.sleepingCells }
         if level.guidesHenry { return rescuePath.count }
+        if level.spreadsComfort { return level.comfortCells }
         return level.amount
     }
     var objectiveProgress: Int {
         if level.clearsDust { return initialDustLayers - remainingDust }
         if level.wakesLeo { return level.sleepingCells - sleepingLeos.count }
         if level.guidesHenry { return rescueProgress }
+        if level.spreadsComfort { return cozyCells.count - initialCozyCells }
         return collected
     }
     var objectiveComplete: Bool {
         if level.clearsDust { return remainingDust == 0 }
         if level.wakesLeo { return sleepingLeos.isEmpty }
         if level.guidesHenry { return rescueProgress >= rescuePath.count }
+        if level.spreadsComfort { return cozyCells.count - initialCozyCells >= level.comfortCells }
         return collected >= level.amount
     }
     var objectiveLabel: String {
         if level.clearsDust { return "CLEAR DUST" }
         if level.wakesLeo { return "WAKE LEO" }
         if level.guidesHenry { return "REACH LEO" }
+        if level.spreadsComfort { return "SPREAD COMFORT" }
         return "COLLECT"
     }
     var objectiveInstruction: String {
         if level.clearsDust { return "Match pieces beneath dusty spaces." }
         if level.wakesLeo { return "Match on or beside sleeping Leos." }
         if level.guidesHenry { return "Match beside the glowing next pawstep." }
+        if level.spreadsComfort { return "Match on or beside the cozy blanket to spread it." }
         return level.goal.name
     }
 
@@ -224,6 +249,11 @@ final class GameModel: ObservableObject {
         rescuePath = freshRescuePath()
         rescueProgress = 0
         rescueBursts.removeAll()
+        cozyCells = freshCozyCells()
+        initialCozyCells = cozyCells.count
+        comfortBursts.removeAll()
+        thunderFlash = false
+        movesMade = 0
         mapChapterIndex = level.chapterIndex
         message = level.clue
     }
@@ -313,6 +343,8 @@ final class GameModel: ObservableObject {
             candidates = Array(sleepingLeos).shuffled().prefix(3)
         } else if level.guidesHenry, rescueProgress < rescuePath.count {
             candidates = [rescuePath[rescueProgress]][...]
+        } else if level.spreadsComfort {
+            candidates = comfortFrontier().shuffled().prefix(4)
         } else {
             candidates = positions(of: level.goal).shuffled().prefix(5)
         }
@@ -374,8 +406,12 @@ final class GameModel: ObservableObject {
     }
 
     private func finishMove() {
+        movesMade += 1
         if objectiveComplete { win() }
-        else if moves <= 0 {
+        else if level.thunderEvery > 0, movesMade.isMultiple(of: level.thunderEvery) {
+            rollThunder()
+        }
+        if !objectiveComplete, moves <= 0 {
             moves += 10
             message = "Ten extra moves, on the house!"
         }
@@ -399,7 +435,11 @@ final class GameModel: ObservableObject {
             let dustHit = damageDust(at: removed)
             let awakened = wakeSleepingLeos(near: removed)
             let advanced = advanceRescue(near: removed)
-            if advanced > 0 {
+            let warmed = spreadComfort(from: removed)
+            if warmed > 0 {
+                message = objectiveComplete ? "Everyone is snug under the blanket." : "Henry tucked the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")."
+                haptic(.success)
+            } else if advanced > 0 {
                 message = rescueProgress == rescuePath.count ? "Henry reached Leo! Safe together." : "This way! Henry moved \(advanced) pawstep\(advanced == 1 ? "" : "s") closer."
                 haptic(.success)
             } else if awakened > 0 {
@@ -436,7 +476,8 @@ final class GameModel: ObservableObject {
         _ = damageDust(at: clearSet)
         let awakened = wakeSleepingLeos(near: clearSet)
         let advanced = advanceRescue(near: clearSet)
-        message = positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
+        let warmed = spreadComfort(from: clearSet)
+        message = warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
             ? "Rainbow paw! Every matching Leo joins the chase!"
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
@@ -454,7 +495,8 @@ final class GameModel: ObservableObject {
         let dustHit = damageDust(at: Set(positions))
         let awakened = wakeSleepingLeos(near: Set(positions))
         let advanced = advanceRescue(near: Set(positions))
-        message = advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
+        let warmed = spreadComfort(from: Set(positions))
+        message = warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
@@ -518,6 +560,64 @@ final class GameModel: ObservableObject {
             rescueBursts.subtract(newlyReached)
         }
         return 1
+    }
+
+    /// Each connected group of cleared cells that touches the blanket becomes cozy.
+    private func spreadComfort(from cleared: Set<Position>) -> Int {
+        guard level.spreadsComfort else { return 0 }
+        var remaining = cleared
+        var warmed = Set<Position>()
+        while let start = remaining.first {
+            var group: Set<Position> = [start]
+            var queue = [start]
+            remaining.remove(start)
+            while let current = queue.popLast() {
+                for next in remaining where abs(next.row - current.row) <= 1 && abs(next.col - current.col) <= 1 {
+                    remaining.remove(next)
+                    group.insert(next)
+                    queue.append(next)
+                }
+            }
+            let touchesBlanket = group.contains { cell in
+                cozyCells.contains { abs($0.row - cell.row) <= 1 && abs($0.col - cell.col) <= 1 }
+            }
+            if touchesBlanket { warmed.formUnion(group.subtracting(cozyCells)) }
+        }
+        guard !warmed.isEmpty else { return 0 }
+        cozyCells.formUnion(warmed)
+        comfortBursts.formUnion(warmed)
+        Task {
+            try? await Task.sleep(for: .milliseconds(650))
+            comfortBursts.subtract(warmed)
+        }
+        return warmed.count
+    }
+
+    /// Cold cells directly beside the blanket.
+    private func comfortFrontier() -> [Position] {
+        (0..<Self.size).flatMap { row in
+            (0..<Self.size).compactMap { col in
+                let cell = Position(row: row, col: col)
+                guard !cozyCells.contains(cell) else { return nil }
+                return cozyCells.contains { abs($0.row - row) <= 1 && abs($0.col - col) <= 1 } ? cell : nil
+            }
+        }
+    }
+
+    /// A harmless rumble: a soft flash and a reassuring line from Henry. Never undoes progress.
+    private func rollThunder() {
+        let lines = [
+            "Rumble! Leo flattens his ears. Henry scoots closer.",
+            "Boom! Leo hides his nose. Henry stays right beside him.",
+            "Crackle! Henry leans against Leo until it passes."
+        ]
+        message = lines[(movesMade / max(1, level.thunderEvery) - 1) % lines.count]
+        thunderFlash = true
+        haptic(.rigid)
+        Task {
+            try? await Task.sleep(for: .milliseconds(450))
+            thunderFlash = false
+        }
     }
 
     private func win() {
@@ -589,6 +689,12 @@ final class GameModel: ObservableObject {
             .init(row: 1, col: 7)
         ]
         return Array(path.prefix(level.rescueSteps))
+    }
+
+    private func freshCozyCells() -> Set<Position> {
+        guard level.spreadsComfort else { return [] }
+        // Leo's blanket spot at the bottom center of the board.
+        return [.init(row: 7, col: 3), .init(row: 7, col: 4)]
     }
 
     private func matchInfo() -> MatchInfo {
