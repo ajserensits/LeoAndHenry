@@ -24,12 +24,8 @@ struct BoosterLoadoutView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     VStack(spacing: 4) {
-                        Text("CHAPTER \(level.chapterIndex + 1) · LEVEL \(localLevel)")
-                            .font(.system(size: 10, weight: .black, design: .rounded))
-                            .tracking(1.5)
-                            .foregroundStyle(.secondary)
-                        Text(level.title)
-                            .font(.system(size: 29, weight: .bold, design: .serif))
+                        CutePill(text: "CHAPTER \(level.chapterIndex + 1) · LEVEL \(localLevel)", size: 10)
+                        StickerText(level.title, size: 29)
                             .multilineTextAlignment(.center)
                         Text("Pack a little help for Henry and Leo")
                             .font(.subheadline.weight(.semibold))

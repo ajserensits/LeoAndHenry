@@ -106,30 +106,30 @@ struct ChapterMapView: View {
         VStack(spacing: 9) {
             HStack {
                 ZStack {
-                    Circle().fill(Color(red: 0.30, green: 0.50, blue: 0.28).gradient)
-                    Image(systemName: mapChapter.symbol).foregroundStyle(.white)
+                    Circle().fill(LinearGradient(colors: [Cute.leaf, Cute.leafDeep], startPoint: .top, endPoint: .bottom))
+                    Image(systemName: mapChapter.symbol).font(.system(size: 20, weight: .black)).foregroundStyle(.white)
                 }
-                .frame(width: 48, height: 48)
-                .overlay(Circle().stroke(.white.opacity(0.85), lineWidth: 3))
-                .shadow(color: .black.opacity(0.16), radius: 4, y: 3)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("CHAPTER \(game.mapChapterIndex + 1)").font(.system(size: 10, weight: .black)).tracking(2).foregroundStyle(.secondary)
-                    Text(mapChapter.title).font(.system(size: 27, weight: .bold, design: .serif))
-                    Text(mapChapter.subtitle).font(.caption).foregroundStyle(.secondary)
+                .frame(width: 50, height: 50)
+                .overlay(Circle().stroke(.white, lineWidth: 3))
+                .shadow(color: Cute.leafDeep.opacity(0.5), radius: 0, y: 3)
+                VStack(alignment: .leading, spacing: 3) {
+                    CutePill(text: "CHAPTER \(game.mapChapterIndex + 1)", size: 9)
+                    StickerText(mapChapter.title, size: 25)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                    Text(mapChapter.subtitle).font(Cute.font(12, .bold)).foregroundStyle(Cute.cocoaSoft)
                 }
                 Spacer()
                 Button { game.selectMapChapter(game.mapChapterIndex - 1) } label: {
                     Image(systemName: "chevron.left")
-                        .frame(width: 36, height: 36)
-                        .background(.white.opacity(0.76), in: Circle())
                 }
+                .buttonStyle(CuteCircleButtonStyle(size: 38))
                 .disabled(game.mapChapterIndex == 0)
                 .opacity(game.mapChapterIndex == 0 ? 0.35 : 1)
                 Button { game.selectMapChapter(game.mapChapterIndex + 1) } label: {
                     Image(systemName: "chevron.right")
-                        .frame(width: 36, height: 36)
-                        .background(.white.opacity(0.76), in: Circle())
                 }
+                .buttonStyle(CuteCircleButtonStyle(size: 38))
                 .disabled(game.mapChapterIndex == GameModel.chapters.count - 1 || !canOpenChapter(game.mapChapterIndex + 1))
                 .opacity(game.mapChapterIndex == GameModel.chapters.count - 1 || !canOpenChapter(game.mapChapterIndex + 1) ? 0.35 : 1)
 #if DEBUG
@@ -143,35 +143,36 @@ struct ChapterMapView: View {
 #endif
                 Button { game.soundOn.toggle() } label: {
                     Image(systemName: game.soundOn ? "music.note" : "speaker.slash.fill")
-                        .frame(width: 42, height: 42)
-                        .background(.white.opacity(0.76), in: Circle())
                 }
-                .foregroundStyle(Color(red: 0.26, green: 0.43, blue: 0.29))
+                .buttonStyle(CuteCircleButtonStyle(size: 42))
                 .accessibilityLabel(game.soundOn ? "Turn music off" : "Turn music on")
                 Button {
                     visitGarden()
                 } label: {
                     Image(systemName: "house.and.flag.fill")
-                        .frame(width: 42, height: 42)
-                        .background(.white.opacity(0.75), in: Circle())
                 }
-                .foregroundStyle(Color(red: 0.26, green: 0.43, blue: 0.29))
+                .buttonStyle(CuteCircleButtonStyle(size: 42))
             }
-            ProgressView(value: Double(chapterCompleted), total: Double(mapChapter.levelRange.count))
-                .tint(Color(red: 0.34, green: 0.53, blue: 0.32))
+            CuteProgressBar(value: Double(chapterCompleted), total: Double(mapChapter.levelRange.count), height: 11)
             HStack(spacing: 6) {
                 Image(systemName: "pawprint.fill")
                 Text(chapterCompleted == mapChapter.levelRange.count ? "Chapter complete!" : "Next stop: Level \(henryLevel - mapChapter.levelRange.lowerBound + 1)")
                 Spacer()
                 Text("\(chapterCompleted) of \(mapChapter.levelRange.count) complete")
             }
-            .font(.system(size: 10, weight: .bold, design: .rounded))
-            .foregroundStyle(Color(red: 0.30, green: 0.42, blue: 0.25))
+            .font(Cute.font(11, .heavy))
+            .foregroundStyle(Cute.leafDeep)
         }
         .padding(.horizontal, 20).padding(.top, 12).padding(.bottom, 14)
-        .background(.regularMaterial)
-        .overlay(alignment: .bottom) { Rectangle().fill(Color.white.opacity(0.62)).frame(height: 1) }
-        .shadow(color: Color.brown.opacity(0.12), radius: 8, y: 4)
+        .background(Cute.cream.opacity(0.96))
+        .overlay(alignment: .bottom) {
+            StitchLine()
+                .stroke(Cute.stitch, style: StrokeStyle(lineWidth: 1.6, lineCap: .round, dash: [5, 4]))
+                .frame(height: 2)
+                .padding(.bottom, 6)
+        }
+        .overlay(alignment: .bottom) { Rectangle().fill(.white).frame(height: 2.5) }
+        .shadow(color: Cute.cocoa.opacity(0.16), radius: 0, y: 3)
     }
 
     @ViewBuilder
@@ -219,7 +220,7 @@ struct ChapterMapView: View {
                 if completed {
                     Image(systemName: "checkmark").font(.title2.bold()).foregroundStyle(.white)
                 } else if unlocked {
-                    Text("\(row + 1)").font(.title2.bold()).foregroundStyle(Color(red: 0.19, green: 0.28, blue: 0.17))
+                    Text("\(row + 1)").font(Cute.font(26, .black)).foregroundStyle(Cute.cocoa)
                 } else {
                     Image(systemName: "lock.fill").foregroundStyle(.white.opacity(0.78))
                 }
@@ -237,17 +238,16 @@ struct ChapterMapView: View {
         HStack(spacing: 8) {
             if !row.isMultiple(of: 2) { levelGoalIcon(index) }
             VStack(alignment: row.isMultiple(of: 2) ? .leading : .trailing, spacing: 2) {
-                Text("Level \(row + 1)").font(.caption2.bold()).foregroundStyle(.secondary)
+                Text("Level \(row + 1)").font(Cute.font(10, .black)).foregroundStyle(Cute.berryDeep)
                 Text(GameModel.levels[index].title)
-                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .font(Cute.font(15, .heavy))
+                    .foregroundStyle(Cute.cocoa)
                     .multilineTextAlignment(row.isMultiple(of: 2) ? .leading : .trailing)
                     .lineLimit(2)
-                if unlocked { Text(GameModel.levels[index].stolenItem).font(.caption2).foregroundStyle(.secondary) }
+                if unlocked { Text(GameModel.levels[index].stolenItem).font(Cute.font(10, .semibold)).foregroundStyle(Cute.cocoaSoft) }
                 if index == henryLevel && index >= game.wins {
-                    Text("PLAY NEXT")
-                        .font(.system(size: 8, weight: .black))
-                        .tracking(1.2)
-                        .foregroundStyle(Color(red: 0.23, green: 0.45, blue: 0.22))
+                    CutePill(text: "PLAY NEXT", icon: "play.fill", size: 8)
+                        .padding(.top, 2)
                 }
             }
             if row.isMultiple(of: 2) { levelGoalIcon(index) }
@@ -255,9 +255,8 @@ struct ChapterMapView: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .frame(maxWidth: 185, alignment: row.isMultiple(of: 2) ? .leading : .trailing)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(.white.opacity(0.58), lineWidth: 1))
-        .opacity(unlocked ? 1 : 0.48)
+        .quiltedCard(fill: Cute.cream.opacity(0.94), corner: 18)
+        .opacity(unlocked ? 1 : 0.55)
     }
 
     @ViewBuilder

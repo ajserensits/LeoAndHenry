@@ -124,17 +124,28 @@ struct ContentView: View {
             }
         }
         .animation(.easeInOut(duration: 0.35), value: showingFinale)
-        .alert(game.levelIndex == GameModel.levels.count - 1 ? "\(game.chapter.title) complete!" : "Henry got it back!", isPresented: winAlertPresented) {
-            Button("Follow Leo") {
-                game.continueGarden()
-                withAnimation { showingMap = true }
+        .overlay {
+            if winAlertPresented.wrappedValue {
+                LevelWinCard(
+                    title: finishedChapter ? "\(game.chapter.title) complete!" : "Henry got it back!",
+                    message: "Henry recovered his \(game.level.stolenItem). Leo looks innocent—but only until the next level.",
+                    buttonTitle: "Follow Leo"
+                ) {
+                    game.continueGarden()
+                    withAnimation { showingMap = true }
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.94)))
+                .zIndex(8)
             }
-        } message: {
-            Text("Henry recovered his \(game.level.stolenItem). Leo looks innocent—but only until the next level.")
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: winAlertPresented.wrappedValue)
     }
 
     private var showingFinale: Bool { game.showingWin && game.levelIndex == GameModel.levels.count - 1 }
+    private var finishedChapter: Bool { game.levelIndex + 1 == game.chapter.levelRange.upperBound }
+    private var levelTag: String {
+        "CHAPTER \(game.level.chapterIndex + 1) · LEVEL \(game.levelIndex - game.chapter.levelRange.lowerBound + 1)"
+    }
 
     private func beginLevel(_ level: Int) {
         pendingLevel = level
@@ -184,21 +195,21 @@ struct ContentView: View {
             .padding(.leading, 10)
             .padding(.vertical, 12)
 
-            VStack {
+            VStack(alignment: .trailing) {
                 HStack {
                     Spacer()
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) { showingPause = true }
                     } label: {
                         Image(systemName: "pause.fill")
-                            .font(.title2.bold())
-                            .frame(width: 52, height: 52)
-                            .background(.ultraThinMaterial, in: Circle())
-                            .overlay(Circle().stroke(.white.opacity(0.8), lineWidth: 2))
-                            .shadow(color: .black.opacity(0.18), radius: 5, y: 3)
                     }
-                    .foregroundStyle(Color(red: 0.25, green: 0.38, blue: 0.27))
+                    .buttonStyle(CuteCircleButtonStyle(size: 52))
                     .accessibilityLabel("Pause game")
+                }
+                Spacer()
+                if sideSpace >= 150 {
+                    HenrySpeechBubble(message: game.message, portraitSize: 40, fontSize: 12, lineLimit: 4)
+                        .frame(width: min(230, sideSpace - 30))
                 }
                 Spacer()
             }
@@ -210,69 +221,71 @@ struct ContentView: View {
 
     private var landscapeHUD: some View {
         VStack(spacing: 9) {
-            VStack(spacing: 2) {
-                Text("CHAPTER \(game.level.chapterIndex + 1) · LEVEL \(game.levelIndex - GameModel.chapters[game.level.chapterIndex].levelRange.lowerBound + 1)")
-                    .font(.system(size: 8, weight: .black, design: .rounded))
-                    .tracking(0.8)
-                    .foregroundStyle(.secondary)
-                Text(game.level.title)
-                    .font(.system(size: 15, weight: .bold, design: .serif))
+            VStack(spacing: 5) {
+                CutePill(text: levelTag, size: 8)
+                StickerText(game.level.title, size: 17)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .minimumScaleFactor(0.72)
             }
 
-            VStack(spacing: 0) {
+            VStack(spacing: 3) {
                 Text("\(game.moves)")
-                    .font(.system(size: 32, weight: .black, design: .rounded))
-                    .foregroundStyle(Color(red: 0.19, green: 0.36, blue: 0.25))
+                    .font(Cute.font(28, .black))
+                    .foregroundStyle(.white)
+                    .shadow(color: Cute.leafDeep, radius: 0, y: 2)
                     .contentTransition(.numericText())
+                    .frame(width: 62, height: 62)
+                    .background(Circle().fill(LinearGradient(colors: [Cute.leaf, Cute.leafDeep], startPoint: .top, endPoint: .bottom)))
+                    .overlay(alignment: .top) {
+                        Capsule().fill(.white.opacity(0.35)).frame(width: 30, height: 7).padding(.top, 7)
+                    }
+                    .overlay(Circle().stroke(.white, lineWidth: 3))
+                    .shadow(color: Cute.leafDeep.opacity(0.55), radius: 0, y: 3)
                 Text("MOVES LEFT")
-                    .font(.system(size: 8, weight: .black, design: .rounded))
+                    .font(Cute.font(8, .black))
                     .tracking(1.2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Cute.cocoaSoft)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .background(Color.white.opacity(0.58), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
 
             VStack(spacing: 5) {
                 HStack(spacing: 7) {
                     LevelGoalIcon(level: game.level, size: 32)
                     VStack(alignment: .leading, spacing: 0) {
                         Text(game.objectiveLabel)
-                            .font(.system(size: 8, weight: .black, design: .rounded))
-                            .foregroundStyle(.secondary)
+                            .font(Cute.font(8, .black))
+                            .foregroundStyle(Cute.cocoaSoft)
                         if game.level.isMultiGoal {
                             ObjectiveChips(game: game, iconSize: 18)
                         } else {
                             Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)")
-                                .font(.system(size: 18, weight: .bold, design: .rounded))
+                                .font(Cute.font(18, .black))
+                                .foregroundStyle(Cute.cocoa)
                                 .contentTransition(.numericText())
                         }
                     }
                     Spacer(minLength: 0)
                 }
 
-                ProgressView(value: Double(game.objectiveProgress), total: Double(max(1, game.objectiveAmount)))
-                    .tint(Color(red: 0.39, green: 0.62, blue: 0.34))
+                CuteProgressBar(value: Double(game.objectiveProgress), total: Double(max(1, game.objectiveAmount)), height: 11)
             }
             .padding(10)
-            .background(Color.white.opacity(0.58), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
+            .background(.white.opacity(0.8), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Cute.honey, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
+            }
 
             Text(game.objectiveInstruction)
-                .font(.system(size: 9, weight: .semibold, design: .rounded))
-                .foregroundStyle(.secondary)
+                .font(Cute.font(9, .bold))
+                .foregroundStyle(Cute.cocoaSoft)
                 .multilineTextAlignment(.center)
-                .lineLimit(2)
+                .lineLimit(3)
+                .minimumScaleFactor(0.8)
         }
-        .padding(11)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .stroke(Color.white.opacity(0.78), lineWidth: 1.5)
-        }
-        .shadow(color: Color.black.opacity(0.16), radius: 8, y: 4)
+        .padding(13)
+        .quiltedCard(corner: 24)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(game.moves) moves left. \(game.objectiveLabel == "COLLECT" ? game.level.goal.name : game.objectiveLabel.capitalized) \(game.objectiveProgress) of \(game.objectiveAmount).")
     }
@@ -282,17 +295,15 @@ struct ContentView: View {
             Color.black.opacity(0.42).ignoresSafeArea()
             VStack(spacing: 13) {
                 HStack {
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text("PAUSED").font(.system(size: 11, weight: .black)).tracking(2).foregroundStyle(.secondary)
-                        Text(game.level.title).font(.system(size: 26, weight: .bold, design: .serif))
+                    VStack(alignment: .leading, spacing: 5) {
+                        CutePill(text: "PAUSED", icon: "pause.fill", size: 10)
+                        StickerText(game.level.title, size: 26)
                     }
                     Spacer()
                     Button { game.soundOn.toggle() } label: {
                         Image(systemName: game.soundOn ? "speaker.wave.2.fill" : "speaker.slash.fill")
-                            .frame(width: 44, height: 44)
-                            .background(Color(red: 0.90, green: 0.84, blue: 0.72), in: Circle())
                     }
-                    .foregroundStyle(Color(red: 0.25, green: 0.38, blue: 0.27))
+                    .buttonStyle(CuteCircleButtonStyle(size: 44))
                 }
 
                 mission
@@ -331,46 +342,40 @@ struct ContentView: View {
                     withAnimation(.easeInOut(duration: 0.2)) { showingPause = false }
                 } label: {
                     Label("Resume", systemImage: "play.fill")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 5)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(Color(red: 0.31, green: 0.50, blue: 0.31))
+                .buttonStyle(CuteCandyButtonStyle())
             }
             .padding(20)
             .frame(maxWidth: 540)
-            .background(Color(red: 0.97, green: 0.94, blue: 0.82), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 28, style: .continuous).stroke(.white.opacity(0.9), lineWidth: 2))
-            .shadow(color: .black.opacity(0.30), radius: 22, y: 10)
+            .quiltedCard(corner: 30)
             .padding(18)
         }
     }
 
     private var statusMessage: some View {
-        Text(game.message)
-            .font(.system(size: 13, design: .serif).italic())
-            .foregroundStyle(.secondary)
-            .lineLimit(1).minimumScaleFactor(0.70)
-            .frame(height: 19)
+        HenrySpeechBubble(message: game.message, portraitSize: 30, fontSize: 12, lineLimit: 1)
+            .frame(height: 34)
     }
 
     private var header: some View {
         HStack {
             Button { withAnimation { showingMap = true } } label: {
                 HStack(spacing: 9) {
-                    Text("❀").font(.title2).frame(width: 39, height: 39).background(Color(red: 0.28, green: 0.42, blue: 0.30)).foregroundStyle(.white).clipShape(Circle())
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("Henry's Garden Chase").font(.system(size: 20, weight: .bold, design: .serif))
-                        Text("tap for the chapter map").font(.caption2).foregroundStyle(.secondary)
+                    Text("❀").font(.title2).frame(width: 39, height: 39)
+                        .background(LinearGradient(colors: [Cute.berry, Cute.berryDeep], startPoint: .top, endPoint: .bottom))
+                        .foregroundStyle(.white).clipShape(Circle())
+                        .overlay(Circle().stroke(.white, lineWidth: 2.5))
+                    VStack(alignment: .leading, spacing: 1) {
+                        StickerText("Henry's Garden Chase", size: 20, colors: [Cute.leaf, Cute.leafDeep])
+                        Text("tap for the chapter map").font(Cute.font(10, .bold)).foregroundStyle(Cute.cocoaSoft)
                     }
                 }
             }.buttonStyle(.plain)
             Spacer()
             Button { game.soundOn.toggle() } label: {
                 Image(systemName: game.soundOn ? "speaker.wave.2.fill" : "speaker.slash.fill")
-                    .frame(width: 39, height: 39).background(.white.opacity(0.75)).clipShape(Circle()).shadow(color: .black.opacity(0.09), radius: 4, y: 3)
-            }.foregroundStyle(Color(red: 0.25, green: 0.38, blue: 0.27))
+            }
+            .buttonStyle(CuteCircleButtonStyle(size: 39))
         }
     }
 
@@ -378,14 +383,15 @@ struct ContentView: View {
         HStack {
             Button { beginLevel(game.levelIndex - 1) } label: { Image(systemName: "chevron.left") }.disabled(game.levelIndex == 0)
             Spacer()
-            VStack(spacing: 0) {
-                Text("GARDEN PATH").font(.system(size: 9, weight: .black)).tracking(2).foregroundStyle(.secondary)
-                Text(game.level.title).font(.system(size: 20, weight: .bold, design: .serif)).lineLimit(1).minimumScaleFactor(0.7)
+            VStack(spacing: 4) {
+                CutePill(text: levelTag, size: 9)
+                StickerText(game.level.title, size: 21)
+                    .lineLimit(1).minimumScaleFactor(0.7)
             }
             Spacer()
             Button { beginLevel(game.levelIndex + 1) } label: { Image(systemName: "chevron.right") }.disabled(game.levelIndex >= game.unlocked - 1)
         }
-        .buttonStyle(RoundButtonStyle())
+        .buttonStyle(CuteCircleButtonStyle(size: 38))
     }
 
     private var mission: some View {
@@ -396,24 +402,31 @@ struct ContentView: View {
                 LevelGoalIcon(level: game.level, size: 37)
                 VStack(alignment: .leading, spacing: 0) {
                     Text(game.objectiveLabel)
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(.secondary)
+                        .font(Cute.font(9, .black))
+                        .foregroundStyle(Cute.cocoaSoft)
                     if game.level.isMultiGoal {
                         ObjectiveChips(game: game, iconSize: 16)
                     } else {
-                        Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)").bold()
+                        Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)")
+                            .font(Cute.font(18, .black))
+                            .foregroundStyle(Cute.cocoa)
+                            .contentTransition(.numericText())
                     }
                 }
             }.frame(maxWidth: .infinity)
             Divider().frame(height: 35)
             metric(value: "∞", label: "LIVES", color: .pink)
         }
-        .padding(.vertical, 10).padding(.horizontal, 8)
-        .background(Color(red: 0.94, green: 0.89, blue: 0.79)).clipShape(RoundedRectangle(cornerRadius: 20))
+        .padding(.vertical, 11).padding(.horizontal, 10)
+        .quiltedCard(corner: 22)
     }
 
-    private func metric(value: String, label: String, color: Color = Color(red: 0.16, green: 0.29, blue: 0.22)) -> some View {
-        VStack(spacing: 0) { Text(value).font(.title2.bold()).foregroundStyle(color); Text(label).font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(.secondary) }.frame(maxWidth: .infinity)
+    private func metric(value: String, label: String, color: Color = Cute.leafDeep) -> some View {
+        VStack(spacing: 0) {
+            Text(value).font(Cute.font(24, .black)).foregroundStyle(color).contentTransition(.numericText())
+            Text(label).font(Cute.font(9, .black)).tracking(1).foregroundStyle(Cute.cocoaSoft)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private var board: some View {
@@ -1667,16 +1680,16 @@ struct IntroView: View {
             LinearGradient(colors: [.clear, .black.opacity(0.12), Color(red: 0.12, green: 0.22, blue: 0.14).opacity(0.94)], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             VStack(spacing: 8) {
-                Text("HENRY & LEO")
-                    .font(.system(size: 13, weight: .black)).tracking(4).foregroundStyle(.white.opacity(0.85))
-                Text("The Great Garden Chase")
-                    .font(.system(size: 37, weight: .bold, design: .serif)).multilineTextAlignment(.center).foregroundStyle(.white)
+                CutePill(text: "HENRY & LEO", icon: "heart.fill", size: 11)
+                StickerText("The Great Garden Chase", size: 37, colors: [Cute.honey, Cute.honeyDeep])
+                    .multilineTextAlignment(.center)
                 Text("Leo stole Henry's toy. Again.\nMatch the garden friends and follow the trail!")
-                    .font(.subheadline).multilineTextAlignment(.center).foregroundStyle(.white.opacity(0.9)).padding(.bottom, 8)
+                    .font(Cute.font(15, .bold)).multilineTextAlignment(.center).foregroundStyle(.white.opacity(0.92)).padding(.bottom, 8)
                 Button(action: play) {
-                    Text("Start the chase  🐾").font(.headline).padding(.horizontal, 28).padding(.vertical, 14)
-                        .background(Color(red: 0.94, green: 0.72, blue: 0.31), in: Capsule()).foregroundStyle(Color(red: 0.18, green: 0.25, blue: 0.15))
+                    Text("Start the chase  🐾")
                 }
+                .buttonStyle(CuteCandyButtonStyle(colors: [Cute.berry, Cute.berryDeep]))
+                .frame(maxWidth: 320)
             }
             .padding(.horizontal, 25).padding(.bottom, 34)
         }
@@ -1710,14 +1723,10 @@ struct BirthdayFinaleView: View {
                             .padding(10)
                     }
                     .accessibilityHidden(true)
-                Text("HAPPY BIRTHDAY")
-                    .font(.system(size: 12, weight: .black, design: .rounded))
-                    .tracking(3)
-                    .foregroundStyle(Color(red: 0.86, green: 0.36, blue: 0.48))
-                Text("Leo & Henry")
-                    .font(.system(size: 30, weight: .bold, design: .serif))
+                CutePill(text: "HAPPY BIRTHDAY", icon: "birthday.cake.fill", fill: Cute.berry.opacity(0.85), size: 11)
+                StickerText("Leo & Henry", size: 32)
                 Text("Through bugs and vacuums, thunder and mowers, splashes and doorbells, Henry never left Leo's side. Now the brothers lie nose to nose and share the peanut-butter pad, one happy lick at a time.")
-                    .font(.system(size: 15, weight: .medium, design: .rounded))
+                    .font(Cute.font(15, .semibold))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -1726,17 +1735,12 @@ struct BirthdayFinaleView: View {
                     .foregroundStyle(Color(red: 0.24, green: 0.45, blue: 0.27))
                 Button(action: done) {
                     Text("Back to the map")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(Color(red: 0.39, green: 0.62, blue: 0.34), in: Capsule())
-                        .foregroundStyle(.white)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(CuteCandyButtonStyle())
             }
             .padding(20)
             .frame(maxWidth: 420)
-            .background(Color(red: 0.99, green: 0.96, blue: 0.89), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+            .quiltedCard(corner: 30)
             .padding(24)
     }
 }
@@ -1810,9 +1814,9 @@ private struct PauseDestinationCard: View {
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(title)
-                    .font(.system(size: 16, weight: .black, design: .rounded))
+                    .font(Cute.font(17, .black))
                 Text(subtitle)
-                    .font(.system(size: 9, weight: .semibold, design: .rounded))
+                    .font(Cute.font(10, .bold))
                     .opacity(0.82)
             }
             .foregroundStyle(.white)
@@ -1839,12 +1843,6 @@ private struct PauseDestinationCard: View {
     }
 }
 
-struct RoundButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label.frame(width: 38, height: 38).background(.white.opacity(0.8)).clipShape(Circle()).opacity(configuration.isPressed ? 0.6 : 1)
-    }
-}
-
 struct GardenView: View {
     @ObservedObject var game: GameModel
     @Environment(\.dismiss) private var dismiss
@@ -1852,7 +1850,7 @@ struct GardenView: View {
         ZStack {
             LinearGradient(colors: [Color(red: 0.69, green: 0.86, blue: 0.84), Color(red: 0.44, green: 0.66, blue: 0.34)], startPoint: .top, endPoint: .bottom).ignoresSafeArea()
             VStack {
-                HStack { VStack(alignment: .leading) { Text("Our Cozy Corner").font(.largeTitle.bold()).fontDesign(.serif); Text(game.level.title).foregroundStyle(.secondary) }; Spacer(); Button("Done") { dismiss() }.buttonStyle(.borderedProminent).tint(Color(red: 0.29, green: 0.45, blue: 0.31)) }
+                HStack { VStack(alignment: .leading) { StickerText("Our Cozy Corner", size: 32); Text(game.level.title).foregroundStyle(.secondary) }; Spacer(); Button("Done") { dismiss() }.buttonStyle(.borderedProminent).tint(Color(red: 0.29, green: 0.45, blue: 0.31)) }
                 Spacer()
                 Text("🏡").font(.system(size: 110))
                 HStack(spacing: 10) {
