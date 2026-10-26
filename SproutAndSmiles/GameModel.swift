@@ -104,6 +104,8 @@ struct Level {
     var breezeEvery: Int = 0
     var clueCells: Int = 0
     var clueDepth: Int = 1
+    var splashCount: Int = 0
+    var splashEvery: Int = 0
 
     var clearsDust: Bool { dustCells > 0 }
     var wakesLeo: Bool { sleepingCells > 0 }
@@ -112,6 +114,7 @@ struct Level {
     var followsQuietRoute: Bool { quietRouteSteps > 0 }
     var quietsNoise: Bool { canCells + bagCells > 0 }
     var findsClues: Bool { clueCells > 0 }
+    var keepsLeoDry: Bool { splashCount > 0 }
 }
 
 struct Chapter: Identifiable {
@@ -202,7 +205,18 @@ final class GameModel: ObservableObject {
         .init(goal: .tomato, amount: 0, moves: 23, title: "Familiar Footsteps", stolenItem: "Mom's footsteps", clue: "Slipper, keys, pawprints—every clue says they are heading home.", chapterIndex: 6, clueCells: 8, clueDepth: 2),
         .init(goal: .carrot, amount: 0, moves: 23, title: "The Porch Light", stolenItem: "warm light ahead", clue: "Henry spots the porch light and leads Leo toward it one pawstep at a time.", chapterIndex: 6, rescueSteps: 11),
         .init(goal: .onion, amount: 0, moves: 23, title: "Almost Home", stolenItem: "last garden clues", clue: "The cottage is close. Find the final familiar signs along the path.", chapterIndex: 6, clueCells: 10, clueDepth: 2),
-        .init(goal: .pea, amount: 0, moves: 25, title: "There You Are, Mom!", stolenItem: "the way back to Mom", clue: "Henry follows every clue until Leo sees Mom waiting in the warm window.", chapterIndex: 6, clueCells: 12, clueDepth: 2)
+        .init(goal: .pea, amount: 0, moves: 25, title: "There You Are, Mom!", stolenItem: "the way back to Mom", clue: "Henry follows every clue until Leo sees Mom waiting in the warm window.", chapterIndex: 6, clueCells: 12, clueDepth: 2),
+
+        .init(goal: .tomato, amount: 22, moves: 25, title: "Leo Spots the Pool", stolenItem: "Henry's pool ring", clue: "Mom wants everyone outside by the pool. Leo grabbed Henry's ring and froze.", chapterIndex: 7),
+        .init(goal: .carrot, amount: 0, moves: 25, title: "First Little Splash", stolenItem: "dry paws", clue: "Splashes creep from the pool. Match on or beside them before they reach Leo's towel.", chapterIndex: 7, splashCount: 5, splashEvery: 3),
+        .init(goal: .onion, amount: 0, moves: 24, title: "The Dry Way", stolenItem: "dry stepping stones", clue: "Henry shows Leo the dry stones along the edge of the patio.", chapterIndex: 7, quietRouteSteps: 8),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "Cannonball Next Door", stolenItem: "splash-free corner", clue: "A neighbor's cannonball sends drops flying. Henry stays between Leo and the water.", chapterIndex: 7, splashCount: 7, splashEvery: 3),
+        .init(goal: .eggplant, amount: 0, moves: 24, title: "Wet Paws, Brave Paws", stolenItem: "brave little step", clue: "The splashes come a little faster. Henry nudges back any that get too close.", chapterIndex: 7, splashCount: 8, splashEvery: 2),
+        .init(goal: .pea, amount: 0, moves: 24, title: "Sunny Towel Nap", stolenItem: "warm towel", clue: "Leo dozed off on the warm towel. Henry gives gentle woofs to wake him.", chapterIndex: 7, sleepingCells: 8),
+        .init(goal: .tomato, amount: 0, moves: 23, title: "Pool Toy Parade", stolenItem: "floating duck", clue: "Pool toys bob by and splash the deck. Keep Leo's towel dry.", chapterIndex: 7, splashCount: 9, splashEvery: 2),
+        .init(goal: .carrot, amount: 0, moves: 23, title: "Between Leo and the Water", stolenItem: "path to Mom's chair", clue: "Henry walks on the pool side so Leo can walk on the dry side.", chapterIndex: 7, quietRouteSteps: 12),
+        .init(goal: .onion, amount: 0, moves: 23, title: "The Big Splash", stolenItem: "Mom's sun hat", clue: "Mom dives in! Clear the big wave of splashes before it reaches Leo.", chapterIndex: 7, splashCount: 11, splashEvery: 2),
+        .init(goal: .pea, amount: 0, moves: 25, title: "Dry and Proud", stolenItem: "shared pool ring", clue: "One last splash wave, then Leo hands Henry's ring back beside Mom's chair.", chapterIndex: 7, splashCount: 12, splashEvery: 2)
     ]
 
     static let chapters: [Chapter] = [
@@ -212,7 +226,8 @@ final class GameModel: ObservableObject {
         .init(id: 3, title: "Thunder over the Tomatoes", subtitle: "Henry keeps Leo cozy until the storm rolls past.", backgroundName: "chapter-04-thunder-tomatoes", symbol: "cloud.bolt.rain.fill", levelRange: 30..<40),
         .init(id: 4, title: "The Lawnmower Loop", subtitle: "Henry leads Leo around the quiet side of the yard.", backgroundName: "chapter-05-lawnmower-loop", symbol: "leaf.arrow.triangle.circlepath", levelRange: 40..<50),
         .init(id: 5, title: "Bags, Cans, and Courage", subtitle: "Henry clears the noisy porch one clatter at a time.", backgroundName: "chapter-06-bags-and-cans", symbol: "bag.fill", levelRange: 50..<60),
-        .init(id: 6, title: "Where Is Mom?", subtitle: "Henry follows familiar clues and keeps Leo close.", backgroundName: "chapter-07-where-is-mom", symbol: "heart.text.clipboard.fill", levelRange: 60..<70)
+        .init(id: 6, title: "Where Is Mom?", subtitle: "Henry follows familiar clues and keeps Leo close.", backgroundName: "chapter-07-where-is-mom", symbol: "heart.text.clipboard.fill", levelRange: 60..<70),
+        .init(id: 7, title: "Pool Day", subtitle: "Henry keeps Leo on the dry side of the pool.", backgroundName: "chapter-08-pool-day", symbol: "drop.fill", levelRange: 70..<80)
     ]
 
     @Published var board: [[Tile]] = []
@@ -243,6 +258,11 @@ final class GameModel: ObservableObject {
     @Published var hiddenClues: [Position: HiddenClue] = [:]
     @Published private(set) var initialClueCount = 0
     @Published var clueBursts: [Position: ClueKind] = [:]
+    @Published var splashes = Set<Position>()
+    @Published private(set) var splashesSpawned = 0
+    @Published private(set) var splashesCleared = 0
+    @Published var dryBursts = Set<Position>()
+    @Published var nudgeBursts = Set<Position>()
     private var movesMade = 0
     @Published var mapChapterIndex = 0
     @Published var selected: Position?
@@ -271,6 +291,7 @@ final class GameModel: ObservableObject {
         if level.followsQuietRoute { return quietRoute.count }
         if level.quietsNoise { return initialNoise }
         if level.findsClues { return initialClueCount }
+        if level.keepsLeoDry { return level.splashCount }
         return level.amount
     }
     var objectiveProgress: Int {
@@ -281,6 +302,7 @@ final class GameModel: ObservableObject {
         if level.followsQuietRoute { return quietProgress }
         if level.quietsNoise { return initialNoise - remainingNoise }
         if level.findsClues { return initialClueCount - hiddenClues.count }
+        if level.keepsLeoDry { return splashesCleared }
         return collected
     }
     var objectiveComplete: Bool {
@@ -291,6 +313,7 @@ final class GameModel: ObservableObject {
         if level.followsQuietRoute { return quietProgress >= quietRoute.count }
         if level.quietsNoise { return noisyObjects.isEmpty }
         if level.findsClues { return hiddenClues.isEmpty }
+        if level.keepsLeoDry { return splashesCleared >= level.splashCount }
         return collected >= level.amount
     }
     var objectiveLabel: String {
@@ -301,6 +324,7 @@ final class GameModel: ObservableObject {
         if level.followsQuietRoute { return "QUIET ROUTE" }
         if level.quietsNoise { return "HUSH THE NOISE" }
         if level.findsClues { return "FIND MOM'S CLUES" }
+        if level.keepsLeoDry { return "KEEP LEO DRY" }
         return "COLLECT"
     }
     var objectiveInstruction: String {
@@ -311,6 +335,7 @@ final class GameModel: ObservableObject {
         if level.followsQuietRoute { return "Match beside the glowing leaf to lead Leo safely." }
         if level.quietsNoise { return "Match on or beside cans and bags to quiet them." }
         if level.findsClues { return "Match on or beside leafy patches to reveal clues." }
+        if level.keepsLeoDry { return "Match on or beside splashes before they reach Leo's towel." }
         return level.goal.name
     }
 
@@ -362,6 +387,12 @@ final class GameModel: ObservableObject {
         hiddenClues = freshHiddenClues()
         initialClueCount = hiddenClues.count
         clueBursts.removeAll()
+        splashes.removeAll()
+        splashesSpawned = 0
+        splashesCleared = 0
+        dryBursts.removeAll()
+        nudgeBursts.removeAll()
+        if level.keepsLeoDry { for _ in 0..<min(3, level.splashCount) { spawnSplash() } }
         movesMade = 0
         mapChapterIndex = level.chapterIndex
         message = level.clue
@@ -460,6 +491,8 @@ final class GameModel: ObservableObject {
             candidates = noisyObjects.keys.shuffled().prefix(3)
         } else if level.findsClues {
             candidates = hiddenClues.keys.shuffled().prefix(3)
+        } else if level.keepsLeoDry {
+            candidates = splashes.shuffled().prefix(3)
         } else {
             candidates = positions(of: level.goal).shuffled().prefix(5)
         }
@@ -532,6 +565,9 @@ final class GameModel: ObservableObject {
         else if level.breezeEvery > 0, movesMade.isMultiple(of: level.breezeEvery) {
             blowBreeze()
         }
+        else if level.splashEvery > 0, movesMade.isMultiple(of: level.splashEvery) {
+            creepSplashes()
+        }
         if !objectiveComplete, moves <= 0 {
             moves += 10
             message = "Ten extra moves, on the house!"
@@ -560,7 +596,11 @@ final class GameModel: ObservableObject {
             let quietSteps = advanceQuietRoute(near: removed)
             let hushed = hushNoise(near: removed)
             let cluesFound = revealClues(near: removed)
-            if cluesFound > 0 {
+            let dried = drySplashes(near: removed)
+            if dried > 0 {
+                message = objectiveComplete ? "Not a drop on Leo! The brothers trot over to Mom." : "Henry shook off \(dried) splash\(dried == 1 ? "" : "es"). Leo's paws stay dry."
+                haptic(.success)
+            } else if cluesFound > 0 {
                 message = hiddenClues.isEmpty ? "Henry found the way! Mom is waiting in the warm window." : "A familiar clue! Henry knows they are getting closer to Mom."
                 haptic(.success)
             } else if hushed > 0 {
@@ -613,7 +653,8 @@ final class GameModel: ObservableObject {
         let quietSteps = advanceQuietRoute(near: clearSet)
         let hushed = hushNoise(near: clearSet)
         let cluesFound = revealClues(near: clearSet)
-        message = cluesFound > 0 ? "Power-up search! Henry uncovered \(cluesFound) clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
+        let dried = drySplashes(near: clearSet)
+        message = dried > 0 ? "Power-up sunshine! \(dried) splash\(dried == 1 ? "" : "es") dried up!" : cluesFound > 0 ? "Power-up search! Henry uncovered \(cluesFound) clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
             ? "Rainbow paw! Every matching Leo joins the chase!"
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
@@ -635,7 +676,8 @@ final class GameModel: ObservableObject {
         let quietSteps = advanceQuietRoute(near: Set(positions))
         let hushed = hushNoise(near: Set(positions))
         let cluesFound = revealClues(near: Set(positions))
-        message = cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
+        let dried = drySplashes(near: Set(positions))
+        message = dried > 0 ? "Henry soaked up \(dried) splash\(dried == 1 ? "" : "es") with a towel." : cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
@@ -804,6 +846,70 @@ final class GameModel: ObservableObject {
             try? await Task.sleep(for: .milliseconds(520))
             breezeGust = false
         }
+    }
+
+    /// Any match on or beside a splash dries it. More splashes arrive until the level's count is used up.
+    private func drySplashes(near positions: Set<Position>) -> Int {
+        guard level.keepsLeoDry else { return 0 }
+        let touched = splashes.filter { splash in
+            positions.contains { abs($0.row - splash.row) <= 1 && abs($0.col - splash.col) <= 1 }
+        }
+        guard !touched.isEmpty else { return 0 }
+        splashes.subtract(touched)
+        splashesCleared += touched.count
+        dryBursts.formUnion(touched)
+        Task {
+            try? await Task.sleep(for: .milliseconds(650))
+            dryBursts.subtract(touched)
+        }
+        if splashes.isEmpty, splashesSpawned < level.splashCount { spawnSplash() }
+        return touched.count
+    }
+
+    /// Splashes creep one row toward Leo's towel. Henry nudges any that would reach it back to the pool edge.
+    /// Never removes progress.
+    private func creepSplashes() {
+        var moved = Set<Position>()
+        var nudged = Set<Position>()
+        for splash in splashes.sorted(by: { $0.row > $1.row }) {
+            let next = Position(row: splash.row + 1, col: splash.col)
+            if next.row >= Self.size - 1 {
+                let home = Position(row: 0, col: splash.col)
+                let target = moved.contains(home) ? splash : home
+                moved.insert(target)
+                if target == home { nudged.insert(home) }
+            } else {
+                moved.insert(moved.contains(next) ? splash : next)
+            }
+        }
+        splashes = moved
+        if splashesSpawned < level.splashCount, splashes.count < 4 { spawnSplash() }
+        if !nudged.isEmpty {
+            message = "Henry hopped in front of Leo and nudged the splash back to the pool!"
+            nudgeBursts.formUnion(nudged)
+            Task {
+                try? await Task.sleep(for: .milliseconds(800))
+                nudgeBursts.subtract(nudged)
+            }
+        } else {
+            let lines = [
+                "Drip, drip. The splashes inch closer. Henry keeps watch.",
+                "Leo lifts one paw off the wet deck. Henry stands on the pool side.",
+                "A wave sloshes over the edge. Henry is ready."
+            ]
+            message = lines[(movesMade / max(1, level.splashEvery) - 1) % lines.count]
+        }
+        haptic(.soft)
+    }
+
+    private func spawnSplash() {
+        let columns = [1, 6, 3, 4, 0, 7, 2, 5]
+        let open = columns.map { Position(row: 0, col: $0) }.filter { !splashes.contains($0) }
+        guard splashesSpawned < level.splashCount,
+              let spot = open.first(where: { $0.col == columns[splashesSpawned % columns.count] }) ?? open.first
+        else { return }
+        splashes.insert(spot)
+        splashesSpawned += 1
     }
 
     /// Leafy patches may take one or two nearby matches. Revealed objects stay visible briefly.

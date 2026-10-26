@@ -193,6 +193,8 @@ struct ContentView: View {
                         NoiseGoalIcon(size: 32)
                     } else if game.level.findsClues {
                         ClueGoalIcon(size: 32)
+                    } else if game.level.keepsLeoDry {
+                        SplashGoalIcon(size: 32)
                     } else {
                         VeggieView(veggie: game.level.goal, size: 32)
                     }
@@ -360,6 +362,8 @@ struct ContentView: View {
                     NoiseGoalIcon(size: 37)
                 } else if game.level.findsClues {
                     ClueGoalIcon(size: 37)
+                } else if game.level.keepsLeoDry {
+                    SplashGoalIcon(size: 37)
                 } else {
                     VeggieView(veggie: game.level.goal, size: 37)
                 }
@@ -416,6 +420,10 @@ struct ContentView: View {
                         breezeGust: game.breezeGust,
                         clue: game.hiddenClues[position],
                         revealedClue: game.clueBursts[position],
+                        towel: game.level.keepsLeoDry && row == GameModel.size - 1 && (2...5).contains(col),
+                        splash: game.splashes.contains(position),
+                        dryBurst: game.dryBursts.contains(position),
+                        nudgeBurst: game.nudgeBursts.contains(position),
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -467,6 +475,10 @@ struct GameTileCell: View {
     let breezeGust: Bool
     let clue: HiddenClue?
     let revealedClue: ClueKind?
+    let towel: Bool
+    let splash: Bool
+    let dryBurst: Bool
+    let nudgeBurst: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -476,6 +488,7 @@ struct GameTileCell: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             if cozy { CozyBlanketOverlay(size: size) }
+            if towel { PoolTowelOverlay(size: size) }
             VeggieView(veggie: veggie, size: size)
             if cozy { CozyRimOverlay(bursting: comfortBurst, size: size) }
             if let powerUp { PowerUpBadge(powerUp: powerUp, size: size * 0.43) }
@@ -505,6 +518,8 @@ struct GameTileCell: View {
             if noiseBurst { HushBurst(cleared: noise == nil, size: size) }
             if let clue { HiddenClueOverlay(clue: clue, size: size) }
             if let revealedClue { ClueRevealBurst(kind: revealedClue, size: size) }
+            if splash { SplashOverlay(size: size) }
+            if dryBurst || nudgeBurst { HenryDryBurst(text: nudgeBurst ? "BACK YOU GO!" : "DRY!", size: size) }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -628,6 +643,111 @@ struct ClueGoalIcon: View {
         }
         .frame(width: size, height: size)
         .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+struct SplashGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.26, green: 0.62, blue: 0.86).gradient)
+            Image(systemName: "drop.fill")
+                .font(.system(size: size * 0.42, weight: .bold))
+                .foregroundStyle(.white)
+            Image(systemName: "sun.max.fill")
+                .font(.system(size: size * 0.18, weight: .black))
+                .foregroundStyle(Color.yellow)
+                .offset(x: size * 0.19, y: -size * 0.19)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+/// Leo's striped beach towel along the bottom edge, drawn beneath the piece.
+private struct PoolTowelOverlay: View {
+    let size: CGFloat
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: size * 0.18)
+            .fill(
+                LinearGradient(
+                    stops: [
+                        .init(color: Color(red: 0.99, green: 0.83, blue: 0.36), location: 0.0),
+                        .init(color: Color(red: 0.99, green: 0.83, blue: 0.36), location: 0.33),
+                        .init(color: .white, location: 0.33),
+                        .init(color: .white, location: 0.66),
+                        .init(color: Color(red: 0.98, green: 0.55, blue: 0.45), location: 0.66),
+                        .init(color: Color(red: 0.98, green: 0.55, blue: 0.45), location: 1.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .opacity(0.85)
+            )
+            .frame(width: size * 1.02, height: size * 1.02)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+    }
+}
+
+/// A pool splash: a wavy blue rim and a drop badge, keeping Leo's face clear.
+private struct SplashOverlay: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    Color(red: 0.30, green: 0.68, blue: 0.95).opacity(0.95),
+                    style: StrokeStyle(lineWidth: size * 0.09, lineCap: .round, dash: [size * 0.10, size * 0.05])
+                )
+            Image(systemName: "drop.fill")
+                .font(.system(size: size * 0.20, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: size * 0.38, height: size * 0.38)
+                .background(Color(red: 0.22, green: 0.56, blue: 0.86), in: Circle())
+                .overlay(Circle().stroke(.white, lineWidth: 2))
+                .offset(x: size * 0.29, y: -size * 0.28)
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel("Pool splash")
+    }
+}
+
+/// Henry pops in when a splash is dried or nudged back toward the pool.
+private struct HenryDryBurst: View {
+    let text: String
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            if let portrait = UIImage(named: "henry-map-marker") {
+                Image(uiImage: portrait)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size * 0.34, height: size * 0.34)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 2))
+                    .offset(x: -size * 0.30, y: -size * 0.28)
+            }
+            Text(text)
+                .font(.system(size: size * 0.10, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.16, green: 0.42, blue: 0.66))
+                .lineLimit(1)
+                .fixedSize()
+                .padding(.horizontal, size * 0.07)
+                .padding(.vertical, size * 0.035)
+                .background(.white, in: Capsule())
+                .overlay(Capsule().stroke(Color(red: 0.30, green: 0.68, blue: 0.95), lineWidth: 1.5))
+                .offset(y: size * 0.31)
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }
 

@@ -9,7 +9,7 @@
 - Rainbow paw from a straight five-piece match.
 - Garden bomb from an L- or T-shaped match.
 - Unlimited lives, shuffle, water, and hint helpers.
-- Seven ten-level chapter maps with continuous saved progression.
+- Eight ten-level chapter maps with continuous saved progression.
 - Portrait and landscape layouts.
 - Chapter-specific garden and vacuum-hallway backgrounds with character-driven map styling.
 
@@ -28,7 +28,7 @@ Chapter One's ten levels mainly vary the target expression, quantity, and move c
 | Guide Henry | Open a connected route across the board | Chapter Five uses sequential quiet leaves while a harmless mower marker loops around the board edge |
 | Spread comfort | Match on or beside the blanket; each touching group of cleared cells becomes cozy | Implemented in Chapter Four (levels 2, 3, 5, 7, 9, 10) |
 | Find clues | Reveal hidden clue tiles under grass, leaves, or furniture | Implemented in Chapter Seven with one- and two-layer leafy patches revealing Mom's slipper, keys, and familiar pawprints |
-| Protect | Clear approaching nuisance tiles before they reach a protected area | Delivery knock, storm puddles, or noisy objects |
+| Protect | Clear approaching nuisance tiles before they reach a protected area | Implemented in Chapter Eight as creeping pool splashes; Henry nudges any that reach Leo's towel back to the pool. Delivery knock remains a possible reuse |
 | Multi-goal | Combine two simple goals in one level | Recover the item and help Leo feel safe |
 
 Avoid real-time timers as the default difficulty tool. Difficulty should come from board layout, move planning, layered goals, and satisfying power-up choices.
