@@ -23,6 +23,7 @@
 		A2026C04A2026C04A2026C04 /* chapter-04-thunder-tomatoes.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */; };
 		A2026C05A2026C05A2026C05 /* chapter-05-lawnmower-loop.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C05B2026C05B2026C05 /* chapter-05-lawnmower-loop.png */; };
 		A2026C06A2026C06A2026C06 /* chapter-06-bags-and-cans.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C06B2026C06B2026C06 /* chapter-06-bags-and-cans.png */; };
+		A2026C07A2026C07A2026C07 /* chapter-07-where-is-mom.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C07B2026C07B2026C07 /* chapter-07-where-is-mom.png */; };
 		B99465CC4BECECEC3A752EE8 /* leo-happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C766664A10B7B8F39CEA06 /* leo-happy.png */; };
 		C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */; };
 		C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */; };
@@ -41,6 +42,7 @@
 		B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-04-thunder-tomatoes.png"; sourceTree = "<group>"; };
 		B2026C05B2026C05B2026C05 /* chapter-05-lawnmower-loop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-05-lawnmower-loop.png"; sourceTree = "<group>"; };
 		B2026C06B2026C06B2026C06 /* chapter-06-bags-and-cans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-06-bags-and-cans.png"; sourceTree = "<group>"; };
+		B2026C07B2026C07B2026C07 /* chapter-07-where-is-mom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-07-where-is-mom.png"; sourceTree = "<group>"; };
 		5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-expression-sheet.png"; sourceTree = "<group>"; };
 		6312EA7F985878D50D4461E3 /* leo-excited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-excited.png"; sourceTree = "<group>"; };
 		6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-guilty.png"; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */,
 				B2026C05B2026C05B2026C05 /* chapter-05-lawnmower-loop.png */,
 				B2026C06B2026C06B2026C06 /* chapter-06-bags-and-cans.png */,
+				B2026C07B2026C07B2026C07 /* chapter-07-where-is-mom.png */,
 				B78A90852C6887B27854472A /* henry-map-marker.png */,
 				5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */,
 				4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */,
@@ -178,6 +181,7 @@
 				A2026C04A2026C04A2026C04 /* chapter-04-thunder-tomatoes.png in Resources */,
 				A2026C05A2026C05A2026C05 /* chapter-05-lawnmower-loop.png in Resources */,
 				A2026C06A2026C06A2026C06 /* chapter-06-bags-and-cans.png in Resources */,
+				A2026C07A2026C07A2026C07 /* chapter-07-where-is-mom.png in Resources */,
 				85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */,
 				45AC493C43E2BBC0121B3D31 /* leo-excited.png in Resources */,
 				C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */,

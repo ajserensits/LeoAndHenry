@@ -48,6 +48,16 @@ struct NoisyObject: Equatable {
     var hits: Int
 }
 
+/// A familiar sign of Mom hidden beneath soft garden leaves.
+enum ClueKind: CaseIterable, Equatable {
+    case slipper, keys, pawprints
+}
+
+struct HiddenClue: Equatable {
+    let kind: ClueKind
+    var cover: Int
+}
+
 struct Tile: Identifiable, Equatable {
     let id = UUID()
     var veggie: Veggie
@@ -92,6 +102,8 @@ struct Level {
     var canDepth: Int = 1
     var bagCells: Int = 0
     var breezeEvery: Int = 0
+    var clueCells: Int = 0
+    var clueDepth: Int = 1
 
     var clearsDust: Bool { dustCells > 0 }
     var wakesLeo: Bool { sleepingCells > 0 }
@@ -99,6 +111,7 @@ struct Level {
     var spreadsComfort: Bool { comfortCells > 0 }
     var followsQuietRoute: Bool { quietRouteSteps > 0 }
     var quietsNoise: Bool { canCells + bagCells > 0 }
+    var findsClues: Bool { clueCells > 0 }
 }
 
 struct Chapter: Identifiable {
@@ -178,7 +191,18 @@ final class GameModel: ObservableObject {
         .init(goal: .pea, amount: 0, moves: 23, title: "A Gust of Bags", stolenItem: "fluttering courage", clue: "Whoosh! More bags tumble across the porch. Henry chases each one off.", chapterIndex: 5, bagCells: 6, breezeEvery: 3),
         .init(goal: .tomato, amount: 0, moves: 23, title: "The Recycling Tumble", stolenItem: "tumbled bin", clue: "The whole bin tipped over. Henry clears the noisy path one can at a time.", chapterIndex: 5, canCells: 10, canDepth: 2),
         .init(goal: .carrot, amount: 0, moves: 23, title: "Almost Quiet", stolenItem: "quiet porch", clue: "Only a few clatters left. Leo peeks out from behind Henry.", chapterIndex: 5, canCells: 8, canDepth: 2, bagCells: 4, breezeEvery: 3),
-        .init(goal: .pea, amount: 0, moves: 25, title: "Sharing the Snack", stolenItem: "shared snack", clue: "Quiet the last cans and bags, then Henry shares his snack with Leo.", chapterIndex: 5, canCells: 10, canDepth: 2, bagCells: 5, breezeEvery: 2)
+        .init(goal: .pea, amount: 0, moves: 25, title: "Sharing the Snack", stolenItem: "shared snack", clue: "Quiet the last cans and bags, then Henry shares his snack with Leo.", chapterIndex: 5, canCells: 10, canDepth: 2, bagCells: 5, breezeEvery: 2),
+
+        .init(goal: .carrot, amount: 22, moves: 25, title: "Crumbs at the Gate", stolenItem: "crumb trail", clue: "The brothers followed snack crumbs too far—and now they cannot see Mom.", chapterIndex: 6),
+        .init(goal: .tomato, amount: 0, moves: 25, title: "Mom's Pink Slipper", stolenItem: "familiar slipper", clue: "Match beside the leafy patches. Henry smells something familiar underneath.", chapterIndex: 6, clueCells: 3),
+        .init(goal: .onion, amount: 0, moves: 25, title: "Keys in the Flowers", stolenItem: "keys with the paw charm", clue: "A tiny jingle! Henry searches the flowers while Leo stays close.", chapterIndex: 6, clueCells: 4),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "Which Way, Henry?", stolenItem: "safe garden turn", clue: "Henry chooses the gentle path and makes sure Leo follows.", chapterIndex: 6, quietRouteSteps: 8),
+        .init(goal: .eggplant, amount: 0, moves: 24, title: "Leaves over the Path", stolenItem: "hidden familiar things", clue: "Some clues are tucked beneath two layers of leaves.", chapterIndex: 6, clueCells: 6, clueDepth: 2),
+        .init(goal: .pea, amount: 0, moves: 24, title: "Leo Starts to Worry", stolenItem: "a little reassurance", clue: "Henry gathers comforting signs of home and stays beside Leo.", chapterIndex: 6, comfortCells: 18),
+        .init(goal: .tomato, amount: 0, moves: 23, title: "Familiar Footsteps", stolenItem: "Mom's footsteps", clue: "Slipper, keys, pawprints—every clue says they are heading home.", chapterIndex: 6, clueCells: 8, clueDepth: 2),
+        .init(goal: .carrot, amount: 0, moves: 23, title: "The Porch Light", stolenItem: "warm light ahead", clue: "Henry spots the porch light and leads Leo toward it one pawstep at a time.", chapterIndex: 6, rescueSteps: 11),
+        .init(goal: .onion, amount: 0, moves: 23, title: "Almost Home", stolenItem: "last garden clues", clue: "The cottage is close. Find the final familiar signs along the path.", chapterIndex: 6, clueCells: 10, clueDepth: 2),
+        .init(goal: .pea, amount: 0, moves: 25, title: "There You Are, Mom!", stolenItem: "the way back to Mom", clue: "Henry follows every clue until Leo sees Mom waiting in the warm window.", chapterIndex: 6, clueCells: 12, clueDepth: 2)
     ]
 
     static let chapters: [Chapter] = [
@@ -187,7 +211,8 @@ final class GameModel: ObservableObject {
         .init(id: 2, title: "Under the Bed", subtitle: "Henry follows Leo into the coziest hiding place.", backgroundName: "chapter-03-under-the-bed", symbol: "bed.double.fill", levelRange: 20..<30),
         .init(id: 3, title: "Thunder over the Tomatoes", subtitle: "Henry keeps Leo cozy until the storm rolls past.", backgroundName: "chapter-04-thunder-tomatoes", symbol: "cloud.bolt.rain.fill", levelRange: 30..<40),
         .init(id: 4, title: "The Lawnmower Loop", subtitle: "Henry leads Leo around the quiet side of the yard.", backgroundName: "chapter-05-lawnmower-loop", symbol: "leaf.arrow.triangle.circlepath", levelRange: 40..<50),
-        .init(id: 5, title: "Bags, Cans, and Courage", subtitle: "Henry clears the noisy porch one clatter at a time.", backgroundName: "chapter-06-bags-and-cans", symbol: "bag.fill", levelRange: 50..<60)
+        .init(id: 5, title: "Bags, Cans, and Courage", subtitle: "Henry clears the noisy porch one clatter at a time.", backgroundName: "chapter-06-bags-and-cans", symbol: "bag.fill", levelRange: 50..<60),
+        .init(id: 6, title: "Where Is Mom?", subtitle: "Henry follows familiar clues and keeps Leo close.", backgroundName: "chapter-07-where-is-mom", symbol: "heart.text.clipboard.fill", levelRange: 60..<70)
     ]
 
     @Published var board: [[Tile]] = []
@@ -215,6 +240,9 @@ final class GameModel: ObservableObject {
     @Published private(set) var initialNoise = 0
     @Published var noiseBursts = Set<Position>()
     @Published var breezeGust = false
+    @Published var hiddenClues: [Position: HiddenClue] = [:]
+    @Published private(set) var initialClueCount = 0
+    @Published var clueBursts: [Position: ClueKind] = [:]
     private var movesMade = 0
     @Published var mapChapterIndex = 0
     @Published var selected: Position?
@@ -242,6 +270,7 @@ final class GameModel: ObservableObject {
         if level.spreadsComfort { return level.comfortCells }
         if level.followsQuietRoute { return quietRoute.count }
         if level.quietsNoise { return initialNoise }
+        if level.findsClues { return initialClueCount }
         return level.amount
     }
     var objectiveProgress: Int {
@@ -251,6 +280,7 @@ final class GameModel: ObservableObject {
         if level.spreadsComfort { return cozyCells.count - initialCozyCells }
         if level.followsQuietRoute { return quietProgress }
         if level.quietsNoise { return initialNoise - remainingNoise }
+        if level.findsClues { return initialClueCount - hiddenClues.count }
         return collected
     }
     var objectiveComplete: Bool {
@@ -260,6 +290,7 @@ final class GameModel: ObservableObject {
         if level.spreadsComfort { return cozyCells.count - initialCozyCells >= level.comfortCells }
         if level.followsQuietRoute { return quietProgress >= quietRoute.count }
         if level.quietsNoise { return noisyObjects.isEmpty }
+        if level.findsClues { return hiddenClues.isEmpty }
         return collected >= level.amount
     }
     var objectiveLabel: String {
@@ -269,6 +300,7 @@ final class GameModel: ObservableObject {
         if level.spreadsComfort { return "SPREAD COMFORT" }
         if level.followsQuietRoute { return "QUIET ROUTE" }
         if level.quietsNoise { return "HUSH THE NOISE" }
+        if level.findsClues { return "FIND MOM'S CLUES" }
         return "COLLECT"
     }
     var objectiveInstruction: String {
@@ -278,6 +310,7 @@ final class GameModel: ObservableObject {
         if level.spreadsComfort { return "Match on or beside the cozy blanket to spread it." }
         if level.followsQuietRoute { return "Match beside the glowing leaf to lead Leo safely." }
         if level.quietsNoise { return "Match on or beside cans and bags to quiet them." }
+        if level.findsClues { return "Match on or beside leafy patches to reveal clues." }
         return level.goal.name
     }
 
@@ -326,6 +359,9 @@ final class GameModel: ObservableObject {
         initialNoise = remainingNoise
         noiseBursts.removeAll()
         breezeGust = false
+        hiddenClues = freshHiddenClues()
+        initialClueCount = hiddenClues.count
+        clueBursts.removeAll()
         movesMade = 0
         mapChapterIndex = level.chapterIndex
         message = level.clue
@@ -422,6 +458,8 @@ final class GameModel: ObservableObject {
             candidates = [quietRoute[quietProgress]][...]
         } else if level.quietsNoise {
             candidates = noisyObjects.keys.shuffled().prefix(3)
+        } else if level.findsClues {
+            candidates = hiddenClues.keys.shuffled().prefix(3)
         } else {
             candidates = positions(of: level.goal).shuffled().prefix(5)
         }
@@ -521,7 +559,11 @@ final class GameModel: ObservableObject {
             let warmed = spreadComfort(from: removed)
             let quietSteps = advanceQuietRoute(near: removed)
             let hushed = hushNoise(near: removed)
-            if hushed > 0 {
+            let cluesFound = revealClues(near: removed)
+            if cluesFound > 0 {
+                message = hiddenClues.isEmpty ? "Henry found the way! Mom is waiting in the warm window." : "A familiar clue! Henry knows they are getting closer to Mom."
+                haptic(.success)
+            } else if hushed > 0 {
                 message = noisyObjects.isEmpty ? "The porch is quiet! Leo pads out beside Henry." : "Henry nudged \(hushed) noisy thing\(hushed == 1 ? "" : "s") quiet."
                 haptic(.success)
             } else if quietSteps > 0 {
@@ -570,7 +612,8 @@ final class GameModel: ObservableObject {
         let warmed = spreadComfort(from: clearSet)
         let quietSteps = advanceQuietRoute(near: clearSet)
         let hushed = hushNoise(near: clearSet)
-        message = hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
+        let cluesFound = revealClues(near: clearSet)
+        message = cluesFound > 0 ? "Power-up search! Henry uncovered \(cluesFound) clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
             ? "Rainbow paw! Every matching Leo joins the chase!"
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
@@ -591,7 +634,8 @@ final class GameModel: ObservableObject {
         let warmed = spreadComfort(from: Set(positions))
         let quietSteps = advanceQuietRoute(near: Set(positions))
         let hushed = hushNoise(near: Set(positions))
-        message = hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
+        let cluesFound = revealClues(near: Set(positions))
+        message = cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
@@ -762,6 +806,31 @@ final class GameModel: ObservableObject {
         }
     }
 
+    /// Leafy patches may take one or two nearby matches. Revealed objects stay visible briefly.
+    private func revealClues(near positions: Set<Position>) -> Int {
+        guard level.findsClues else { return 0 }
+        let touched = hiddenClues.keys.filter { clue in
+            positions.contains { abs($0.row - clue.row) <= 1 && abs($0.col - clue.col) <= 1 }
+        }
+        guard !touched.isEmpty else { return 0 }
+        var found: [Position: ClueKind] = [:]
+        for position in touched {
+            hiddenClues[position]?.cover -= 1
+            if let clue = hiddenClues[position], clue.cover <= 0 {
+                found[position] = clue.kind
+                hiddenClues[position] = nil
+            }
+        }
+        clueBursts.merge(found) { _, newest in newest }
+        if !found.isEmpty {
+            Task {
+                try? await Task.sleep(for: .milliseconds(900))
+                for position in found.keys { clueBursts[position] = nil }
+            }
+        }
+        return found.count
+    }
+
     /// Cold cells directly beside the blanket.
     private func comfortFrontier() -> [Position] {
         (0..<Self.size).flatMap { row in
@@ -907,6 +976,21 @@ final class GameModel: ObservableObject {
         var result: [Position: NoisyObject] = [:]
         for position in cans.prefix(level.canCells) { result[position] = .init(kind: .can, hits: max(1, level.canDepth)) }
         for position in bags.prefix(level.bagCells) { result[position] = .init(kind: .bag, hits: 1) }
+        return result
+    }
+
+    private func freshHiddenClues() -> [Position: HiddenClue] {
+        guard level.findsClues else { return [:] }
+        let pattern: [Position] = [
+            .init(row: 1, col: 1), .init(row: 1, col: 6), .init(row: 6, col: 1),
+            .init(row: 6, col: 6), .init(row: 3, col: 3), .init(row: 4, col: 4),
+            .init(row: 2, col: 5), .init(row: 5, col: 2), .init(row: 2, col: 2),
+            .init(row: 5, col: 5), .init(row: 3, col: 6), .init(row: 4, col: 1)
+        ]
+        var result: [Position: HiddenClue] = [:]
+        for (index, position) in pattern.prefix(level.clueCells).enumerated() {
+            result[position] = .init(kind: ClueKind.allCases[index % ClueKind.allCases.count], cover: max(1, level.clueDepth))
+        }
         return result
     }
 

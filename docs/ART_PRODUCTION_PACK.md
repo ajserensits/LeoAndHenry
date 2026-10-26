@@ -135,7 +135,7 @@ When an asset is approved, add a row below so the generation prompt, crop, dimen
 | `chapter-04-thunder-tomatoes.png` | Yes (2026-10-25) | same | same | Chapter 4 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
 | `chapter-05-lawnmower-loop.png` | Yes (2026-10-25) | same | same | Chapter 5 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
 | `chapter-06-bags-and-cans.png` | Yes (2026-10-25) | same | same; bright bag sits behind the pause button, accepted | Chapter 6 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
-| `chapter-07-where-is-mom.png` | Yes (2026-10-25) | same | same | Chapter 7 backdrop (planned) |
+| `chapter-07-where-is-mom.png` | Yes (2026-10-25) | same | same | Chapter 7 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
 | `chapter-08-pool-day.png` | Yes (2026-10-25) | same | same | Chapter 8 backdrop (planned) |
 | `chapter-09-special-delivery.png` | Yes (2026-10-25) | same | same | Chapter 9 backdrop (planned) |
 | `chapter-10-birthday-pad.png` | Yes (2026-10-25) | same | same | Chapter 10 backdrop (planned) |

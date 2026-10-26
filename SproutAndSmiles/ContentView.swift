@@ -191,6 +191,8 @@ struct ContentView: View {
                         QuietRouteGoalIcon(size: 32)
                     } else if game.level.quietsNoise {
                         NoiseGoalIcon(size: 32)
+                    } else if game.level.findsClues {
+                        ClueGoalIcon(size: 32)
                     } else {
                         VeggieView(veggie: game.level.goal, size: 32)
                     }
@@ -356,6 +358,8 @@ struct ContentView: View {
                     QuietRouteGoalIcon(size: 37)
                 } else if game.level.quietsNoise {
                     NoiseGoalIcon(size: 37)
+                } else if game.level.findsClues {
+                    ClueGoalIcon(size: 37)
                 } else {
                     VeggieView(veggie: game.level.goal, size: 37)
                 }
@@ -410,6 +414,8 @@ struct ContentView: View {
                         noise: game.noisyObjects[position],
                         noiseBurst: game.noiseBursts.contains(position),
                         breezeGust: game.breezeGust,
+                        clue: game.hiddenClues[position],
+                        revealedClue: game.clueBursts[position],
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -459,6 +465,8 @@ struct GameTileCell: View {
     let noise: NoisyObject?
     let noiseBurst: Bool
     let breezeGust: Bool
+    let clue: HiddenClue?
+    let revealedClue: ClueKind?
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -495,6 +503,8 @@ struct GameTileCell: View {
             if mower { MowerMarkerOverlay(bursting: mowerBurst, size: size) }
             if let noise { NoisyObjectOverlay(object: noise, gust: breezeGust, size: size) }
             if noiseBurst { HushBurst(cleared: noise == nil, size: size) }
+            if let clue { HiddenClueOverlay(clue: clue, size: size) }
+            if let revealedClue { ClueRevealBurst(kind: revealedClue, size: size) }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -598,6 +608,118 @@ struct NoiseGoalIcon: View {
         }
         .frame(width: size, height: size)
         .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+struct ClueGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.78, green: 0.42, blue: 0.55).gradient)
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: size * 0.43, weight: .black))
+                .foregroundStyle(.white)
+            Image(systemName: "heart.fill")
+                .font(.system(size: size * 0.16, weight: .black))
+                .foregroundStyle(Color.yellow)
+                .offset(x: size * 0.17, y: -size * 0.17)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+/// Soft leaves frame a hidden clue without obscuring the Leo expression beneath.
+private struct HiddenClueOverlay: View {
+    let clue: HiddenClue
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    Color(red: 0.34, green: 0.66, blue: 0.31).opacity(0.94),
+                    style: StrokeStyle(lineWidth: size * 0.08, lineCap: .round, dash: [size * 0.10, size * 0.055])
+                )
+
+            Image(systemName: "leaf.fill")
+                .font(.system(size: size * 0.20, weight: .black))
+                .foregroundStyle(Color(red: 0.24, green: 0.58, blue: 0.25))
+                .padding(size * 0.055)
+                .background(.white.opacity(0.88), in: Circle())
+                .offset(x: size * 0.30, y: -size * 0.28)
+
+            Image(systemName: "questionmark")
+                .font(.system(size: size * 0.16, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.66, green: 0.31, blue: 0.48))
+                .padding(size * 0.07)
+                .background(.white.opacity(0.90), in: Circle())
+                .offset(x: -size * 0.30, y: size * 0.29)
+
+            if clue.cover > 1 {
+                Text("\(clue.cover)")
+                    .font(.system(size: size * 0.14, weight: .black, design: .rounded))
+                    .foregroundStyle(.white)
+                    .frame(width: size * 0.24, height: size * 0.24)
+                    .background(Color(red: 0.30, green: 0.55, blue: 0.25), in: Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 1.5))
+                    .offset(x: size * 0.30, y: size * 0.29)
+            }
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel(clue.cover > 1 ? "Hidden clue under \(clue.cover) leaf layers" : "Hidden clue under leaves")
+    }
+}
+
+private struct ClueRevealBurst: View {
+    let kind: ClueKind
+    let size: CGFloat
+
+    private var symbol: String {
+        switch kind {
+        case .slipper: "heart.fill"
+        case .keys: "key.fill"
+        case .pawprints: "pawprint.fill"
+        }
+    }
+
+    private var label: String {
+        switch kind {
+        case .slipper: "SLIPPER!"
+        case .keys: "KEYS!"
+        case .pawprints: "FOOTSTEPS!"
+        }
+    }
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(Color(red: 0.92, green: 0.54, blue: 0.67), lineWidth: size * 0.065)
+
+            Image(systemName: symbol)
+                .font(.system(size: size * 0.22, weight: .black))
+                .foregroundStyle(kind == .slipper ? Color.pink : Color(red: 0.82, green: 0.55, blue: 0.18))
+                .frame(width: size * 0.40, height: size * 0.40)
+                .background(.white.opacity(0.94), in: Circle())
+                .overlay(Circle().stroke(.white, lineWidth: 2))
+                .offset(x: -size * 0.27, y: -size * 0.26)
+
+            Text(label)
+                .font(.system(size: size * 0.095, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.55, green: 0.24, blue: 0.38))
+                .padding(.horizontal, size * 0.065)
+                .padding(.vertical, size * 0.035)
+                .background(.white, in: Capsule())
+                .overlay(Capsule().stroke(Color.pink, lineWidth: 1.5))
+                .offset(y: size * 0.31)
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .transition(.scale(scale: 0.55).combined(with: .opacity))
+        .allowsHitTesting(false)
+        .accessibilityLabel("Found a familiar clue from Mom")
     }
 }
 
