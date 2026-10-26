@@ -9,7 +9,7 @@
 - Rainbow paw from a straight five-piece match.
 - Garden bomb from an L- or T-shaped match.
 - Unlimited lives, shuffle, water, and hint helpers.
-- Nine ten-level chapter maps with continuous saved progression.
+- Ten ten-level chapter maps (100 levels) with continuous saved progression.
 - Portrait and landscape layouts.
 - Chapter-specific garden and vacuum-hallway backgrounds with character-driven map styling.
 
@@ -23,13 +23,13 @@ Chapter One's ten levels mainly vary the target expression, quantity, and move c
 | Clear blockers | Match through layered obstacles to remove them | Vacuum dust is implemented; Chapter Six adds cans (one or two rattles) and breeze-drifting bags cleared by matches on or beside them; garden clutter remains planned |
 | Wake sleeping Leo | Match on or beside sleeping Leo pieces to trigger Henry's bark | Implemented in Chapter Two levels 6 and 9 |
 | Rescue route | Match on or beside the highlighted next pawstep to move Henry toward Leo | Implemented throughout Chapter Three |
-| Drop items | Clear space beneath an item until it reaches the bottom | Implemented in Chapter Nine with parcels descending to the doormat |
+| Drop items | Clear space beneath an item until it reaches the bottom | Implemented in Chapter Nine with parcels descending to the doormat; reused in Chapter Ten as peanut-butter pads sliding down to Mom |
 | Rescue Leo | Clear or match around Leo's hiding place | Help Leo come out from under the bed |
 | Guide Henry | Open a connected route across the board | Chapter Five uses sequential quiet leaves while a harmless mower marker loops around the board edge |
 | Spread comfort | Match on or beside the blanket; each touching group of cleared cells becomes cozy | Implemented in Chapter Four (levels 2, 3, 5, 7, 9, 10) |
 | Find clues | Reveal hidden clue tiles under grass, leaves, or furniture | Implemented in Chapter Seven with one- and two-layer leafy patches revealing Mom's slipper, keys, and familiar pawprints |
 | Protect | Clear approaching nuisance tiles before they reach a protected area | Implemented in Chapter Eight as creeping pool splashes; Chapter Nine reuses gentle event cues for non-punitive door knocks |
-| Multi-goal | Combine two simple goals in one level | Recover the item and help Leo feel safe |
+| Multi-goal | Combine two simple goals in one level | Implemented in Chapter Ten (levels 6, 8, 9, 10) with per-goal progress chips in the HUD |
 
 Avoid real-time timers as the default difficulty tool. Difficulty should come from board layout, move planning, layered goals, and satisfying power-up choices.
 

@@ -86,7 +86,18 @@ struct ContentView: View {
         .onChange(of: showingIntro) { _, isShowingIntro in
             MapMusicPlayer.shared.setPlaying(game.soundOn && !isShowingIntro)
         }
-        .alert(game.levelIndex == GameModel.levels.count - 1 ? "\(game.chapter.title) complete!" : "Henry got it back!", isPresented: $game.showingWin) {
+        .overlay {
+            if showingFinale {
+                BirthdayFinaleView {
+                    game.showingWin = false
+                    withAnimation { showingMap = true }
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                .zIndex(8)
+            }
+        }
+        .animation(.easeInOut(duration: 0.35), value: showingFinale)
+        .alert(game.levelIndex == GameModel.levels.count - 1 ? "\(game.chapter.title) complete!" : "Henry got it back!", isPresented: winAlertPresented) {
             Button("Follow Leo") {
                 game.continueGarden()
                 withAnimation { showingMap = true }
@@ -94,6 +105,16 @@ struct ContentView: View {
         } message: {
             Text("Henry recovered his \(game.level.stolenItem). Leo looks innocent—but only until the next level.")
         }
+    }
+
+    private var showingFinale: Bool { game.showingWin && game.levelIndex == GameModel.levels.count - 1 }
+
+    /// The final level shows the birthday finale card instead of the usual alert.
+    private var winAlertPresented: Binding<Bool> {
+        Binding(
+            get: { game.showingWin && !showingFinale },
+            set: { game.showingWin = $0 }
+        )
     }
 
     private var portraitGame: some View {
@@ -179,34 +200,18 @@ struct ContentView: View {
 
             VStack(spacing: 5) {
                 HStack(spacing: 7) {
-                    if game.level.clearsDust {
-                        DustGoalIcon(size: 32)
-                    } else if game.level.wakesLeo {
-                        SleepGoalIcon(size: 32)
-                    } else if game.level.guidesHenry {
-                        RescueGoalIcon(size: 32)
-                    } else if game.level.spreadsComfort {
-                        ComfortGoalIcon(size: 32)
-                    } else if game.level.followsQuietRoute {
-                        QuietRouteGoalIcon(size: 32)
-                    } else if game.level.quietsNoise {
-                        NoiseGoalIcon(size: 32)
-                    } else if game.level.findsClues {
-                        ClueGoalIcon(size: 32)
-                    } else if game.level.keepsLeoDry {
-                        SplashGoalIcon(size: 32)
-                    } else if game.level.deliversParcels {
-                        ParcelGoalIcon(size: 32)
-                    } else {
-                        VeggieView(veggie: game.level.goal, size: 32)
-                    }
+                    LevelGoalIcon(level: game.level, size: 32)
                     VStack(alignment: .leading, spacing: 0) {
                         Text(game.objectiveLabel)
                             .font(.system(size: 8, weight: .black, design: .rounded))
                             .foregroundStyle(.secondary)
-                        Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)")
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
+                        if game.level.isMultiGoal {
+                            ObjectiveChips(game: game, iconSize: 18)
+                        } else {
+                            Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)")
+                                .font(.system(size: 18, weight: .bold, design: .rounded))
+                                .contentTransition(.numericText())
+                        }
                     }
                     Spacer(minLength: 0)
                 }
@@ -350,32 +355,16 @@ struct ContentView: View {
             metric(value: "\(game.moves)", label: "MOVES")
             Divider().frame(height: 35)
             HStack(spacing: 8) {
-                if game.level.clearsDust {
-                    DustGoalIcon(size: 37)
-                } else if game.level.wakesLeo {
-                    SleepGoalIcon(size: 37)
-                } else if game.level.guidesHenry {
-                    RescueGoalIcon(size: 37)
-                } else if game.level.spreadsComfort {
-                    ComfortGoalIcon(size: 37)
-                } else if game.level.followsQuietRoute {
-                    QuietRouteGoalIcon(size: 37)
-                } else if game.level.quietsNoise {
-                    NoiseGoalIcon(size: 37)
-                } else if game.level.findsClues {
-                    ClueGoalIcon(size: 37)
-                } else if game.level.keepsLeoDry {
-                    SplashGoalIcon(size: 37)
-                } else if game.level.deliversParcels {
-                    ParcelGoalIcon(size: 37)
-                } else {
-                    VeggieView(veggie: game.level.goal, size: 37)
-                }
+                LevelGoalIcon(level: game.level, size: 37)
                 VStack(alignment: .leading, spacing: 0) {
                     Text(game.objectiveLabel)
                         .font(.system(size: 9, weight: .bold))
                         .foregroundStyle(.secondary)
-                    Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)").bold()
+                    if game.level.isMultiGoal {
+                        ObjectiveChips(game: game, iconSize: 16)
+                    } else {
+                        Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)").bold()
+                    }
                 }
             }.frame(maxWidth: .infinity)
             Divider().frame(height: 35)
@@ -430,6 +419,7 @@ struct ContentView: View {
                         nudgeBurst: game.nudgeBursts.contains(position),
                         parcel: game.parcels.contains(position),
                         parcelBurst: game.parcelBursts.contains(position),
+                        parcelIsPad: game.level.parcelIsPad,
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -444,6 +434,7 @@ struct ContentView: View {
             .shadow(color: Color(red: 0.32, green: 0.26, blue: 0.17).opacity(0.28), radius: 0, y: 7)
             .overlay { ThunderGlow(active: game.thunderFlash).frame(width: side, height: side) }
             .overlay { DoorKnockGlow(active: game.doorKnock).frame(width: side, height: side) }
+            .overlay { PartyGlow(active: game.partyPop).frame(width: side, height: side) }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }.aspectRatio(1, contentMode: .fit)
     }
@@ -488,6 +479,7 @@ struct GameTileCell: View {
     let nudgeBurst: Bool
     let parcel: Bool
     let parcelBurst: Bool
+    let parcelIsPad: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -529,8 +521,8 @@ struct GameTileCell: View {
             if let revealedClue { ClueRevealBurst(kind: revealedClue, size: size) }
             if splash { SplashOverlay(size: size) }
             if dryBurst || nudgeBurst { HenryDryBurst(text: nudgeBurst ? "BACK YOU GO!" : "DRY!", size: size) }
-            if parcel { ParcelOverlay(size: size) }
-            if parcelBurst { ParcelDeliveryBurst(size: size) }
+            if parcel { ParcelOverlay(isPad: parcelIsPad, size: size) }
+            if parcelBurst { ParcelDeliveryBurst(isPad: parcelIsPad, size: size) }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -782,25 +774,144 @@ private struct HenryDryBurst: View {
     }
 }
 
+/// One icon per level for HUDs and maps; two-goal finale levels show a birthday gift.
+struct LevelGoalIcon: View {
+    let level: Level
+    let size: CGFloat
+
+    var body: some View {
+        if level.isMultiGoal {
+            BirthdayGoalIcon(size: size)
+        } else {
+            ObjectiveIcon(objective: level.objectives[0], level: level, size: size)
+        }
+    }
+}
+
+struct ObjectiveIcon: View {
+    let objective: Objective
+    let level: Level
+    let size: CGFloat
+
+    var body: some View {
+        switch objective {
+        case .dust: DustGoalIcon(size: size)
+        case .sleep: SleepGoalIcon(size: size)
+        case .rescue: RescueGoalIcon(size: size)
+        case .comfort: ComfortGoalIcon(size: size)
+        case .quietRoute: QuietRouteGoalIcon(size: size)
+        case .noise: NoiseGoalIcon(size: size)
+        case .clues: ClueGoalIcon(size: size)
+        case .splash: SplashGoalIcon(size: size)
+        case .parcels: if level.parcelIsPad { PadGoalIcon(size: size) } else { ParcelGoalIcon(size: size) }
+        case .collect: VeggieView(veggie: level.goal, size: size)
+        }
+    }
+}
+
+/// Compact per-goal progress for levels that combine two objectives.
+struct ObjectiveChips: View {
+    @ObservedObject var game: GameModel
+    let iconSize: CGFloat
+
+    var body: some View {
+        HStack(spacing: 7) {
+            ForEach(game.level.objectives, id: \.self) { objective in
+                HStack(spacing: 3) {
+                    ObjectiveIcon(objective: objective, level: game.level, size: iconSize)
+                    Text("\(min(game.progress(of: objective), game.amount(of: objective)))/\(game.amount(of: objective))")
+                        .font(.system(size: iconSize * 0.78, weight: .bold, design: .rounded))
+                        .foregroundStyle(game.isComplete(objective) ? Color(red: 0.24, green: 0.55, blue: 0.27) : .primary)
+                        .contentTransition(.numericText())
+                }
+            }
+        }
+        .fixedSize()
+    }
+}
+
+struct BirthdayGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.93, green: 0.45, blue: 0.56).gradient)
+            Image(systemName: "gift.fill")
+                .font(.system(size: size * 0.42, weight: .bold))
+                .foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+struct PadGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.36, green: 0.62, blue: 0.86).gradient)
+            PeanutButterPadBadge(size: size * 0.66)
+            Image(systemName: "arrow.down")
+                .font(.system(size: size * 0.17, weight: .black))
+                .foregroundStyle(Color.yellow)
+                .offset(x: size * 0.20, y: size * 0.20)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+/// A round rubber lick pad with a swirl of peanut butter, drawn in SwiftUI.
+private struct PeanutButterPadBadge: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle().fill(Color(red: 0.30, green: 0.58, blue: 0.84))
+            Circle()
+                .stroke(Color.white.opacity(0.55), style: StrokeStyle(lineWidth: size * 0.05, dash: [size * 0.06, size * 0.05]))
+                .padding(size * 0.12)
+            Circle()
+                .fill(Color(red: 0.80, green: 0.55, blue: 0.27))
+                .frame(width: size * 0.46, height: size * 0.46)
+            Circle()
+                .trim(from: 0.05, to: 0.75)
+                .stroke(Color(red: 0.93, green: 0.74, blue: 0.47), style: StrokeStyle(lineWidth: size * 0.05, lineCap: .round))
+                .frame(width: size * 0.26, height: size * 0.26)
+        }
+        .frame(width: size, height: size)
+        .overlay(Circle().stroke(.white, lineWidth: 2))
+    }
+}
+
 /// A parcel rides with the piece while leaving Leo's face clear and readable.
 private struct ParcelOverlay: View {
+    var isPad = false
     let size: CGFloat
 
     var body: some View {
         ZStack {
             Circle()
                 .stroke(
-                    Color(red: 0.82, green: 0.57, blue: 0.30).opacity(0.95),
+                    isPad ? Color(red: 0.36, green: 0.62, blue: 0.86).opacity(0.95) : Color(red: 0.82, green: 0.57, blue: 0.30).opacity(0.95),
                     style: StrokeStyle(lineWidth: size * 0.075, lineCap: .round, dash: [size * 0.14, size * 0.045])
                 )
 
-            Image(systemName: "shippingbox.fill")
-                .font(.system(size: size * 0.20, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(width: size * 0.40, height: size * 0.40)
-                .background(Color(red: 0.67, green: 0.42, blue: 0.23), in: Circle())
-                .overlay(Circle().stroke(.white, lineWidth: 2))
-                .offset(x: size * 0.29, y: -size * 0.28)
+            if isPad {
+                PeanutButterPadBadge(size: size * 0.40)
+                    .offset(x: size * 0.29, y: -size * 0.28)
+            } else {
+                Image(systemName: "shippingbox.fill")
+                    .font(.system(size: size * 0.20, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: size * 0.40, height: size * 0.40)
+                    .background(Color(red: 0.67, green: 0.42, blue: 0.23), in: Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 2))
+                    .offset(x: size * 0.29, y: -size * 0.28)
+            }
 
             Image(systemName: "arrow.down")
                 .font(.system(size: size * 0.16, weight: .black))
@@ -811,11 +922,12 @@ private struct ParcelOverlay: View {
         }
         .frame(width: size * 0.94, height: size * 0.94)
         .allowsHitTesting(false)
-        .accessibilityLabel("Parcel; clear pieces below it")
+        .accessibilityLabel(isPad ? "Peanut-butter pad; clear pieces below it" : "Parcel; clear pieces below it")
     }
 }
 
 private struct ParcelDeliveryBurst: View {
+    var isPad = false
     let size: CGFloat
 
     var body: some View {
@@ -829,7 +941,7 @@ private struct ParcelDeliveryBurst: View {
                     .overlay(Circle().stroke(.white, lineWidth: 2))
                     .offset(x: -size * 0.30, y: -size * 0.28)
             }
-            Text("DELIVERED!")
+            Text(isPad ? "YUM!" : "DELIVERED!")
                 .font(.system(size: size * 0.095, weight: .black, design: .rounded))
                 .foregroundStyle(Color(red: 0.54, green: 0.31, blue: 0.18))
                 .padding(.horizontal, size * 0.07)
@@ -841,7 +953,7 @@ private struct ParcelDeliveryBurst: View {
         .frame(width: size * 0.94, height: size * 0.94)
         .transition(.scale(scale: 0.55).combined(with: .opacity))
         .allowsHitTesting(false)
-        .accessibilityLabel("Parcel delivered to the doormat")
+        .accessibilityLabel(isPad ? "Peanut-butter pad reached Mom" : "Parcel delivered to the doormat")
     }
 }
 
@@ -1351,6 +1463,37 @@ private struct ThunderGlow: View {
 }
 
 /// A gentle doorbell cue for Chapter Nine. It never flashes rapidly or changes progress.
+/// Birthday bustle: a soft confetti glow with a balloon badge. Reduce Motion skips the glow.
+private struct PartyGlow: View {
+    let active: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 24)
+            .fill(Color(red: 1.00, green: 0.70, blue: 0.80))
+            .opacity(active && !reduceMotion ? 0.14 : 0)
+            .overlay(alignment: .top) {
+                HStack(spacing: 5) {
+                    Image(systemName: "balloon.2.fill")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(Color(red: 0.93, green: 0.36, blue: 0.48), Color(red: 0.36, green: 0.62, blue: 0.86))
+                    Text("PARTY TIME")
+                }
+                .font(.system(size: 11, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.55, green: 0.22, blue: 0.33))
+                .padding(.horizontal, 11)
+                .padding(.vertical, 7)
+                .background(.white.opacity(0.90), in: Capsule())
+                .offset(y: -12)
+                .opacity(active ? 1 : 0)
+                .scaleEffect(active && !reduceMotion ? 1.04 : 1)
+            }
+            .animation(.easeInOut(duration: 0.30), value: active)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+    }
+}
+
 private struct DoorKnockGlow: View {
     let active: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -1499,6 +1642,64 @@ struct IntroView: View {
             }
             .padding(.horizontal, 25).padding(.bottom, 34)
         }
+    }
+}
+
+/// Closing story card after the last level: the brothers share the peanut-butter pad.
+struct BirthdayFinaleView: View {
+    let done: () -> Void
+
+    var body: some View {
+        GeometryReader { proxy in
+            ScrollView {
+                card
+                    .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .background(Color.black.opacity(0.45).ignoresSafeArea())
+    }
+
+    // Scrolls in short landscape layouts so the button always stays reachable.
+    private var card: some View {
+            VStack(spacing: 14) {
+                GameArtworkView()
+                    .frame(height: 190)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .overlay(alignment: .bottomTrailing) {
+                        PeanutButterPadBadge(size: 58)
+                            .padding(10)
+                    }
+                    .accessibilityHidden(true)
+                Text("HAPPY BIRTHDAY")
+                    .font(.system(size: 12, weight: .black, design: .rounded))
+                    .tracking(3)
+                    .foregroundStyle(Color(red: 0.86, green: 0.36, blue: 0.48))
+                Text("Leo & Henry")
+                    .font(.system(size: 30, weight: .bold, design: .serif))
+                Text("Through bugs and vacuums, thunder and mowers, splashes and doorbells, Henry never left Leo's side. Now the brothers lie nose to nose and share the peanut-butter pad, one happy lick at a time.")
+                    .font(.system(size: 15, weight: .medium, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Label("All 100 levels complete", systemImage: "pawprint.fill")
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color(red: 0.24, green: 0.45, blue: 0.27))
+                Button(action: done) {
+                    Text("Back to the map")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color(red: 0.39, green: 0.62, blue: 0.34), in: Capsule())
+                        .foregroundStyle(.white)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(20)
+            .frame(maxWidth: 420)
+            .background(Color(red: 0.99, green: 0.96, blue: 0.89), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+            .padding(24)
     }
 }
 

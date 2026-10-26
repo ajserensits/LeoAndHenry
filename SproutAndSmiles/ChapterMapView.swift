@@ -262,27 +262,7 @@ struct ChapterMapView: View {
 
     @ViewBuilder
     private func levelGoalIcon(_ index: Int) -> some View {
-        if GameModel.levels[index].clearsDust {
-            DustGoalIcon(size: 28)
-        } else if GameModel.levels[index].wakesLeo {
-            SleepGoalIcon(size: 28)
-        } else if GameModel.levels[index].guidesHenry {
-            RescueGoalIcon(size: 28)
-        } else if GameModel.levels[index].spreadsComfort {
-            ComfortGoalIcon(size: 28)
-        } else if GameModel.levels[index].followsQuietRoute {
-            QuietRouteGoalIcon(size: 28)
-        } else if GameModel.levels[index].quietsNoise {
-            NoiseGoalIcon(size: 28)
-        } else if GameModel.levels[index].findsClues {
-            ClueGoalIcon(size: 28)
-        } else if GameModel.levels[index].keepsLeoDry {
-            SplashGoalIcon(size: 28)
-        } else if GameModel.levels[index].deliversParcels {
-            ParcelGoalIcon(size: 28)
-        } else {
-            VeggieView(veggie: GameModel.levels[index].goal, size: 28)
-        }
+        LevelGoalIcon(level: GameModel.levels[index], size: 28)
     }
 
     private func canOpenChapter(_ index: Int) -> Bool {
@@ -346,27 +326,7 @@ private struct DeveloperConsoleView: View {
                                             .foregroundStyle(index < game.wins ? .green : .orange)
                                     }
                                     HStack(spacing: 8) {
-                                        if level.clearsDust {
-                                            DustGoalIcon(size: 34)
-                                        } else if level.wakesLeo {
-                                            SleepGoalIcon(size: 34)
-                                        } else if level.guidesHenry {
-                                            RescueGoalIcon(size: 34)
-                                        } else if level.spreadsComfort {
-                                            ComfortGoalIcon(size: 34)
-                                        } else if level.followsQuietRoute {
-                                            QuietRouteGoalIcon(size: 34)
-                                        } else if level.quietsNoise {
-                                            NoiseGoalIcon(size: 34)
-                                        } else if level.findsClues {
-                                            ClueGoalIcon(size: 34)
-                                        } else if level.keepsLeoDry {
-                                            SplashGoalIcon(size: 34)
-                                        } else if level.deliversParcels {
-                                            ParcelGoalIcon(size: 34)
-                                        } else {
-                                            VeggieView(veggie: level.goal, size: 34)
-                                        }
+                                        LevelGoalIcon(level: level, size: 34)
                                         Text(level.title)
                                             .font(.system(size: 13, weight: .bold, design: .rounded))
                                             .multilineTextAlignment(.leading)

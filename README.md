@@ -4,7 +4,7 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 
 ## What is in the playable build
 
-- Nine ten-level chapters with chapter-specific storybook maps
+- Ten ten-level chapters (100 levels) with chapter-specific storybook maps
 - Chapter Two's first new objective: one- and two-layer vacuum dust tiles
 - Sleeping-Leo objectives where nearby matches trigger Henry's wake-up bark
 - Under-the-bed rescue routes that move Henry toward Leo one pawstep at a time
@@ -14,6 +14,7 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 - Hidden-clue levels where Henry uncovers Mom's slipper, keys, and familiar pawprints beneath leafy patches
 - Pool-day levels where splashes creep toward Leo's towel and Henry nudges back any that get too close
 - Special-delivery levels where clearing beneath parcels carries them safely down to the doormat
+- A birthday finale with peanut-butter pads to bring down to Mom, two-goal "birthday goals" levels, and a closing story card after level 100
 - Original title artwork based on the supplied photos of Leo and Henry
 - Distinct illustrated Leo expression pieces and a Henry map portrait
 - Portrait and landscape play, including a full-height centered landscape board
@@ -32,7 +33,7 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 - [Development Roadmap](docs/ROADMAP.md) — gameplay varieties and the path from prototype to complete chapters
 - [Claude Handoff](CLAUDE.md) — repository-specific instructions for anyone continuing the implementation or artwork
 
-Chapter One contains the original collection levels. Chapter Two, **The Vacuum Awakens**, adds layered dust and sleeping-Leo goals. Chapter Three, **Under the Bed**, adds rescue routes. Chapter Four, **Thunder over the Tomatoes**, adds comfort spreading. Chapter Five, **The Lawnmower Loop**, adds quiet routes and a moving mower. Chapter Six, **Bags, Cans, and Courage**, adds layered cans and drifting bags. Chapter Seven, **Where Is Mom?**, adds hidden clues. Chapter Eight, **Pool Day**, adds creeping splashes and towel protection. Chapter Nine, **Special Delivery**, adds true drop-item levels where parcels descend as spaces beneath them are cleared, plus gentle door-knock moments that never undo progress. Reusable story-card systems remain planned work.
+Chapter One contains the original collection levels. Chapter Two, **The Vacuum Awakens**, adds layered dust and sleeping-Leo goals. Chapter Three, **Under the Bed**, adds rescue routes. Chapter Four, **Thunder over the Tomatoes**, adds comfort spreading. Chapter Five, **The Lawnmower Loop**, adds quiet routes and a moving mower. Chapter Six, **Bags, Cans, and Courage**, adds layered cans and drifting bags. Chapter Seven, **Where Is Mom?**, adds hidden clues. Chapter Eight, **Pool Day**, adds creeping splashes and towel protection. Chapter Nine, **Special Delivery**, adds true drop-item levels where parcels descend as spaces beneath them are cleared, plus gentle door-knock moments that never undo progress. Chapter Ten, **The Birthday Peanut-Butter Pad**, revisits every earlier goal with a party twist, sends peanut-butter pads down to Mom, adds two-goal levels with per-goal progress chips, and ends with a closing card of the brothers sharing the pad. Reusable per-level story cards remain planned work.
 
 ## Run it on an iPhone
 

@@ -108,6 +108,8 @@ struct Level {
     var splashEvery: Int = 0
     var parcelCount: Int = 0
     var knockEvery: Int = 0
+    var parcelIsPad = false
+    var partyEvery: Int = 0
 
     var clearsDust: Bool { dustCells > 0 }
     var wakesLeo: Bool { sleepingCells > 0 }
@@ -118,6 +120,27 @@ struct Level {
     var findsClues: Bool { clueCells > 0 }
     var keepsLeoDry: Bool { splashCount > 0 }
     var deliversParcels: Bool { parcelCount > 0 }
+
+    /// Every goal this level asks for, in display order. Most levels have one; finale levels combine two.
+    var objectives: [Objective] {
+        var result: [Objective] = []
+        if clearsDust { result.append(.dust) }
+        if wakesLeo { result.append(.sleep) }
+        if guidesHenry { result.append(.rescue) }
+        if spreadsComfort { result.append(.comfort) }
+        if followsQuietRoute { result.append(.quietRoute) }
+        if quietsNoise { result.append(.noise) }
+        if findsClues { result.append(.clues) }
+        if keepsLeoDry { result.append(.splash) }
+        if deliversParcels { result.append(.parcels) }
+        if amount > 0 || result.isEmpty { result.append(.collect) }
+        return result
+    }
+    var isMultiGoal: Bool { objectives.count > 1 }
+}
+
+enum Objective: Hashable {
+    case dust, sleep, rescue, comfort, quietRoute, noise, clues, splash, parcels, collect
 }
 
 struct Chapter: Identifiable {
@@ -230,7 +253,18 @@ final class GameModel: ObservableObject {
         .init(goal: .tomato, amount: 0, moves: 23, title: "Henry Stays Close", stolenItem: "shared couch blanket", clue: "Henry settles beside Leo until the footsteps at the door sound less scary.", chapterIndex: 8, comfortCells: 22, knockEvery: 3),
         .init(goal: .carrot, amount: 0, moves: 23, title: "Packages in the Hall", stolenItem: "five safe parcels", clue: "The hallway fills with boxes, but Henry knows exactly where each one belongs.", chapterIndex: 8, parcelCount: 5, knockEvery: 2),
         .init(goal: .onion, amount: 0, moves: 23, title: "The Visitor Leaves", stolenItem: "quiet front step", clue: "The footsteps fade. Henry checks the familiar clues that mean everything is safe.", chapterIndex: 8, clueCells: 8, clueDepth: 2, knockEvery: 4),
-        .init(goal: .pea, amount: 0, moves: 25, title: "Special Delivery", stolenItem: "shared squeaky bug", clue: "Bring in the last parcels, then Henry and Leo can share the toy by the sunny door.", chapterIndex: 8, parcelCount: 6, knockEvery: 2)
+        .init(goal: .pea, amount: 0, moves: 25, title: "Special Delivery", stolenItem: "shared squeaky bug", clue: "Bring in the last parcels, then Henry and Leo can share the toy by the sunny door.", chapterIndex: 8, parcelCount: 6, knockEvery: 2),
+
+        .init(goal: .pea, amount: 24, moves: 25, title: "Birthday Morning", stolenItem: "first birthday sniff", clue: "It's the brothers' birthday! Leo is already sniffing around the kitchen.", chapterIndex: 9, partyEvery: 5),
+        .init(goal: .tomato, amount: 0, moves: 25, title: "Party Prep Dust", stolenItem: "tidy kitchen floor", clue: "Mom tidies up for the party. Clear the dust so Leo has a calm spot.", chapterIndex: 9, dustCells: 12, dustDepth: 1, partyEvery: 5),
+        .init(goal: .carrot, amount: 0, moves: 24, title: "Wrapping-Paper Rustle", stolenItem: "crinkly gift bag", clue: "Gift bags crinkle and cans clink. Henry quiets them one at a time.", chapterIndex: 9, canCells: 6, bagCells: 3, partyEvery: 4),
+        .init(goal: .onion, amount: 0, moves: 24, title: "Pads on the Counter", stolenItem: "peanut-butter pads", clue: "The peanut-butter pads are up high. Clear beneath them so they slide down to Mom.", chapterIndex: 9, parcelCount: 2, parcelIsPad: true, partyEvery: 4),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "Leo Hides from the Hubbub", stolenItem: "quiet hiding spot", clue: "Too much party! Leo slipped away. Henry follows his pawsteps to him.", chapterIndex: 9, rescueSteps: 10, partyEvery: 4),
+        .init(goal: .tomato, amount: 16, moves: 24, title: "Too Much Commotion", stolenItem: "party noisemakers", clue: "Quiet the clattery noisemakers and gather happy Leos for the party.", chapterIndex: 9, canCells: 6, partyEvery: 3),
+        .init(goal: .eggplant, amount: 0, moves: 23, title: "The Hidden Treat", stolenItem: "hidden treat", clue: "Mom hid a surprise. Henry follows familiar clues while Leo stays close.", chapterIndex: 9, clueCells: 8, clueDepth: 2, partyEvery: 4),
+        .init(goal: .pea, amount: 16, moves: 24, title: "Spilled Water Bowl", stolenItem: "dry party paws", clue: "Someone bumped the water bowl! Keep Leo dry and gather snack-time Leos.", chapterIndex: 9, splashCount: 6, splashEvery: 3),
+        .init(goal: .carrot, amount: 0, moves: 24, title: "Two Pads, Two Brothers", stolenItem: "party blanket", clue: "Bring both pads down and spread the party blanket wide enough for two.", chapterIndex: 9, comfortCells: 12, parcelCount: 2, parcelIsPad: true, partyEvery: 3),
+        .init(goal: .pea, amount: 0, moves: 26, title: "The Peanut-Butter Pad", stolenItem: "shared birthday pad", clue: "One last birthday wish: bring the pads to Mom and make a cozy spot to share them.", chapterIndex: 9, comfortCells: 18, parcelCount: 2, parcelIsPad: true, partyEvery: 4)
     ]
 
     static let chapters: [Chapter] = [
@@ -242,7 +276,8 @@ final class GameModel: ObservableObject {
         .init(id: 5, title: "Bags, Cans, and Courage", subtitle: "Henry clears the noisy porch one clatter at a time.", backgroundName: "chapter-06-bags-and-cans", symbol: "bag.fill", levelRange: 50..<60),
         .init(id: 6, title: "Where Is Mom?", subtitle: "Henry follows familiar clues and keeps Leo close.", backgroundName: "chapter-07-where-is-mom", symbol: "heart.text.clipboard.fill", levelRange: 60..<70),
         .init(id: 7, title: "Pool Day", subtitle: "Henry keeps Leo on the dry side of the pool.", backgroundName: "chapter-08-pool-day", symbol: "drop.fill", levelRange: 70..<80),
-        .init(id: 8, title: "Special Delivery", subtitle: "Henry keeps watch while Leo waits somewhere cozy.", backgroundName: "chapter-09-special-delivery", symbol: "shippingbox.fill", levelRange: 80..<90)
+        .init(id: 8, title: "Special Delivery", subtitle: "Henry keeps watch while Leo waits somewhere cozy.", backgroundName: "chapter-09-special-delivery", symbol: "shippingbox.fill", levelRange: 80..<90),
+        .init(id: 9, title: "The Birthday Peanut-Butter Pad", subtitle: "Henry helps Leo through the party bustle to share a birthday treat.", backgroundName: "chapter-10-birthday-pad", symbol: "birthday.cake.fill", levelRange: 90..<100)
     ]
 
     @Published var board: [[Tile]] = []
@@ -282,6 +317,7 @@ final class GameModel: ObservableObject {
     @Published private(set) var parcelsDelivered = 0
     @Published var parcelBursts = Set<Position>()
     @Published var doorKnock = false
+    @Published var partyPop = false
     private var movesMade = 0
     @Published var mapChapterIndex = 0
     @Published var selected: Position?
@@ -302,65 +338,91 @@ final class GameModel: ObservableObject {
     var remainingDust: Int { dustLayers.flatMap { $0 }.reduce(0, +) }
     var remainingNoise: Int { noisyObjects.values.reduce(0) { $0 + $1.hits } }
     var mowerPosition: Position? { mowerLoop.isEmpty ? nil : mowerLoop[mowerProgress % mowerLoop.count] }
-    var objectiveAmount: Int {
-        if level.clearsDust { return initialDustLayers }
-        if level.wakesLeo { return level.sleepingCells }
-        if level.guidesHenry { return rescuePath.count }
-        if level.spreadsComfort { return level.comfortCells }
-        if level.followsQuietRoute { return quietRoute.count }
-        if level.quietsNoise { return initialNoise }
-        if level.findsClues { return initialClueCount }
-        if level.keepsLeoDry { return level.splashCount }
-        if level.deliversParcels { return level.parcelCount }
-        return level.amount
-    }
-    var objectiveProgress: Int {
-        if level.clearsDust { return initialDustLayers - remainingDust }
-        if level.wakesLeo { return level.sleepingCells - sleepingLeos.count }
-        if level.guidesHenry { return rescueProgress }
-        if level.spreadsComfort { return cozyCells.count - initialCozyCells }
-        if level.followsQuietRoute { return quietProgress }
-        if level.quietsNoise { return initialNoise - remainingNoise }
-        if level.findsClues { return initialClueCount - hiddenClues.count }
-        if level.keepsLeoDry { return splashesCleared }
-        if level.deliversParcels { return parcelsDelivered }
-        return collected
-    }
-    var objectiveComplete: Bool {
-        if level.clearsDust { return remainingDust == 0 }
-        if level.wakesLeo { return sleepingLeos.isEmpty }
-        if level.guidesHenry { return rescueProgress >= rescuePath.count }
-        if level.spreadsComfort { return cozyCells.count - initialCozyCells >= level.comfortCells }
-        if level.followsQuietRoute { return quietProgress >= quietRoute.count }
-        if level.quietsNoise { return noisyObjects.isEmpty }
-        if level.findsClues { return hiddenClues.isEmpty }
-        if level.keepsLeoDry { return splashesCleared >= level.splashCount }
-        if level.deliversParcels { return parcelsDelivered >= level.parcelCount }
-        return collected >= level.amount
-    }
+    var objectiveAmount: Int { level.objectives.reduce(0) { $0 + amount(of: $1) } }
+    var objectiveProgress: Int { level.objectives.reduce(0) { $0 + min(progress(of: $1), amount(of: $1)) } }
+    var objectiveComplete: Bool { level.objectives.allSatisfy(isComplete) }
     var objectiveLabel: String {
-        if level.clearsDust { return "CLEAR DUST" }
-        if level.wakesLeo { return "WAKE LEO" }
-        if level.guidesHenry { return "REACH LEO" }
-        if level.spreadsComfort { return "SPREAD COMFORT" }
-        if level.followsQuietRoute { return "QUIET ROUTE" }
-        if level.quietsNoise { return "HUSH THE NOISE" }
-        if level.findsClues { return "FIND MOM'S CLUES" }
-        if level.keepsLeoDry { return "KEEP LEO DRY" }
-        if level.deliversParcels { return "DELIVER PARCELS" }
-        return "COLLECT"
+        level.isMultiGoal ? "BIRTHDAY GOALS" : label(of: level.objectives[0])
     }
     var objectiveInstruction: String {
-        if level.clearsDust { return "Match pieces beneath dusty spaces." }
-        if level.wakesLeo { return "Match on or beside sleeping Leos." }
-        if level.guidesHenry { return "Match beside the glowing next pawstep." }
-        if level.spreadsComfort { return "Match on or beside the cozy blanket to spread it." }
-        if level.followsQuietRoute { return "Match beside the glowing leaf to lead Leo safely." }
-        if level.quietsNoise { return "Match on or beside cans and bags to quiet them." }
-        if level.findsClues { return "Match on or beside leafy patches to reveal clues." }
-        if level.keepsLeoDry { return "Match on or beside splashes before they reach Leo's towel." }
-        if level.deliversParcels { return "Clear pieces beneath parcels to bring them to the mat." }
-        return level.goal.name
+        level.isMultiGoal
+            ? level.objectives.map { instruction(of: $0) }.joined(separator: " ")
+            : instruction(of: level.objectives[0])
+    }
+
+    func amount(of objective: Objective) -> Int {
+        switch objective {
+        case .dust: initialDustLayers
+        case .sleep: level.sleepingCells
+        case .rescue: rescuePath.count
+        case .comfort: level.comfortCells
+        case .quietRoute: quietRoute.count
+        case .noise: initialNoise
+        case .clues: initialClueCount
+        case .splash: level.splashCount
+        case .parcels: level.parcelCount
+        case .collect: level.amount
+        }
+    }
+
+    func progress(of objective: Objective) -> Int {
+        switch objective {
+        case .dust: initialDustLayers - remainingDust
+        case .sleep: level.sleepingCells - sleepingLeos.count
+        case .rescue: rescueProgress
+        case .comfort: cozyCells.count - initialCozyCells
+        case .quietRoute: quietProgress
+        case .noise: initialNoise - remainingNoise
+        case .clues: initialClueCount - hiddenClues.count
+        case .splash: splashesCleared
+        case .parcels: parcelsDelivered
+        case .collect: collected
+        }
+    }
+
+    func isComplete(_ objective: Objective) -> Bool {
+        switch objective {
+        case .dust: remainingDust == 0
+        case .sleep: sleepingLeos.isEmpty
+        case .rescue: rescueProgress >= rescuePath.count
+        case .comfort: cozyCells.count - initialCozyCells >= level.comfortCells
+        case .quietRoute: quietProgress >= quietRoute.count
+        case .noise: noisyObjects.isEmpty
+        case .clues: hiddenClues.isEmpty
+        case .splash: splashesCleared >= level.splashCount
+        case .parcels: parcelsDelivered >= level.parcelCount
+        case .collect: collected >= level.amount
+        }
+    }
+
+    private func label(of objective: Objective) -> String {
+        switch objective {
+        case .dust: "CLEAR DUST"
+        case .sleep: "WAKE LEO"
+        case .rescue: "REACH LEO"
+        case .comfort: "SPREAD COMFORT"
+        case .quietRoute: "QUIET ROUTE"
+        case .noise: "HUSH THE NOISE"
+        case .clues: "FIND MOM'S CLUES"
+        case .splash: "KEEP LEO DRY"
+        case .parcels: level.parcelIsPad ? "BRING THE PADS" : "DELIVER PARCELS"
+        case .collect: "COLLECT"
+        }
+    }
+
+    private func instruction(of objective: Objective) -> String {
+        switch objective {
+        case .dust: "Match pieces beneath dusty spaces."
+        case .sleep: "Match on or beside sleeping Leos."
+        case .rescue: "Match beside the glowing next pawstep."
+        case .comfort: "Match on or beside the cozy blanket to spread it."
+        case .quietRoute: "Match beside the glowing leaf to lead Leo safely."
+        case .noise: "Match on or beside cans and bags to quiet them."
+        case .clues: "Match on or beside leafy patches to reveal clues."
+        case .splash: "Match on or beside splashes before they reach Leo's towel."
+        case .parcels: level.parcelIsPad ? "Clear pieces beneath the peanut-butter pads to bring them down to Mom." : "Clear pieces beneath parcels to bring them to the mat."
+        case .collect: level.isMultiGoal ? "Collect \(level.amount) \(level.goal.name)." : level.goal.name
+        }
     }
 
     init() {
@@ -421,6 +483,7 @@ final class GameModel: ObservableObject {
         parcelsDelivered = 0
         parcelBursts.removeAll()
         doorKnock = false
+        partyPop = false
         movesMade = 0
         mapChapterIndex = level.chapterIndex
         message = level.clue
@@ -605,6 +668,9 @@ final class GameModel: ObservableObject {
         else if level.knockEvery > 0, movesMade.isMultiple(of: level.knockEvery) {
             ringDoorbell()
         }
+        else if level.partyEvery > 0, movesMade.isMultiple(of: level.partyEvery) {
+            popPartyCommotion()
+        }
         if !objectiveComplete, moves <= 0 {
             moves += 10
             message = "Ten extra moves, on the house!"
@@ -636,7 +702,9 @@ final class GameModel: ObservableObject {
             let dried = drySplashes(near: removed)
             let delivered = dropParcels(afterClearing: removed)
             if delivered > 0 {
-                message = objectiveComplete ? "All the parcels are safe inside. The visitor is gone!" : "Thump! \(delivered) parcel\(delivered == 1 ? "" : "s") reached the doormat."
+                message = level.parcelIsPad
+                    ? (objectiveComplete ? "Both pads reached Mom! Happy birthday, Leo and Henry!" : "Slide! \(delivered) peanut-butter pad\(delivered == 1 ? "" : "s") reached Mom.")
+                    : (objectiveComplete ? "All the parcels are safe inside. The visitor is gone!" : "Thump! \(delivered) parcel\(delivered == 1 ? "" : "s") reached the doormat.")
                 haptic(.success)
             } else if dried > 0 {
                 message = objectiveComplete ? "Not a drop on Leo! The brothers trot over to Mom." : "Henry shook off \(dried) splash\(dried == 1 ? "" : "es"). Leo's paws stay dry."
@@ -696,7 +764,7 @@ final class GameModel: ObservableObject {
         let cluesFound = revealClues(near: clearSet)
         let dried = drySplashes(near: clearSet)
         let delivered = dropParcels(afterClearing: clearSet)
-        message = delivered > 0 ? "Power-up delivery! \(delivered) parcel\(delivered == 1 ? "" : "s") reached the mat!" : dried > 0 ? "Power-up sunshine! \(dried) splash\(dried == 1 ? "" : "es") dried up!" : cluesFound > 0 ? "Power-up search! Henry uncovered \(cluesFound) clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
+        message = delivered > 0 ? "Power-up delivery! \(delivered) \(level.parcelIsPad ? "pad" : "parcel")\(delivered == 1 ? "" : "s") reached \(level.parcelIsPad ? "Mom" : "the mat")!" : dried > 0 ? "Power-up sunshine! \(dried) splash\(dried == 1 ? "" : "es") dried up!" : cluesFound > 0 ? "Power-up search! Henry uncovered \(cluesFound) clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "Power-up hush! \(hushed) clatter\(hushed == 1 ? "" : "s") settled down!" : quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
             ? "Rainbow paw! Every matching Leo joins the chase!"
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
@@ -720,7 +788,7 @@ final class GameModel: ObservableObject {
         let cluesFound = revealClues(near: Set(positions))
         let dried = drySplashes(near: Set(positions))
         let delivered = dropParcels(afterClearing: Set(positions))
-        message = delivered > 0 ? "The water swept \(delivered) parcel\(delivered == 1 ? "" : "s") down to the mat!" : dried > 0 ? "Henry soaked up \(dried) splash\(dried == 1 ? "" : "es") with a towel." : cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
+        message = delivered > 0 ? "The water swept \(delivered) \(level.parcelIsPad ? "pad" : "parcel")\(delivered == 1 ? "" : "s") down to \(level.parcelIsPad ? "Mom" : "the mat")!" : dried > 0 ? "Henry soaked up \(dried) splash\(dried == 1 ? "" : "es") with a towel." : cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
@@ -979,6 +1047,22 @@ final class GameModel: ObservableObject {
             }
         }
         return deliveredAt.count
+    }
+
+    /// Birthday bustle: a soft glow and a reassuring line from Henry. Never undoes progress.
+    private func popPartyCommotion() {
+        let lines = [
+            "Pop! A balloon squeaks. Leo hides behind Henry.",
+            "Everyone sings at once. Henry leans against Leo until it's over.",
+            "Confetti everywhere! Henry sniffs it to show Leo it's only paper."
+        ]
+        message = lines[(movesMade / max(1, level.partyEvery) - 1) % lines.count]
+        partyPop = true
+        haptic(.soft)
+        Task {
+            try? await Task.sleep(for: .milliseconds(600))
+            partyPop = false
+        }
     }
 
     private func ringDoorbell() {
