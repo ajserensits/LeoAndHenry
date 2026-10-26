@@ -366,6 +366,12 @@ private struct DeveloperConsoleView: View {
                             Label("Mark Through Current Level Complete", systemImage: "checkmark.seal.fill")
                                 .frame(maxWidth: .infinity)
                         }
+                        Button {
+                            game.developerGrantStartingBoosters()
+                        } label: {
+                            Label("Grant 10 of Every Booster", systemImage: "shippingbox.and.arrow.backward.fill")
+                                .frame(maxWidth: .infinity)
+                        }
                         Button(role: .destructive) { confirmingReset = true } label: {
                             Label("Reset Player Progress", systemImage: "arrow.counterclockwise")
                                 .frame(maxWidth: .infinity)

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */; };
 		1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F186D3BAA33C371B5D9E9106 /* GameModel.swift */; };
+		A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */; };
 		2C6A4CC6FB0FD8C799B43E41 /* leo-lick.png in Resources */ = {isa = PBXBuildFile; fileRef = 75F1962D5CC71EE060E5734C /* leo-lick.png */; };
 		45AC493C43E2BBC0121B3D31 /* leo-excited.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312EA7F985878D50D4461E3 /* leo-excited.png */; };
 		5F8B118CF46B2214365D1DDD /* leo-henry-garden-chase.png in Resources */ = {isa = PBXBuildFile; fileRef = 4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */; };
@@ -58,6 +59,7 @@
 		CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HenrysGardenChase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F186D3BAA33C371B5D9E9106 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		F59D290CA682A7C220C2BB08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterSystemViews.swift; sourceTree = "<group>"; };
 		FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SproutAndSmilesApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,6 +83,7 @@
 		6DA0318BB56D75320849B513 /* SproutAndSmiles */ = {
 			isa = PBXGroup;
 			children = (
+				B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */,
 				943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */,
 				F59D290CA682A7C220C2BB08 /* ContentView.swift */,
 				F186D3BAA33C371B5D9E9106 /* GameModel.swift */,
@@ -213,6 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */,
 				15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */,
 				7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */,
 				1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */,

@@ -8,6 +8,8 @@
 - Row and column rockets from four-piece matches.
 - Rainbow paw from a straight five-piece match.
 - Garden bomb from an L- or T-shaped match.
+- Henry's Booster Basket appears once before levels 3 and 7 of every chapter and awards up to three starting boosters.
+- Earned starting boosters persist on-device and can be selected before any standard level.
 - Unlimited lives, shuffle, water, and hint helpers.
 - Ten ten-level chapter maps (100 levels) with continuous saved progression.
 - Portrait and landscape layouts.
@@ -42,7 +44,7 @@ The app now includes a `#if DEBUG` developer console that can preview any curren
 - Open any level or chapter without altering the player's genuine saved progress. *(Current levels implemented.)*
 - Preview every objective and obstacle type.
 - Reset or seed progress deliberately. *(Reset and unlock-all implemented.)*
-- Grant a chosen power-up for testing.
+- Grant starting power-ups for testing. *(A DEBUG-only action currently grants ten of each inventory booster.)*
 - Display board and save-state diagnostics.
 
 Never expose this menu in Release or TestFlight builds intended for normal play.
@@ -76,6 +78,8 @@ Never expose this menu in Release or TestFlight builds intended for normal play.
 
 ### Milestone 4: Polish and accessibility
 
+- Tune Booster Basket spawn rates, catch widths, and ten-second pacing through family playtesting.
+- Add bespoke basket, catch, wobble, and reward audio while respecting the global sound setting.
 - VoiceOver labels and logical focus order.
 - Reduce Motion alternatives.
 - Color-independent piece identification.

@@ -71,6 +71,14 @@ enum PowerUp: Equatable {
     case rainbowPaw
 }
 
+enum StartingBooster: String, CaseIterable, Identifiable, Hashable {
+    case rocket
+    case gardenBomb
+    case rainbowPaw
+
+    var id: String { rawValue }
+}
+
 private struct MatchInfo {
     var positions = Set<Position>()
     var horizontalRuns: [[Position]] = []
@@ -332,6 +340,10 @@ final class GameModel: ObservableObject {
     @Published private(set) var unlocked: Int
     @Published private(set) var wins: Int
     @Published private(set) var isDeveloperPreview = false
+    @Published private(set) var rocketBoosters: Int
+    @Published private(set) var gardenBombBoosters: Int
+    @Published private(set) var rainbowPawBoosters: Int
+    @Published private(set) var claimedBasketLevels: Set<Int>
 
     var level: Level { Self.levels[levelIndex] }
     var chapter: Chapter { Self.chapters[level.chapterIndex] }
@@ -430,16 +442,50 @@ final class GameModel: ObservableObject {
         let savedWins = min(Self.levels.count, max(0, defaults.integer(forKey: "gardenWins")))
         wins = savedWins
         unlocked = min(Self.levels.count, max(1, max(defaults.integer(forKey: "unlockedLevels"), savedWins + 1)))
+        rocketBoosters = max(0, defaults.integer(forKey: "boosterInventory.rocket"))
+        gardenBombBoosters = max(0, defaults.integer(forKey: "boosterInventory.gardenBomb"))
+        rainbowPawBoosters = max(0, defaults.integer(forKey: "boosterInventory.rainbowPaw"))
+        claimedBasketLevels = Set(defaults.array(forKey: "boosterBasket.claimedLevels") as? [Int] ?? [])
         soundOn = defaults.object(forKey: "soundOn") == nil ? true : defaults.bool(forKey: "soundOn")
         defaults.set(unlocked, forKey: "unlockedLevels")
         let savedLevel = min(max(0, defaults.integer(forKey: "currentLevel")), unlocked - 1)
         start(level: savedLevel)
     }
 
-    func start(level requested: Int) {
+    func start(level requested: Int, using startingBoosters: Set<StartingBooster> = []) {
         isDeveloperPreview = false
         prepareLevel(min(max(requested, 0), unlocked - 1))
+        let availableBoosters = consume(startingBoosters)
+        placeStartingBoosters(availableBoosters)
         UserDefaults.standard.set(levelIndex, forKey: "currentLevel")
+    }
+
+    func boosterCount(_ booster: StartingBooster) -> Int {
+        switch booster {
+        case .rocket: rocketBoosters
+        case .gardenBomb: gardenBombBoosters
+        case .rainbowPaw: rainbowPawBoosters
+        }
+    }
+
+    func shouldPlayBoosterBasket(before requestedLevel: Int) -> Bool {
+        let level = min(max(requestedLevel, 0), Self.levels.count - 1)
+        let localLevel = level - Self.chapters[Self.levels[level].chapterIndex].levelRange.lowerBound + 1
+        return (localLevel == 3 || localLevel == 7) && !claimedBasketLevels.contains(level)
+    }
+
+    func completeBoosterBasket(for level: Int, caught: [StartingBooster]) {
+        guard !claimedBasketLevels.contains(level) else { return }
+        claimedBasketLevels.insert(level)
+        for booster in caught.prefix(3) {
+            switch booster {
+            case .rocket: rocketBoosters += 1
+            case .gardenBomb: gardenBombBoosters += 1
+            case .rainbowPaw: rainbowPawBoosters += 1
+            }
+        }
+        saveBoosterInventory()
+        UserDefaults.standard.set(Array(claimedBasketLevels).sorted(), forKey: "boosterBasket.claimedLevels")
     }
 
     private func prepareLevel(_ requested: Int) {
@@ -525,9 +571,24 @@ final class GameModel: ObservableObject {
         defaults.removeObject(forKey: "gardenWins")
         defaults.removeObject(forKey: "unlockedLevels")
         defaults.removeObject(forKey: "currentLevel")
+        defaults.removeObject(forKey: "boosterInventory.rocket")
+        defaults.removeObject(forKey: "boosterInventory.gardenBomb")
+        defaults.removeObject(forKey: "boosterInventory.rainbowPaw")
+        defaults.removeObject(forKey: "boosterBasket.claimedLevels")
         wins = 0
         unlocked = 1
+        rocketBoosters = 0
+        gardenBombBoosters = 0
+        rainbowPawBoosters = 0
+        claimedBasketLevels.removeAll()
         start(level: 0)
+    }
+
+    func developerGrantStartingBoosters() {
+        rocketBoosters += 10
+        gardenBombBoosters += 10
+        rainbowPawBoosters += 10
+        saveBoosterInventory()
     }
 #endif
 
@@ -1162,6 +1223,50 @@ final class GameModel: ObservableObject {
             }
         }
         return result
+    }
+
+    private func consume(_ requested: Set<StartingBooster>) -> Set<StartingBooster> {
+        var consumed = Set<StartingBooster>()
+        for booster in requested {
+            switch booster {
+            case .rocket where rocketBoosters > 0:
+                rocketBoosters -= 1
+                consumed.insert(booster)
+            case .gardenBomb where gardenBombBoosters > 0:
+                gardenBombBoosters -= 1
+                consumed.insert(booster)
+            case .rainbowPaw where rainbowPawBoosters > 0:
+                rainbowPawBoosters -= 1
+                consumed.insert(booster)
+            default:
+                break
+            }
+        }
+        if !consumed.isEmpty { saveBoosterInventory() }
+        return consumed
+    }
+
+    private func placeStartingBoosters(_ boosters: Set<StartingBooster>) {
+        var open = (0..<(Self.size * Self.size)).map { Position(row: $0 / Self.size, col: $0 % Self.size) }.shuffled()
+        for booster in StartingBooster.allCases where boosters.contains(booster) {
+            guard let position = open.popLast() else { break }
+            switch booster {
+            case .rocket:
+                board[position.row][position.col].powerUp = Bool.random() ? .rowRocket : .columnRocket
+            case .gardenBomb:
+                board[position.row][position.col].powerUp = .gardenBomb
+            case .rainbowPaw:
+                board[position.row][position.col].powerUp = .rainbowPaw
+            }
+        }
+        if !boosters.isEmpty { message = "Henry packed \(boosters.count) starting booster\(boosters.count == 1 ? "" : "s") for this level!" }
+    }
+
+    private func saveBoosterInventory() {
+        let defaults = UserDefaults.standard
+        defaults.set(rocketBoosters, forKey: "boosterInventory.rocket")
+        defaults.set(gardenBombBoosters, forKey: "boosterInventory.gardenBomb")
+        defaults.set(rainbowPawBoosters, forKey: "boosterInventory.rainbowPaw")
     }
 
     private func freshDustLayers() -> [[Int]] {

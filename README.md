@@ -19,6 +19,8 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 - Distinct illustrated Leo expression pieces and a Henry map portrait
 - Portrait and landscape play, including a full-height centered landscape board
 - Match-four, match-five, and L-shaped-match power-ups
+- Henry's Booster Basket before levels 3 and 7 of every chapter, with falling rockets, garden bombs, and rainbow paws to catch
+- A persistent starting-booster inventory and pre-level loadout where saved boosters can be brought onto any board
 - Unlimited lives and free extra moves
 - Tap-to-swap and swipe-to-swap controls
 - Cascades, goals, hints, shuffling, and a watering-can booster
@@ -31,6 +33,7 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 - [Story Bible](docs/STORY_BIBLE.md) — character canon, emotional rules, and the proposed ten-part story arc
 - [Art Bible](docs/ART_BIBLE.md) — visual language, asset specifications, naming, and the artwork queue
 - [Development Roadmap](docs/ROADMAP.md) — gameplay varieties and the path from prototype to complete chapters
+- [Booster System](docs/BOOSTER_SYSTEM.md) — basket-game rules, persistent inventory, loadout behavior, and developer testing notes
 - [Claude Handoff](CLAUDE.md) — repository-specific instructions for anyone continuing the implementation or artwork
 
 Chapter One contains the original collection levels. Chapter Two, **The Vacuum Awakens**, adds layered dust and sleeping-Leo goals. Chapter Three, **Under the Bed**, adds rescue routes. Chapter Four, **Thunder over the Tomatoes**, adds comfort spreading. Chapter Five, **The Lawnmower Loop**, adds quiet routes and a moving mower. Chapter Six, **Bags, Cans, and Courage**, adds layered cans and drifting bags. Chapter Seven, **Where Is Mom?**, adds hidden clues. Chapter Eight, **Pool Day**, adds creeping splashes and towel protection. Chapter Nine, **Special Delivery**, adds true drop-item levels where parcels descend as spaces beneath them are cleared, plus gentle door-knock moments that never undo progress. Chapter Ten, **The Birthday Peanut-Butter Pad**, revisits every earlier goal with a party twist, sends peanut-butter pads down to Mom, adds two-goal levels with per-goal progress chips, and ends with a closing card of the brothers sharing the pad. Reusable per-level story cards remain planned work.

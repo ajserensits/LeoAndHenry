@@ -6,6 +6,9 @@ struct ContentView: View {
     @State private var showingIntro = true
     @State private var showingMap = false
     @State private var showingPause = false
+    @State private var pendingLevel: Int?
+    @State private var showingBoosterBasket = false
+    @State private var showingBoosterLoadout = false
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: GameModel.size)
 
@@ -33,8 +36,7 @@ struct ContentView: View {
                 ChapterMapView(
                     game: game,
                     playLevel: { level in
-                        game.start(level: level)
-                        withAnimation(.easeInOut(duration: 0.25)) { showingMap = false }
+                        beginLevel(level)
                     },
                     previewLevel: { level in
 #if DEBUG
@@ -63,6 +65,31 @@ struct ContentView: View {
                 pauseOverlay
                     .transition(.opacity.combined(with: .scale(scale: 0.96)))
                     .zIndex(6)
+            }
+
+            if showingBoosterBasket, let level = pendingLevel {
+                BoosterBasketView(chapterIndex: GameModel.levels[level].chapterIndex) { caught in
+                    game.completeBoosterBasket(for: level, caught: caught)
+                    withAnimation(.easeInOut(duration: 0.28)) {
+                        showingBoosterBasket = false
+                        showingBoosterLoadout = true
+                    }
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                .zIndex(7)
+            }
+
+            if showingBoosterLoadout, let level = pendingLevel {
+                BoosterLoadoutView(game: game, levelIndex: level) { selected in
+                    game.start(level: level, using: selected)
+                    pendingLevel = nil
+                    withAnimation(.easeInOut(duration: 0.28)) {
+                        showingBoosterLoadout = false
+                        showingMap = false
+                    }
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                .zIndex(7)
             }
         }
         .overlay(alignment: .topLeading) {
@@ -108,6 +135,17 @@ struct ContentView: View {
     }
 
     private var showingFinale: Bool { game.showingWin && game.levelIndex == GameModel.levels.count - 1 }
+
+    private func beginLevel(_ level: Int) {
+        pendingLevel = level
+        withAnimation(.easeInOut(duration: 0.28)) {
+            if game.shouldPlayBoosterBasket(before: level) {
+                showingBoosterBasket = true
+            } else {
+                showingBoosterLoadout = true
+            }
+        }
+    }
 
     /// The final level shows the birthday finale card instead of the usual alert.
     private var winAlertPresented: Binding<Bool> {
@@ -338,14 +376,14 @@ struct ContentView: View {
 
     private var levelHeader: some View {
         HStack {
-            Button { game.start(level: game.levelIndex - 1) } label: { Image(systemName: "chevron.left") }.disabled(game.levelIndex == 0)
+            Button { beginLevel(game.levelIndex - 1) } label: { Image(systemName: "chevron.left") }.disabled(game.levelIndex == 0)
             Spacer()
             VStack(spacing: 0) {
                 Text("GARDEN PATH").font(.system(size: 9, weight: .black)).tracking(2).foregroundStyle(.secondary)
                 Text(game.level.title).font(.system(size: 20, weight: .bold, design: .serif)).lineLimit(1).minimumScaleFactor(0.7)
             }
             Spacer()
-            Button { game.start(level: game.levelIndex + 1) } label: { Image(systemName: "chevron.right") }.disabled(game.levelIndex >= game.unlocked - 1)
+            Button { beginLevel(game.levelIndex + 1) } label: { Image(systemName: "chevron.right") }.disabled(game.levelIndex >= game.unlocked - 1)
         }
         .buttonStyle(RoundButtonStyle())
     }
