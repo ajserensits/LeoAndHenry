@@ -235,6 +235,7 @@ struct LevelWinCard: View {
     let title: String
     let message: String
     let buttonTitle: String
+    var showsTreat = false
     let action: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -290,6 +291,19 @@ struct LevelWinCard: View {
                 .foregroundStyle(Cute.cocoaSoft)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
+            if showsTreat {
+                HStack(spacing: 6) {
+                    TreatIcon(size: 22)
+                    Text("+1 treat for the yard!")
+                        .font(Cute.font(14, .black))
+                        .foregroundStyle(Cute.leafDeep)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 5)
+                .background(.white, in: Capsule())
+                .overlay(Capsule().strokeBorder(Cute.leaf.opacity(0.5), lineWidth: 2))
+                .scaleEffect(floating ? 1.05 : 1)
+            }
             Button(action: action) {
                 Label(buttonTitle, systemImage: "pawprint.fill")
             }

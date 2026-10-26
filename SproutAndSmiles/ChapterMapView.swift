@@ -163,6 +163,17 @@ struct ChapterMapView: View {
                     Image(systemName: "house.and.flag.fill")
                 }
                 .buttonStyle(CuteCircleButtonStyle(size: 42))
+                .overlay(alignment: .topTrailing) {
+                    if game.yardProjectReady {
+                        TreatIcon(size: 17)
+                            .frame(width: 24, height: 24)
+                            .background(Cute.berry, in: Circle())
+                            .overlay(Circle().strokeBorder(.white, lineWidth: 2))
+                            .offset(x: 7, y: -3)
+                            .allowsHitTesting(false)
+                    }
+                }
+                .accessibilityLabel(game.yardProjectReady ? "Our yard, treats to spend" : "Our yard")
             }
             if compactHeader {
                 HStack(spacing: 10) {

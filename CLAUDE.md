@@ -18,6 +18,7 @@ Before changing story, gameplay, or artwork, read:
 - Normal match pieces are all circular. Special states and power-ups follow the dust-overlay pattern: preserve the Leo face and identifying background, keep the center clear, and communicate the state with a translucent rim, perimeter detail, or compact edge badge. Never let an overlay dominate the underlying piece. Only a true non-matchable blocker may fully cover its cell.
 - Player progression remains sequential and saved on-device.
 - Starting-booster inventory and completed Booster Basket events are also saved on-device. Do not make the levels 3 and 7 reward event repeatable without an explicit economy decision.
+- Yard treats come only from first-time level wins (one per level) and are derived as wins minus the cost of built yard projects. Built projects and chosen styles are saved on-device. Treats can never be bought.
 - Any level-unlock/testing interface must be compiled only under `#if DEBUG` and must not corrupt genuine saved progress.
 - Preserve portrait and both landscape orientations.
 

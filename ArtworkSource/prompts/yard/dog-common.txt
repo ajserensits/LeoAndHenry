@@ -1,0 +1,5 @@
+Use your built-in image generation tool to create exactly ONE image, then save it as a PNG at the output path given below. Do not edit, create, or delete any other files. Do not run git. Generate a SQUARE image (1024x1024) with a TRANSPARENT background (true alpha, no background color, no ground, no scenery).
+
+This is a character sprite for the yard screen of a cozy iPhone match-three game starring two real family dogs. It will be placed on a painted lawn. The attached images are the approved character and style references: match the dog's identity, coat, markings, proportions and the painterly rendering EXACTLY.
+
+STYLE: Premium storybook illustration with a soft painterly 3D rendering, like a high-end animated film still, warm golden-hour light from the upper left, rich color, very detailed soft fur. Seen from a gentle elevated three-quarter view. The whole dog is fully visible, centered, filling about 75% of the frame, with a small soft contact shadow directly beneath. Exactly one dog. No text, letters, numbers, logos, or watermarks. No props unless described.

@@ -33,6 +33,34 @@
 		C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */; };
 		C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */; };
 		FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */; };
+		A2027D00A2027D00A2027D00 /* yard-background.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D00B2027D00B2027D00 /* yard-background.png */; };
+		A2027D01A2027D01A2027D01 /* yard-flowers-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D01B2027D01B2027D01 /* yard-flowers-1.png */; };
+		A2027D02A2027D02A2027D02 /* yard-flowers-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D02B2027D02B2027D02 /* yard-flowers-2.png */; };
+		A2027D03A2027D03A2027D03 /* yard-flowers-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D03B2027D03B2027D03 /* yard-flowers-3.png */; };
+		A2027D04A2027D04A2027D04 /* yard-doghouse-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D04B2027D04B2027D04 /* yard-doghouse-1.png */; };
+		A2027D05A2027D05A2027D05 /* yard-doghouse-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D05B2027D05B2027D05 /* yard-doghouse-2.png */; };
+		A2027D06A2027D06A2027D06 /* yard-doghouse-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D06B2027D06B2027D06 /* yard-doghouse-3.png */; };
+		A2027D07A2027D07A2027D07 /* yard-splash-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D07B2027D07B2027D07 /* yard-splash-1.png */; };
+		A2027D08A2027D08A2027D08 /* yard-splash-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D08B2027D08B2027D08 /* yard-splash-2.png */; };
+		A2027D09A2027D09A2027D09 /* yard-splash-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D09B2027D09B2027D09 /* yard-splash-3.png */; };
+		A2027D0AA2027D0AA2027D0A /* yard-nap-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0AB2027D0AB2027D0A /* yard-nap-1.png */; };
+		A2027D0BA2027D0BA2027D0B /* yard-nap-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0BB2027D0BB2027D0B /* yard-nap-2.png */; };
+		A2027D0CA2027D0CA2027D0C /* yard-nap-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0CB2027D0CB2027D0C /* yard-nap-3.png */; };
+		A2027D0DA2027D0DA2027D0D /* yard-toys-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0DB2027D0DB2027D0D /* yard-toys-1.png */; };
+		A2027D0EA2027D0EA2027D0E /* yard-toys-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0EB2027D0EB2027D0E /* yard-toys-2.png */; };
+		A2027D0FA2027D0FA2027D0F /* yard-toys-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0FB2027D0FB2027D0F /* yard-toys-3.png */; };
+		A2027D10A2027D10A2027D10 /* yard-bench-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D10B2027D10B2027D10 /* yard-bench-1.png */; };
+		A2027D11A2027D11A2027D11 /* yard-bench-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D11B2027D11B2027D11 /* yard-bench-2.png */; };
+		A2027D12A2027D12A2027D12 /* yard-bench-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D12B2027D12B2027D12 /* yard-bench-3.png */; };
+		A2027D13A2027D13A2027D13 /* yard-tree-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D13B2027D13B2027D13 /* yard-tree-1.png */; };
+		A2027D14A2027D14A2027D14 /* yard-tree-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D14B2027D14B2027D14 /* yard-tree-2.png */; };
+		A2027D15A2027D15A2027D15 /* yard-tree-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D15B2027D15B2027D15 /* yard-tree-3.png */; };
+		A2027D16A2027D16A2027D16 /* yard-arch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D16B2027D16B2027D16 /* yard-arch-1.png */; };
+		A2027D17A2027D17A2027D17 /* yard-arch-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D17B2027D17B2027D17 /* yard-arch-2.png */; };
+		A2027D18A2027D18A2027D18 /* yard-arch-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D18B2027D18B2027D18 /* yard-arch-3.png */; };
+		A2027D19A2027D19A2027D19 /* yard-dog-leo.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D19B2027D19B2027D19 /* yard-dog-leo.png */; };
+		A2027D1AA2027D1AA2027D1A /* yard-dog-henry.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */; };
+		A2027E01A2027E01A2027E01 /* YardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2027E01B2027E01B2027E01 /* YardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +91,34 @@
 		B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterSystemViews.swift; sourceTree = "<group>"; };
 		B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuteTheme.swift; sourceTree = "<group>"; };
 		FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SproutAndSmilesApp.swift; sourceTree = "<group>"; };
+		B2027D00B2027D00B2027D00 /* yard-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-background.png"; sourceTree = "<group>"; };
+		B2027D01B2027D01B2027D01 /* yard-flowers-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-1.png"; sourceTree = "<group>"; };
+		B2027D02B2027D02B2027D02 /* yard-flowers-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-2.png"; sourceTree = "<group>"; };
+		B2027D03B2027D03B2027D03 /* yard-flowers-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-3.png"; sourceTree = "<group>"; };
+		B2027D04B2027D04B2027D04 /* yard-doghouse-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-1.png"; sourceTree = "<group>"; };
+		B2027D05B2027D05B2027D05 /* yard-doghouse-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-2.png"; sourceTree = "<group>"; };
+		B2027D06B2027D06B2027D06 /* yard-doghouse-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-3.png"; sourceTree = "<group>"; };
+		B2027D07B2027D07B2027D07 /* yard-splash-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-1.png"; sourceTree = "<group>"; };
+		B2027D08B2027D08B2027D08 /* yard-splash-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-2.png"; sourceTree = "<group>"; };
+		B2027D09B2027D09B2027D09 /* yard-splash-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-3.png"; sourceTree = "<group>"; };
+		B2027D0AB2027D0AB2027D0A /* yard-nap-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-1.png"; sourceTree = "<group>"; };
+		B2027D0BB2027D0BB2027D0B /* yard-nap-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-2.png"; sourceTree = "<group>"; };
+		B2027D0CB2027D0CB2027D0C /* yard-nap-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-3.png"; sourceTree = "<group>"; };
+		B2027D0DB2027D0DB2027D0D /* yard-toys-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-1.png"; sourceTree = "<group>"; };
+		B2027D0EB2027D0EB2027D0E /* yard-toys-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-2.png"; sourceTree = "<group>"; };
+		B2027D0FB2027D0FB2027D0F /* yard-toys-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-3.png"; sourceTree = "<group>"; };
+		B2027D10B2027D10B2027D10 /* yard-bench-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-1.png"; sourceTree = "<group>"; };
+		B2027D11B2027D11B2027D11 /* yard-bench-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-2.png"; sourceTree = "<group>"; };
+		B2027D12B2027D12B2027D12 /* yard-bench-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-3.png"; sourceTree = "<group>"; };
+		B2027D13B2027D13B2027D13 /* yard-tree-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-1.png"; sourceTree = "<group>"; };
+		B2027D14B2027D14B2027D14 /* yard-tree-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-2.png"; sourceTree = "<group>"; };
+		B2027D15B2027D15B2027D15 /* yard-tree-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-3.png"; sourceTree = "<group>"; };
+		B2027D16B2027D16B2027D16 /* yard-arch-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-1.png"; sourceTree = "<group>"; };
+		B2027D17B2027D17B2027D17 /* yard-arch-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-2.png"; sourceTree = "<group>"; };
+		B2027D18B2027D18B2027D18 /* yard-arch-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-3.png"; sourceTree = "<group>"; };
+		B2027D19B2027D19B2027D19 /* yard-dog-leo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-leo.png"; sourceTree = "<group>"; };
+		B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-henry.png"; sourceTree = "<group>"; };
+		B2027E01B2027E01B2027E01 /* YardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -87,6 +143,7 @@
 			children = (
 				B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */,
 				B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */,
+				B2027E01B2027E01B2027E01 /* YardView.swift */,
 				943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */,
 				F59D290CA682A7C220C2BB08 /* ContentView.swift */,
 				F186D3BAA33C371B5D9E9106 /* GameModel.swift */,
@@ -114,6 +171,7 @@
 				5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */,
 				4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */,
 				9144EF00766C5A9982D45C66 /* LeoPieces */,
+				C2027D00C2027D00C2027D00 /* Yard */,
 			);
 			path = Artwork;
 			sourceTree = "<group>";
@@ -129,6 +187,40 @@
 				0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */,
 			);
 			path = LeoPieces;
+			sourceTree = "<group>";
+		};
+		C2027D00C2027D00C2027D00 /* Yard */ = {
+			isa = PBXGroup;
+			children = (
+				B2027D00B2027D00B2027D00 /* yard-background.png */,
+				B2027D01B2027D01B2027D01 /* yard-flowers-1.png */,
+				B2027D02B2027D02B2027D02 /* yard-flowers-2.png */,
+				B2027D03B2027D03B2027D03 /* yard-flowers-3.png */,
+				B2027D04B2027D04B2027D04 /* yard-doghouse-1.png */,
+				B2027D05B2027D05B2027D05 /* yard-doghouse-2.png */,
+				B2027D06B2027D06B2027D06 /* yard-doghouse-3.png */,
+				B2027D07B2027D07B2027D07 /* yard-splash-1.png */,
+				B2027D08B2027D08B2027D08 /* yard-splash-2.png */,
+				B2027D09B2027D09B2027D09 /* yard-splash-3.png */,
+				B2027D0AB2027D0AB2027D0A /* yard-nap-1.png */,
+				B2027D0BB2027D0BB2027D0B /* yard-nap-2.png */,
+				B2027D0CB2027D0CB2027D0C /* yard-nap-3.png */,
+				B2027D0DB2027D0DB2027D0D /* yard-toys-1.png */,
+				B2027D0EB2027D0EB2027D0E /* yard-toys-2.png */,
+				B2027D0FB2027D0FB2027D0F /* yard-toys-3.png */,
+				B2027D10B2027D10B2027D10 /* yard-bench-1.png */,
+				B2027D11B2027D11B2027D11 /* yard-bench-2.png */,
+				B2027D12B2027D12B2027D12 /* yard-bench-3.png */,
+				B2027D13B2027D13B2027D13 /* yard-tree-1.png */,
+				B2027D14B2027D14B2027D14 /* yard-tree-2.png */,
+				B2027D15B2027D15B2027D15 /* yard-tree-3.png */,
+				B2027D16B2027D16B2027D16 /* yard-arch-1.png */,
+				B2027D17B2027D17B2027D17 /* yard-arch-2.png */,
+				B2027D18B2027D18B2027D18 /* yard-arch-3.png */,
+				B2027D19B2027D19B2027D19 /* yard-dog-leo.png */,
+				B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */,
+			);
+			path = Yard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +292,33 @@
 				A2026C08A2026C08A2026C08 /* chapter-08-pool-day.png in Resources */,
 				A2026C09A2026C09A2026C09 /* chapter-09-special-delivery.png in Resources */,
 				A2026C10A2026C10A2026C10 /* chapter-10-birthday-pad.png in Resources */,
+				A2027D00A2027D00A2027D00 /* yard-background.png in Resources */,
+				A2027D01A2027D01A2027D01 /* yard-flowers-1.png in Resources */,
+				A2027D02A2027D02A2027D02 /* yard-flowers-2.png in Resources */,
+				A2027D03A2027D03A2027D03 /* yard-flowers-3.png in Resources */,
+				A2027D04A2027D04A2027D04 /* yard-doghouse-1.png in Resources */,
+				A2027D05A2027D05A2027D05 /* yard-doghouse-2.png in Resources */,
+				A2027D06A2027D06A2027D06 /* yard-doghouse-3.png in Resources */,
+				A2027D07A2027D07A2027D07 /* yard-splash-1.png in Resources */,
+				A2027D08A2027D08A2027D08 /* yard-splash-2.png in Resources */,
+				A2027D09A2027D09A2027D09 /* yard-splash-3.png in Resources */,
+				A2027D0AA2027D0AA2027D0A /* yard-nap-1.png in Resources */,
+				A2027D0BA2027D0BA2027D0B /* yard-nap-2.png in Resources */,
+				A2027D0CA2027D0CA2027D0C /* yard-nap-3.png in Resources */,
+				A2027D0DA2027D0DA2027D0D /* yard-toys-1.png in Resources */,
+				A2027D0EA2027D0EA2027D0E /* yard-toys-2.png in Resources */,
+				A2027D0FA2027D0FA2027D0F /* yard-toys-3.png in Resources */,
+				A2027D10A2027D10A2027D10 /* yard-bench-1.png in Resources */,
+				A2027D11A2027D11A2027D11 /* yard-bench-2.png in Resources */,
+				A2027D12A2027D12A2027D12 /* yard-bench-3.png in Resources */,
+				A2027D13A2027D13A2027D13 /* yard-tree-1.png in Resources */,
+				A2027D14A2027D14A2027D14 /* yard-tree-2.png in Resources */,
+				A2027D15A2027D15A2027D15 /* yard-tree-3.png in Resources */,
+				A2027D16A2027D16A2027D16 /* yard-arch-1.png in Resources */,
+				A2027D17A2027D17A2027D17 /* yard-arch-2.png in Resources */,
+				A2027D18A2027D18A2027D18 /* yard-arch-3.png in Resources */,
+				A2027D19A2027D19A2027D19 /* yard-dog-leo.png in Resources */,
+				A2027D1AA2027D1AA2027D1A /* yard-dog-henry.png in Resources */,
 				85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */,
 				45AC493C43E2BBC0121B3D31 /* leo-nervous.png in Resources */,
 				C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */,
@@ -221,6 +340,7 @@
 			files = (
 				A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */,
 				A2026CA7A2026CA7A2026CA7 /* CuteTheme.swift in Sources */,
+				A2027E01A2027E01A2027E01 /* YardView.swift in Sources */,
 				15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */,
 				7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */,
 				1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */,

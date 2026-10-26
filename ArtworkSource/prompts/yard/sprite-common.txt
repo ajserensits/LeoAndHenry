@@ -1,0 +1,7 @@
+Use your built-in image generation tool to create exactly ONE image, then save it as a PNG at the output path given below. Do not edit, create, or delete any other files. Do not run git. Generate a SQUARE image (1024x1024) with a TRANSPARENT background (true alpha, no background color, no ground, no scenery).
+
+This is a single decoration sprite for the yard-decorating screen of a cozy iPhone match-three game starring two small family dogs. It will be placed on top of a painted lawn. The attached images are the approved style references: match their rendering style exactly.
+
+STYLE: Premium storybook illustration with a soft painterly 3D rendering, like a high-end animated film still. Warm golden-hour light from the upper left, rich saturated colors. Seen from a gentle elevated three-quarter view, slightly from above. The object is centered, fully visible with nothing cropped, filling about 80% of the frame, with a small soft contact shadow directly beneath it. Small-dog scale: items are sized for two small dogs.
+
+Isolated object only on a fully transparent background. No text, letters, numbers, logos, labels, signatures, or watermarks. No people. No dogs or other animals unless described below.

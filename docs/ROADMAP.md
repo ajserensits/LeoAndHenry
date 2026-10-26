@@ -11,6 +11,7 @@
 - Henry's Booster Basket appears once before levels 3 and 7 of every chapter and awards up to three starting boosters.
 - Earned starting boosters persist on-device and can be selected before any standard level.
 - Unlimited lives, shuffle, water, and hint helpers.
+- Leo & Henry's Yard (replaces the old Cozy Corner): each first-time level win earns one treat; eight painted yard projects (1 to 20 treats, 79 in total) are fixed up with treats and then switched freely among three painted styles each. See `docs/YARD.md`.
 - Ten ten-level chapter maps (100 levels) with continuous saved progression.
 - Portrait and landscape layouts.
 - Chapter-specific garden and vacuum-hallway backgrounds with character-driven map styling.

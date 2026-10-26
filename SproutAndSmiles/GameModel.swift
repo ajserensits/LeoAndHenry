@@ -344,6 +344,10 @@ final class GameModel: ObservableObject {
     @Published private(set) var gardenBombBoosters: Int
     @Published private(set) var rainbowPawBoosters: Int
     @Published private(set) var claimedBasketLevels: Set<Int>
+    /// Built yard projects mapped to the chosen style index. Saved on-device.
+    @Published private(set) var yardChoices: [String: Int]
+    /// True when the level just won was a first-time win, which earns one yard treat.
+    @Published private(set) var lastWinEarnedTreat = false
 
     var level: Level { Self.levels[levelIndex] }
     var chapter: Chapter { Self.chapters[level.chapterIndex] }
@@ -446,6 +450,7 @@ final class GameModel: ObservableObject {
         gardenBombBoosters = max(0, defaults.integer(forKey: "boosterInventory.gardenBomb"))
         rainbowPawBoosters = max(0, defaults.integer(forKey: "boosterInventory.rainbowPaw"))
         claimedBasketLevels = Set(defaults.array(forKey: "boosterBasket.claimedLevels") as? [Int] ?? [])
+        yardChoices = defaults.dictionary(forKey: "yard.choices") as? [String: Int] ?? [:]
         soundOn = defaults.object(forKey: "soundOn") == nil ? true : defaults.bool(forKey: "soundOn")
         defaults.set(unlocked, forKey: "unlockedLevels")
         let savedLevel = min(max(0, defaults.integer(forKey: "currentLevel")), unlocked - 1)
@@ -575,6 +580,8 @@ final class GameModel: ObservableObject {
         defaults.removeObject(forKey: "boosterInventory.gardenBomb")
         defaults.removeObject(forKey: "boosterInventory.rainbowPaw")
         defaults.removeObject(forKey: "boosterBasket.claimedLevels")
+        defaults.removeObject(forKey: "yard.choices")
+        yardChoices = [:]
         wins = 0
         unlocked = 1
         rocketBoosters = 0
@@ -591,6 +598,22 @@ final class GameModel: ObservableObject {
         saveBoosterInventory()
     }
 #endif
+
+    /// Spends treats to fix up a yard spot, starting with its first style.
+    @discardableResult
+    func buildYardSpot(_ id: String) -> Bool {
+        guard let spot = Yard.spot(id), yardChoices[id] == nil, treats >= spot.cost else { return false }
+        yardChoices[id] = 0
+        UserDefaults.standard.set(yardChoices, forKey: "yard.choices")
+        return true
+    }
+
+    /// Switching styles on a built spot is always free.
+    func chooseYardStyle(_ id: String, style: Int) {
+        guard let spot = Yard.spot(id), yardChoices[id] != nil, spot.styles.indices.contains(style) else { return }
+        yardChoices[id] = style
+        UserDefaults.standard.set(yardChoices, forKey: "yard.choices")
+    }
 
     func tap(_ position: Position) {
         guard !isBusy else { return }
@@ -1198,10 +1221,12 @@ final class GameModel: ObservableObject {
         if isDeveloperPreview {
             showingWin = true
             message = "Developer preview complete — saved progress was not changed."
+            lastWinEarnedTreat = false
             haptic(.success)
             return
         }
 #endif
+        lastWinEarnedTreat = levelIndex + 1 > wins
         wins = max(wins, levelIndex + 1)
         unlocked = min(Self.levels.count, max(unlocked, levelIndex + 2))
         UserDefaults.standard.set(wins, forKey: "gardenWins")

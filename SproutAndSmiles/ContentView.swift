@@ -106,7 +106,7 @@ struct ContentView: View {
             }
 #endif
         }
-        .sheet(isPresented: $showGarden) { GardenView(game: game) }
+        .fullScreenCover(isPresented: $showGarden) { YardView(game: game) }
         .onChange(of: game.soundOn) { _, isOn in
             MapMusicPlayer.shared.setPlaying(isOn && !showingIntro)
         }
@@ -129,7 +129,8 @@ struct ContentView: View {
                 LevelWinCard(
                     title: finishedChapter ? "\(game.chapter.title) complete!" : "Henry got it back!",
                     message: "Henry recovered his \(game.level.stolenItem). Leo looks innocent—but only until the next level.",
-                    buttonTitle: "Follow Leo"
+                    buttonTitle: "Follow Leo",
+                    showsTreat: game.lastWinEarnedTreat
                 ) {
                     game.continueGarden()
                     withAnimation { showingMap = true }
@@ -329,9 +330,9 @@ struct ContentView: View {
                     } label: {
                         PauseDestinationCard(
                             icon: "house.and.flag.fill",
-                            decoration: "camera.macro",
-                            title: "Garden",
-                            subtitle: "See what bloomed",
+                            decoration: "sparkles",
+                            title: "Our Yard",
+                            subtitle: game.yardProjectReady ? "Treats to spend!" : "Decorate with treats",
                             colors: [Color(red: 0.39, green: 0.66, blue: 0.34), Color(red: 0.18, green: 0.43, blue: 0.30)]
                         )
                     }
@@ -1853,23 +1854,3 @@ private struct PauseDestinationCard: View {
     }
 }
 
-struct GardenView: View {
-    @ObservedObject var game: GameModel
-    @Environment(\.dismiss) private var dismiss
-    var body: some View {
-        ZStack {
-            LinearGradient(colors: [Color(red: 0.69, green: 0.86, blue: 0.84), Color(red: 0.44, green: 0.66, blue: 0.34)], startPoint: .top, endPoint: .bottom).ignoresSafeArea()
-            VStack {
-                HStack { VStack(alignment: .leading) { StickerText("Our Cozy Corner", size: 32); Text(game.level.title).foregroundStyle(.secondary) }; Spacer(); Button("Done") { dismiss() }.buttonStyle(.borderedProminent).tint(Color(red: 0.29, green: 0.45, blue: 0.31)) }
-                Spacer()
-                Text("🏡").font(.system(size: 110))
-                HStack(spacing: 10) {
-                    ForEach(0..<6, id: \.self) { i in Text(["🌷","🌻","🌼","🌹","🪻","🌸"][i]).font(.system(size: game.wins > i ? 43 : 25)).saturation(game.wins > i ? 1 : 0).opacity(game.wins > i ? 1 : 0.3) }
-                }
-                if game.wins >= 3 { Text("ᓚᘏᗢ").font(.title).foregroundStyle(.brown) }
-                Text("Win levels and watch this corner bloom.").font(.headline).padding(.top)
-                Spacer()
-            }.padding(24)
-        }
-    }
-}

@@ -1,0 +1,7 @@
+Use your built-in image generation tool to create exactly ONE image, then save it as a PNG at the output path given below. Do not edit, create, or delete any other files. Do not run git. Generate a wide landscape image (1536x1024).
+
+This is the home-base "yard decorating" screen for a cozy iPhone match-three game starring two real family dogs. The attached images are the approved style references: match their rendering style, lighting quality, saturation and painterly finish exactly.
+
+STYLE: Premium storybook illustration with a soft painterly 3D rendering, like a high-end animated film still. Warm golden-hour light, rich saturated colors, gentle depth of field. Cozy and affectionate.
+
+Absolutely no text, letters, numbers, logos, labels, signatures, or watermarks. No people. No animals at all (the dogs are added separately).
