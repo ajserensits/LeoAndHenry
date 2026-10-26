@@ -1761,7 +1761,17 @@ struct GameArtworkView: View {
 struct ChapterBackdropView: View {
     let chapterIndex: Int
 
+    /// The art fills whatever space it is given without growing the layout around it.
+    /// (A bare scaledToFill image made parent ZStacks wider or taller than the screen.)
     var body: some View {
+        Color.clear.overlay {
+            artwork
+        }
+        .clipped()
+    }
+
+    @MainActor @ViewBuilder
+    private var artwork: some View {
         Group {
             let name = GameModel.chapters[min(max(0, chapterIndex), GameModel.chapters.count - 1)].backgroundName
             if let url = Bundle.main.url(forResource: name, withExtension: "png"),
