@@ -13,7 +13,7 @@ struct ContentView: View {
         ZStack {
             GeometryReader { proxy in
                 if proxy.size.width > proxy.size.height {
-                    ChapterOneBackdropView()
+                    ChapterBackdropView(chapterIndex: game.level.chapterIndex)
                         .overlay(Color.black.opacity(0.04))
                 } else {
                     LinearGradient(colors: [Color(red: 0.94, green: 0.96, blue: 0.86), Color(red: 0.99, green: 0.91, blue: 0.79)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -35,6 +35,12 @@ struct ContentView: View {
                     playLevel: { level in
                         game.start(level: level)
                         withAnimation(.easeInOut(duration: 0.25)) { showingMap = false }
+                    },
+                    previewLevel: { level in
+#if DEBUG
+                        game.startDeveloperPreview(level: level)
+                        withAnimation(.easeInOut(duration: 0.25)) { showingMap = false }
+#endif
                     },
                     visitGarden: { showGarden = true }
                 )
@@ -59,7 +65,27 @@ struct ContentView: View {
                     .zIndex(6)
             }
         }
+        .overlay(alignment: .topLeading) {
+#if DEBUG
+            if game.isDeveloperPreview && !showingMap && !showingIntro {
+                Label("DEV PREVIEW · LEVEL \(game.levelIndex + 1)", systemImage: "hammer.fill")
+                    .font(.system(size: 9, weight: .black, design: .rounded))
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 5)
+                    .background(Color.black.opacity(0.72), in: Capsule())
+                    .foregroundStyle(.yellow)
+                    .padding(8)
+                    .allowsHitTesting(false)
+            }
+#endif
+        }
         .sheet(isPresented: $showGarden) { GardenView(game: game) }
+        .onChange(of: game.soundOn) { _, isOn in
+            MapMusicPlayer.shared.setPlaying(isOn && !showingIntro)
+        }
+        .onChange(of: showingIntro) { _, isShowingIntro in
+            MapMusicPlayer.shared.setPlaying(game.soundOn && !isShowingIntro)
+        }
         .alert(game.levelIndex == GameModel.levels.count - 1 ? "The brothers share the feast!" : "Henry got it back!", isPresented: $game.showingWin) {
             Button("Follow Leo") {
                 game.continueGarden()
@@ -77,7 +103,6 @@ struct ContentView: View {
             mission
             statusMessage
             board
-            boosters
             Spacer(minLength: 3)
         }
         .padding(.horizontal, 12)
@@ -86,9 +111,19 @@ struct ContentView: View {
 
     private func landscapeGame(in size: CGSize) -> some View {
         let boardSide = max(240, min(size.width * 0.90, size.height - 8))
+        let sideSpace = (size.width - boardSide) / 2
+        let hudWidth = min(180, max(124, sideSpace - 22))
         return ZStack {
             board
                 .frame(width: boardSide, height: boardSide)
+
+            HStack {
+                landscapeHUD
+                    .frame(width: hudWidth)
+                Spacer()
+            }
+            .padding(.leading, 10)
+            .padding(.vertical, 12)
 
             VStack {
                 HStack {
@@ -114,6 +149,79 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
+    private var landscapeHUD: some View {
+        VStack(spacing: 9) {
+            VStack(spacing: 2) {
+                Text("CHAPTER \(game.level.chapterIndex + 1) · LEVEL \(game.levelIndex - GameModel.chapters[game.level.chapterIndex].levelRange.lowerBound + 1)")
+                    .font(.system(size: 8, weight: .black, design: .rounded))
+                    .tracking(0.8)
+                    .foregroundStyle(.secondary)
+                Text(game.level.title)
+                    .font(.system(size: 15, weight: .bold, design: .serif))
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.72)
+            }
+
+            VStack(spacing: 0) {
+                Text("\(game.moves)")
+                    .font(.system(size: 32, weight: .black, design: .rounded))
+                    .foregroundStyle(Color(red: 0.19, green: 0.36, blue: 0.25))
+                    .contentTransition(.numericText())
+                Text("MOVES LEFT")
+                    .font(.system(size: 8, weight: .black, design: .rounded))
+                    .tracking(1.2)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .background(Color.white.opacity(0.58), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
+
+            VStack(spacing: 5) {
+                HStack(spacing: 7) {
+                    if game.level.clearsDust {
+                        DustGoalIcon(size: 32)
+                    } else if game.level.wakesLeo {
+                        SleepGoalIcon(size: 32)
+                    } else if game.level.guidesHenry {
+                        RescueGoalIcon(size: 32)
+                    } else {
+                        VeggieView(veggie: game.level.goal, size: 32)
+                    }
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(game.objectiveLabel)
+                            .font(.system(size: 8, weight: .black, design: .rounded))
+                            .foregroundStyle(.secondary)
+                        Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)")
+                            .font(.system(size: 18, weight: .bold, design: .rounded))
+                            .contentTransition(.numericText())
+                    }
+                    Spacer(minLength: 0)
+                }
+
+                ProgressView(value: Double(game.objectiveProgress), total: Double(max(1, game.objectiveAmount)))
+                    .tint(Color(red: 0.39, green: 0.62, blue: 0.34))
+            }
+            .padding(10)
+            .background(Color.white.opacity(0.58), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
+
+            Text(game.objectiveInstruction)
+                .font(.system(size: 9, weight: .semibold, design: .rounded))
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+        }
+        .padding(11)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .stroke(Color.white.opacity(0.78), lineWidth: 1.5)
+        }
+        .shadow(color: Color.black.opacity(0.16), radius: 8, y: 4)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(game.moves) moves left. \(game.level.clearsDust ? "Dust cleared" : game.level.goal.name) \(game.objectiveProgress) of \(game.objectiveAmount).")
+    }
+
     private var pauseOverlay: some View {
         ZStack {
             Color.black.opacity(0.42).ignoresSafeArea()
@@ -134,23 +242,35 @@ struct ContentView: View {
 
                 mission
                 statusMessage
-                boosters
 
                 HStack(spacing: 10) {
                     Button {
                         showingPause = false
                         withAnimation { showingMap = true }
                     } label: {
-                        Label("Chapter Map", systemImage: "map.fill").frame(maxWidth: .infinity)
+                        PauseDestinationCard(
+                            icon: "map.fill",
+                            decoration: "pawprint.fill",
+                            title: "Chapter Map",
+                            subtitle: "Follow Leo's trail",
+                            colors: [Color(red: 0.95, green: 0.65, blue: 0.19), Color(red: 0.80, green: 0.38, blue: 0.16)]
+                        )
                     }
+                    .buttonStyle(.plain)
                     Button {
                         showingPause = false
                         showGarden = true
                     } label: {
-                        Label("Garden", systemImage: "house.and.flag.fill").frame(maxWidth: .infinity)
+                        PauseDestinationCard(
+                            icon: "house.and.flag.fill",
+                            decoration: "camera.macro",
+                            title: "Garden",
+                            subtitle: "See what bloomed",
+                            colors: [Color(red: 0.39, green: 0.66, blue: 0.34), Color(red: 0.18, green: 0.43, blue: 0.30)]
+                        )
                     }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.bordered)
 
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) { showingPause = false }
@@ -218,8 +338,21 @@ struct ContentView: View {
             metric(value: "\(game.moves)", label: "MOVES")
             Divider().frame(height: 35)
             HStack(spacing: 8) {
-                VeggieView(veggie: game.level.goal, size: 37)
-                VStack(alignment: .leading, spacing: 0) { Text("COLLECT").font(.system(size: 9, weight: .bold)).foregroundStyle(.secondary); Text("\(min(game.collected, game.level.amount)) / \(game.level.amount)").bold() }
+                if game.level.clearsDust {
+                    DustGoalIcon(size: 37)
+                } else if game.level.wakesLeo {
+                    SleepGoalIcon(size: 37)
+                } else if game.level.guidesHenry {
+                    RescueGoalIcon(size: 37)
+                } else {
+                    VeggieView(veggie: game.level.goal, size: 37)
+                }
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(game.objectiveLabel)
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(.secondary)
+                    Text("\(min(game.objectiveProgress, game.objectiveAmount)) / \(game.objectiveAmount)").bold()
+                }
             }.frame(maxWidth: .infinity)
             Divider().frame(height: 35)
             metric(value: "∞", label: "LIVES", color: .pink)
@@ -240,11 +373,19 @@ struct ContentView: View {
                     let row = index / GameModel.size
                     let col = index % GameModel.size
                     let position = Position(row: row, col: col)
+                    let rescueStep = game.rescuePath.firstIndex(of: position)
                     GameTileCell(
                         veggie: game.board[row][col].veggie,
                         powerUp: game.board[row][col].powerUp,
                         position: position,
                         size: side / 9.1,
+                        dustLayers: game.dustLayers[row][col],
+                        sleeping: game.sleepingLeos.contains(position),
+                        barking: game.barkBursts.contains(position),
+                        rescueStep: rescueStep,
+                        rescueProgress: game.rescueProgress,
+                        rescueTotal: game.rescuePath.count,
+                        rescueBurst: game.rescueBursts.contains(position),
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -275,6 +416,13 @@ struct GameTileCell: View {
     let powerUp: PowerUp?
     let position: Position
     let size: CGFloat
+    let dustLayers: Int
+    let sleeping: Bool
+    let barking: Bool
+    let rescueStep: Int?
+    let rescueProgress: Int
+    let rescueTotal: Int
+    let rescueBurst: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -285,6 +433,18 @@ struct GameTileCell: View {
         ZStack(alignment: .bottomTrailing) {
             VeggieView(veggie: veggie, size: size)
             if let powerUp { PowerUpBadge(powerUp: powerUp, size: size * 0.43) }
+            if dustLayers > 0 { DustTileOverlay(layers: dustLayers, size: size) }
+            if sleeping { SleepingLeoOverlay(size: size) }
+            if barking { HenryBarkBurst(size: size) }
+            if let rescueStep {
+                RescuePathOverlay(
+                    step: rescueStep,
+                    progress: rescueProgress,
+                    total: rescueTotal,
+                    bursting: rescueBurst,
+                    size: size
+                )
+            }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -304,6 +464,239 @@ struct GameTileCell: View {
         if hinting { return 1.14 }
         if selected { return 1.10 }
         return 1
+    }
+}
+
+struct DustGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.65, green: 0.61, blue: 0.54).gradient)
+            Image(systemName: "wind")
+                .font(.system(size: size * 0.46, weight: .bold))
+                .foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+struct SleepGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.31, green: 0.55, blue: 0.82).gradient)
+            Image(systemName: "moon.zzz.fill")
+                .font(.system(size: size * 0.43, weight: .bold))
+                .foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+struct RescueGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.91, green: 0.57, blue: 0.20).gradient)
+            Image(systemName: "pawprint.fill")
+                .font(.system(size: size * 0.44, weight: .bold))
+                .foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+private struct RescuePathOverlay: View {
+    let step: Int
+    let progress: Int
+    let total: Int
+    let bursting: Bool
+    let size: CGFloat
+
+    private var completed: Bool { step < progress }
+    private var active: Bool { step == progress }
+    private var destination: Bool { step == total - 1 }
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    completed ? Color.green.opacity(0.68) : active ? Color.yellow.opacity(0.98) : Color.white.opacity(0.48),
+                    style: StrokeStyle(lineWidth: active ? size * 0.075 : size * 0.045, lineCap: .round, dash: active || completed ? [] : [3, 4])
+                )
+
+            Image(systemName: completed ? "checkmark.circle.fill" : "pawprint.fill")
+                .font(.system(size: size * 0.17, weight: .black))
+                .foregroundStyle(completed ? .green : active ? Color.orange : .white.opacity(0.74))
+                .padding(size * 0.045)
+                .background(.white.opacity(0.80), in: Circle())
+                .offset(x: -size * 0.31, y: size * 0.29)
+
+            if active, let portrait = UIImage(named: "henry-map-marker") {
+                Image(uiImage: portrait)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size * 0.34, height: size * 0.34)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 2))
+                    .offset(x: -size * 0.30, y: -size * 0.28)
+            }
+
+            if destination {
+                Image(systemName: "heart.fill")
+                    .font(.system(size: size * 0.17, weight: .black))
+                    .foregroundStyle(.pink)
+                    .padding(size * 0.05)
+                    .background(.white.opacity(0.86), in: Circle())
+                    .offset(x: size * 0.31, y: -size * 0.29)
+            }
+
+            if bursting {
+                Text(destination && progress >= total ? "FOUND LEO!" : "THIS WAY!")
+                    .font(.system(size: size * 0.11, weight: .black, design: .rounded))
+                    .foregroundStyle(Color(red: 0.22, green: 0.31, blue: 0.18))
+                    .padding(.horizontal, size * 0.07)
+                    .padding(.vertical, size * 0.035)
+                    .background(.white, in: Capsule())
+                    .overlay(Capsule().stroke(Color.orange, lineWidth: 1.5))
+                    .offset(y: -size * 0.31)
+            }
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel(active ? "Henry's next pawstep" : completed ? "Completed pawstep" : "Future pawstep")
+    }
+}
+
+private struct SleepingLeoOverlay: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(Color.blue.opacity(0.035))
+                .overlay(Circle().stroke(Color(red: 0.34, green: 0.61, blue: 0.91).opacity(0.88), lineWidth: size * 0.07))
+
+            Image(systemName: "moon.fill")
+                .font(.system(size: size * 0.18, weight: .bold))
+                .foregroundStyle(Color(red: 0.98, green: 0.80, blue: 0.25))
+                .padding(size * 0.065)
+                .background(Color.white.opacity(0.84), in: Circle())
+                .offset(x: -size * 0.31, y: size * 0.29)
+
+            Text("Zz")
+                .font(.system(size: size * 0.18, weight: .black, design: .rounded))
+                .foregroundStyle(.white)
+                .padding(.horizontal, size * 0.075)
+                .padding(.vertical, size * 0.035)
+                .background(Color(red: 0.26, green: 0.51, blue: 0.84), in: Capsule())
+                .offset(x: size * 0.27, y: -size * 0.31)
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel("Sleeping Leo")
+    }
+}
+
+private struct HenryBarkBurst: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            if let portrait = UIImage(named: "henry-map-marker") {
+                Image(uiImage: portrait)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size * 0.48, height: size * 0.48)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 2))
+                    .offset(x: -size * 0.23, y: size * 0.22)
+            }
+            Text("WOOF!")
+                .font(.system(size: size * 0.15, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.19, green: 0.28, blue: 0.18))
+                .padding(.horizontal, size * 0.08)
+                .padding(.vertical, size * 0.05)
+                .background(.white, in: Capsule())
+                .overlay(Capsule().stroke(Color.orange, lineWidth: 2))
+                .offset(x: size * 0.16, y: -size * 0.27)
+        }
+        .frame(width: size, height: size)
+        .transition(.scale(scale: 0.45).combined(with: .opacity))
+        .allowsHitTesting(false)
+        .accessibilityLabel("Henry barks and wakes Leo")
+    }
+}
+
+private struct DustTileOverlay: View {
+    let layers: Int
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.18)
+                .fill(Color.white.opacity(layers > 1 ? 0.10 : 0.05))
+                .overlay {
+                    RoundedRectangle(cornerRadius: size * 0.18)
+                        .stroke(
+                            Color(red: 0.49, green: 0.44, blue: 0.37).opacity(layers > 1 ? 0.92 : 0.68),
+                            lineWidth: layers > 1 ? size * 0.10 : size * 0.065
+                        )
+                }
+
+            VStack {
+                HStack {
+                    dustPuff(scale: 0.20, opacity: 0.72)
+                    dustPuff(scale: 0.14, opacity: 0.50)
+                    Spacer()
+                    dustPuff(scale: 0.17, opacity: 0.62)
+                }
+                Spacer()
+                HStack {
+                    dustPuff(scale: 0.15, opacity: 0.54)
+                    Spacer()
+                    dustPuff(scale: 0.21, opacity: 0.72)
+                    dustPuff(scale: 0.12, opacity: 0.48)
+                }
+            }
+            .padding(size * 0.035)
+
+            Image(systemName: "wind")
+                .font(.system(size: size * 0.20, weight: .black))
+                .foregroundStyle(Color(red: 0.28, green: 0.25, blue: 0.22).opacity(0.86))
+                .padding(size * 0.06)
+                .background(.white.opacity(0.78), in: Circle())
+                .offset(x: -size * 0.31, y: size * 0.31)
+
+            if layers > 1 {
+                Text("2")
+                    .font(.system(size: size * 0.20, weight: .black))
+                    .foregroundStyle(.white)
+                    .padding(size * 0.07)
+                    .background(Color.brown, in: Circle())
+                    .offset(x: size * 0.31, y: -size * 0.31)
+            }
+        }
+        .frame(width: size * 0.92, height: size * 0.92)
+        .allowsHitTesting(false)
+        .transition(.scale.combined(with: .opacity))
+        .accessibilityLabel(layers > 1 ? "Two-layer dust" : "Dust")
+    }
+
+    private func dustPuff(scale: CGFloat, opacity: Double) -> some View {
+        Circle()
+            .fill(Color(red: 0.72, green: 0.69, blue: 0.63).opacity(opacity))
+            .frame(width: size * scale, height: size * scale)
+            .overlay(Circle().stroke(.white.opacity(0.45), lineWidth: 1))
     }
 }
 
@@ -380,10 +773,13 @@ struct GameArtworkView: View {
     }
 }
 
-struct ChapterOneBackdropView: View {
+struct ChapterBackdropView: View {
+    let chapterIndex: Int
+
     var body: some View {
         Group {
-            if let url = Bundle.main.url(forResource: "chapter-one-garden", withExtension: "png"),
+            let name = GameModel.chapters[min(max(0, chapterIndex), GameModel.chapters.count - 1)].backgroundName
+            if let url = Bundle.main.url(forResource: name, withExtension: "png"),
                let image = UIImage(contentsOfFile: url.path) {
                 Image(uiImage: image).resizable().scaledToFill()
             } else {
@@ -397,6 +793,10 @@ struct ChapterOneBackdropView: View {
     }
 }
 
+struct ChapterOneBackdropView: View {
+    var body: some View { ChapterBackdropView(chapterIndex: 0) }
+}
+
 struct BoosterButton: View {
     let icon: String, title: String, action: () -> Void
     var body: some View {
@@ -406,6 +806,55 @@ struct BoosterButton: View {
                 VStack(alignment: .leading, spacing: 0) { Text(title).font(.caption.bold()); Text("∞").font(.caption2).foregroundStyle(.secondary) }
             }.frame(maxWidth: .infinity)
         }.buttonStyle(.plain)
+    }
+}
+
+private struct PauseDestinationCard: View {
+    let icon: String
+    let decoration: String
+    let title: String
+    let subtitle: String
+    let colors: [Color]
+
+    var body: some View {
+        HStack(spacing: 11) {
+            ZStack {
+                Circle().fill(.white.opacity(0.24))
+                Image(systemName: icon)
+                    .font(.system(size: 23, weight: .bold))
+                    .foregroundStyle(.white)
+            }
+            .frame(width: 48, height: 48)
+            .overlay(Circle().stroke(.white.opacity(0.44), lineWidth: 1.5))
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text(title)
+                    .font(.system(size: 16, weight: .black, design: .rounded))
+                Text(subtitle)
+                    .font(.system(size: 9, weight: .semibold, design: .rounded))
+                    .opacity(0.82)
+            }
+            .foregroundStyle(.white)
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right")
+                .font(.caption.bold())
+                .foregroundStyle(.white.opacity(0.82))
+        }
+        .padding(.horizontal, 12)
+        .frame(maxWidth: .infinity, minHeight: 70)
+        .background(
+            LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing),
+            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+        )
+        .overlay(alignment: .topTrailing) {
+            Image(systemName: decoration)
+                .font(.system(size: 32, weight: .black))
+                .foregroundStyle(.white.opacity(0.12))
+                .rotationEffect(.degrees(14))
+                .padding(6)
+        }
+        .overlay(RoundedRectangle(cornerRadius: 18).stroke(.white.opacity(0.55), lineWidth: 1.5))
+        .shadow(color: colors.last?.opacity(0.28) ?? .clear, radius: 5, y: 3)
     }
 }
 

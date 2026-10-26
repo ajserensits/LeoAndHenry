@@ -36,6 +36,19 @@ The current Chapter One art establishes the target rendering style: storybook-re
 
 Current piece files live in `SproutAndSmiles/Artwork/LeoPieces/`.
 
+### Special-state overlay standard
+
+The approved Chapter Two dust treatment is the reference pattern for every special state applied to a normal match piece.
+
+- The Leo face, expression, and saturated identifying background must remain immediately readable.
+- Keep the center of the circular piece visually clear. Put state information around the rim or in the corners.
+- Prefer translucent rims, small perimeter puffs, sparkles, vines, droplets, cracks, or compact corner badges.
+- A special-state overlay should identify the condition without becoming the dominant image.
+- Layered or counted states use one small, high-contrast number badge near the edge.
+- Power-up symbols remain compact badges rather than replacing the underlying portrait.
+- Test every overlay on all six Leo expressions at actual gameplay size, without relying on color alone.
+- Only a true blocker that occupies a board cell instead of a match piece may fully cover that cell. It must look clearly non-matchable and visually distinct from the circular pieces.
+
 ## Chapter background rules
 
 Gameplay in landscape uses a chapter-specific illustrated backdrop behind the centered square board.
@@ -102,3 +115,4 @@ Chapter One currently uses `SproutAndSmiles/Artwork/chapter-one-garden.png`.
 - Is the center clear where gameplay requires it?
 - Is there any accidental text, watermark, extra limb, duplicate animal, or inconsistent marking?
 - Does the asset remain legible after cropping in both iPhone orientations?
+- If this is a special-piece overlay, is the underlying Leo expression still instantly recognizable?

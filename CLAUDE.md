@@ -14,7 +14,7 @@ Before changing story, gameplay, or artwork, read:
 - Henry is the younger black-and-white dog who protects and helps Leo.
 - Henry should help Leo whenever the story allows.
 - The game has unlimited lives and no ads, purchases, required account, or tracking.
-- Normal match pieces are all circular. Only power-up overlays should look special.
+- Normal match pieces are all circular. Special states and power-ups follow the dust-overlay pattern: preserve the Leo face and identifying background, keep the center clear, and communicate the state with a translucent rim, perimeter detail, or compact edge badge. Never let an overlay dominate the underlying piece. Only a true non-matchable blocker may fully cover its cell.
 - Player progression remains sequential and saved on-device.
 - Any level-unlock/testing interface must be compiled only under `#if DEBUG` and must not corrupt genuine saved progress.
 - Preserve portrait and both landscape orientations.

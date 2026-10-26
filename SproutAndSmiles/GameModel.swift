@@ -72,6 +72,24 @@ struct Level {
     let title: String
     let stolenItem: String
     let clue: String
+    var chapterIndex: Int = 0
+    var dustCells: Int = 0
+    var dustDepth: Int = 0
+    var sleepingCells: Int = 0
+    var rescueSteps: Int = 0
+
+    var clearsDust: Bool { dustCells > 0 }
+    var wakesLeo: Bool { sleepingCells > 0 }
+    var guidesHenry: Bool { rescueSteps > 0 }
+}
+
+struct Chapter: Identifiable {
+    let id: Int
+    let title: String
+    let subtitle: String
+    let backgroundName: String
+    let symbol: String
+    let levelRange: Range<Int>
 }
 
 @MainActor
@@ -87,13 +105,49 @@ final class GameModel: ObservableObject {
         .init(goal: .tomato, amount: 32, moves: 22, title: "Ball in the Brambles", stolenItem: "red ball", clue: "Henry spotted the ball beyond the tomatoes."),
         .init(goal: .carrot, amount: 34, moves: 21, title: "The Great Carrot Caper", stolenItem: "carrot treat", clue: "This clue has Leo written all over it."),
         .init(goal: .onion, amount: 36, moves: 21, title: "Moonlight Munchies", stolenItem: "bedtime snack", clue: "A midnight rustle wakes determined Henry."),
-        .init(goal: .pea, amount: 40, moves: 20, title: "The Garden Feast", stolenItem: "celebration supper", clue: "One last chase before the brothers share.")
+        .init(goal: .pea, amount: 40, moves: 20, title: "The Garden Feast", stolenItem: "celebration supper", clue: "One last chase before the brothers share."),
+
+        .init(goal: .carrot, amount: 18, moves: 25, title: "Follow the Crumbs", stolenItem: "crunchy biscuit", clue: "Henry spots biscuit crumbs beside the laundry basket.", chapterIndex: 1),
+        .init(goal: .tomato, amount: 0, moves: 25, title: "Dust Bunny Detour", stolenItem: "dusty pawprints", clue: "Match on the dusty tiles to clear a quiet path.", chapterIndex: 1, dustCells: 8, dustDepth: 1),
+        .init(goal: .onion, amount: 0, moves: 24, title: "Behind the Basket", stolenItem: "hidden biscuit", clue: "Leo is tucked behind the basket. Clear the dust so Henry can see him.", chapterIndex: 1, dustCells: 12, dustDepth: 1),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "The Vacuum Wakes", stolenItem: "dropped biscuit", clue: "The vacuum rumbles. Henry stands between it and Leo.", chapterIndex: 1, dustCells: 10, dustDepth: 2),
+        .init(goal: .eggplant, amount: 0, moves: 23, title: "A Quiet Corner", stolenItem: "comfort blanket", clue: "Clear the thickest dust and make Leo a quiet corner.", chapterIndex: 1, dustCells: 14, dustDepth: 2),
+        .init(goal: .pea, amount: 0, moves: 23, title: "Nap Behind the Hamper", stolenItem: "runaway biscuit", clue: "Make matches beside sleeping Leos so Henry can bark them awake.", chapterIndex: 1, sleepingCells: 6),
+        .init(goal: .tomato, amount: 0, moves: 22, title: "Two Layers of Trouble", stolenItem: "favorite toy", clue: "Some dust bunnies need two good matches before they tumble away.", chapterIndex: 1, dustCells: 18, dustDepth: 2),
+        .init(goal: .carrot, amount: 0, moves: 22, title: "Henry Takes the Lead", stolenItem: "safe hallway", clue: "Henry leads the way one clean pawstep at a time.", chapterIndex: 1, dustCells: 20, dustDepth: 2),
+        .init(goal: .onion, amount: 0, moves: 21, title: "The Great Wake-Up Call", stolenItem: "doorway clue", clue: "Henry needs one more chorus of barks before everyone heads outside.", chapterIndex: 1, sleepingCells: 12),
+        .init(goal: .pea, amount: 0, moves: 24, title: "Safe in the Sunshine", stolenItem: "shared biscuit", clue: "One final cleanup, then Henry and Leo can share the biscuit outside.", chapterIndex: 1, dustCells: 24, dustDepth: 2),
+
+        .init(goal: .tomato, amount: 18, moves: 25, title: "The Noise Upstairs", stolenItem: "red plush ladybug", clue: "A sudden thump sends Leo—and Henry's ladybug—under the bed.", chapterIndex: 2),
+        .init(goal: .carrot, amount: 0, moves: 25, title: "Dust Under the Bed", stolenItem: "dusty pawprints", clue: "Clear the soft dust bunnies so Henry can crawl underneath.", chapterIndex: 2, dustCells: 10, dustDepth: 1),
+        .init(goal: .onion, amount: 0, moves: 24, title: "Henry Squeezes In", stolenItem: "first pawsteps", clue: "Match beside the glowing pawstep to guide Henry toward Leo.", chapterIndex: 2, rescueSteps: 6),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "Between the Slippers", stolenItem: "safe route", clue: "Follow the pawprints around the slippers and boxes.", chapterIndex: 2, rescueSteps: 8),
+        .init(goal: .eggplant, amount: 0, moves: 23, title: "The Sock Fort", stolenItem: "striped sock", clue: "Two layers of fluff stand between the brothers.", chapterIndex: 2, dustCells: 14, dustDepth: 2),
+        .init(goal: .pea, amount: 0, moves: 23, title: "Follow My Pawsteps", stolenItem: "comfort trail", clue: "Henry keeps crawling, one gentle pawstep at a time.", chapterIndex: 2, rescueSteps: 10),
+        .init(goal: .tomato, amount: 24, moves: 22, title: "The Ladybug Clue", stolenItem: "red plush ladybug", clue: "Henry spots a flash of red beside Leo's fluffy paw.", chapterIndex: 2),
+        .init(goal: .carrot, amount: 0, moves: 22, title: "Almost There, Leo", stolenItem: "shared blanket", clue: "Only a few more careful pawsteps to reach Leo.", chapterIndex: 2, rescueSteps: 12),
+        .init(goal: .onion, amount: 0, moves: 22, title: "A Gentle Wake-Up", stolenItem: "cozy hiding place", clue: "A few quiet woofs let Leo know Henry is close.", chapterIndex: 2, sleepingCells: 8),
+        .init(goal: .pea, amount: 0, moves: 24, title: "Out From Under", stolenItem: "red plush ladybug", clue: "Guide Henry all the way to Leo, then bring the ladybug into the light.", chapterIndex: 2, rescueSteps: 13)
+    ]
+
+    static let chapters: [Chapter] = [
+        .init(id: 0, title: "The Bug in the Beans", subtitle: "Henry follows Leo's pawprints through the garden.", backgroundName: "chapter-one-garden", symbol: "leaf.fill", levelRange: 0..<10),
+        .init(id: 1, title: "The Vacuum Awakens", subtitle: "Henry clears a safe path through the hallway.", backgroundName: "chapter-02-vacuum-hallway", symbol: "wind", levelRange: 10..<20),
+        .init(id: 2, title: "Under the Bed", subtitle: "Henry follows Leo into the coziest hiding place.", backgroundName: "chapter-03-under-the-bed", symbol: "bed.double.fill", levelRange: 20..<30)
     ]
 
     @Published var board: [[Tile]] = []
     @Published var levelIndex = 0
     @Published var moves = 0
     @Published var collected = 0
+    @Published var dustLayers = Array(repeating: Array(repeating: 0, count: boardSize), count: boardSize)
+    @Published private(set) var initialDustLayers = 0
+    @Published var sleepingLeos = Set<Position>()
+    @Published var barkBursts = Set<Position>()
+    @Published var rescuePath: [Position] = []
+    @Published var rescueProgress = 0
+    @Published var rescueBursts = Set<Position>()
+    @Published var mapChapterIndex = 0
     @Published var selected: Position?
     @Published var popping = Set<Position>()
     @Published var hint = Set<Position>()
@@ -105,8 +159,41 @@ final class GameModel: ObservableObject {
     @Published var isBusy = false
     @Published private(set) var unlocked: Int
     @Published private(set) var wins: Int
+    @Published private(set) var isDeveloperPreview = false
 
     var level: Level { Self.levels[levelIndex] }
+    var chapter: Chapter { Self.chapters[level.chapterIndex] }
+    var remainingDust: Int { dustLayers.flatMap { $0 }.reduce(0, +) }
+    var objectiveAmount: Int {
+        if level.clearsDust { return initialDustLayers }
+        if level.wakesLeo { return level.sleepingCells }
+        if level.guidesHenry { return rescuePath.count }
+        return level.amount
+    }
+    var objectiveProgress: Int {
+        if level.clearsDust { return initialDustLayers - remainingDust }
+        if level.wakesLeo { return level.sleepingCells - sleepingLeos.count }
+        if level.guidesHenry { return rescueProgress }
+        return collected
+    }
+    var objectiveComplete: Bool {
+        if level.clearsDust { return remainingDust == 0 }
+        if level.wakesLeo { return sleepingLeos.isEmpty }
+        if level.guidesHenry { return rescueProgress >= rescuePath.count }
+        return collected >= level.amount
+    }
+    var objectiveLabel: String {
+        if level.clearsDust { return "CLEAR DUST" }
+        if level.wakesLeo { return "WAKE LEO" }
+        if level.guidesHenry { return "REACH LEO" }
+        return "COLLECT"
+    }
+    var objectiveInstruction: String {
+        if level.clearsDust { return "Match pieces beneath dusty spaces." }
+        if level.wakesLeo { return "Match on or beside sleeping Leos." }
+        if level.guidesHenry { return "Match beside the glowing next pawstep." }
+        return level.goal.name
+    }
 
     init() {
         let defaults = UserDefaults.standard
@@ -118,15 +205,70 @@ final class GameModel: ObservableObject {
     }
 
     func start(level requested: Int) {
-        levelIndex = min(max(requested, 0), unlocked - 1)
+        isDeveloperPreview = false
+        prepareLevel(min(max(requested, 0), unlocked - 1))
+        UserDefaults.standard.set(levelIndex, forKey: "currentLevel")
+    }
+
+    private func prepareLevel(_ requested: Int) {
+        levelIndex = min(max(requested, 0), Self.levels.count - 1)
         moves = level.moves
         collected = 0
         selected = nil
         showingWin = false
         board = freshBoard()
+        dustLayers = freshDustLayers()
+        initialDustLayers = remainingDust
+        sleepingLeos = freshSleepingLeos()
+        barkBursts.removeAll()
+        rescuePath = freshRescuePath()
+        rescueProgress = 0
+        rescueBursts.removeAll()
+        mapChapterIndex = level.chapterIndex
         message = level.clue
-        UserDefaults.standard.set(levelIndex, forKey: "currentLevel")
     }
+
+    func selectMapChapter(_ requested: Int) {
+        let index = min(max(0, requested), Self.chapters.count - 1)
+#if DEBUG
+        mapChapterIndex = index
+#else
+        if unlocked > Self.chapters[index].levelRange.lowerBound { mapChapterIndex = index }
+#endif
+    }
+
+#if DEBUG
+    /// Opens locked content without touching the player's genuine progression.
+    func startDeveloperPreview(level requested: Int) {
+        isDeveloperPreview = true
+        prepareLevel(requested)
+        message = "Developer preview · \(level.clue)"
+    }
+
+    func developerUnlockAllLevels() {
+        isDeveloperPreview = false
+        unlocked = Self.levels.count
+        UserDefaults.standard.set(unlocked, forKey: "unlockedLevels")
+    }
+
+    func developerCompleteThroughCurrentLevel() {
+        isDeveloperPreview = false
+        wins = min(Self.levels.count, max(wins, levelIndex + 1))
+        unlocked = min(Self.levels.count, max(unlocked, wins + 1))
+        UserDefaults.standard.set(wins, forKey: "gardenWins")
+        UserDefaults.standard.set(unlocked, forKey: "unlockedLevels")
+    }
+
+    func developerResetProgress() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "gardenWins")
+        defaults.removeObject(forKey: "unlockedLevels")
+        defaults.removeObject(forKey: "currentLevel")
+        wins = 0
+        unlocked = 1
+        start(level: 0)
+    }
+#endif
 
     func tap(_ position: Position) {
         guard !isBusy else { return }
@@ -159,12 +301,26 @@ final class GameModel: ObservableObject {
 
     func water() {
         guard !isBusy else { return }
-        let candidates = positions(of: level.goal).shuffled().prefix(5)
+        let candidates: ArraySlice<Position>
+        if level.clearsDust {
+            let dusty = (0..<Self.size).flatMap { row in
+                (0..<Self.size).compactMap { col in
+                    dustLayers[row][col] > 0 ? Position(row: row, col: col) : nil
+                }
+            }
+            candidates = dusty.shuffled().prefix(5)
+        } else if level.wakesLeo {
+            candidates = Array(sleepingLeos).shuffled().prefix(3)
+        } else if level.guidesHenry, rescueProgress < rescuePath.count {
+            candidates = [rescuePath[rescueProgress]][...]
+        } else {
+            candidates = positions(of: level.goal).shuffled().prefix(5)
+        }
         guard !candidates.isEmpty else { return }
         Task {
             isBusy = true
             await clear(Array(candidates))
-            if collected >= level.amount { win() }
+            if objectiveComplete { win() }
             isBusy = false
         }
     }
@@ -181,7 +337,15 @@ final class GameModel: ObservableObject {
         } else { shuffle() }
     }
 
-    func continueGarden() { start(level: min(levelIndex + 1, unlocked - 1)) }
+    func continueGarden() {
+#if DEBUG
+        if isDeveloperPreview {
+            startDeveloperPreview(level: min(levelIndex + 1, Self.levels.count - 1))
+            return
+        }
+#endif
+        start(level: min(levelIndex + 1, unlocked - 1))
+    }
 
     private func attemptSwap(_ a: Position, _ b: Position) async {
         isBusy = true
@@ -210,7 +374,7 @@ final class GameModel: ObservableObject {
     }
 
     private func finishMove() {
-        if collected >= level.amount { win() }
+        if objectiveComplete { win() }
         else if moves <= 0 {
             moves += 10
             message = "Ten extra moves, on the house!"
@@ -232,9 +396,21 @@ final class GameModel: ObservableObject {
             removed = expandedClearSet(from: removed)
             popping = removed
             collected += removed.filter { board[$0.row][$0.col].veggie == level.goal }.count
-            if let creation {
+            let dustHit = damageDust(at: removed)
+            let awakened = wakeSleepingLeos(near: removed)
+            let advanced = advanceRescue(near: removed)
+            if advanced > 0 {
+                message = rescueProgress == rescuePath.count ? "Henry reached Leo! Safe together." : "This way! Henry moved \(advanced) pawstep\(advanced == 1 ? "" : "s") closer."
+                haptic(.success)
+            } else if awakened > 0 {
+                message = "WOOF! Henry woke \(awakened) sleepy Leo\(awakened == 1 ? "" : "s")."
+                haptic(.success)
+            } else if let creation {
                 message = creationMessage(creation.kind)
                 haptic(.success)
+            } else if dustHit > 0 {
+                message = remainingDust == 0 ? "The hallway is clear! Henry found a safe path." : "Poof! \(dustHit) dust layer\(dustHit == 1 ? "" : "s") cleared."
+                haptic(.soft)
             } else {
                 message = combo > 1 ? "\(combo)x cascade! Leo is everywhere." : "Lovely! A happy little row."
                 haptic(.soft)
@@ -257,9 +433,12 @@ final class GameModel: ObservableObject {
         clearSet = expandedClearSet(from: clearSet, rainbowTargets: rainbowTargets)
         popping = clearSet
         collected += clearSet.filter { board[$0.row][$0.col].veggie == level.goal }.count
+        _ = damageDust(at: clearSet)
+        let awakened = wakeSleepingLeos(near: clearSet)
+        let advanced = advanceRescue(near: clearSet)
         message = positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
             ? "Rainbow paw! Every matching Leo joins the chase!"
-            : "Power-up! The garden is flying!"
+            : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
         try? await Task.sleep(for: .milliseconds(320))
         collapse(clearSet)
@@ -272,7 +451,10 @@ final class GameModel: ObservableObject {
     private func clear(_ positions: [Position]) async {
         popping = Set(positions)
         collected += positions.filter { board[$0.row][$0.col].veggie == level.goal }.count
-        message = "A little rain works wonders."
+        let dustHit = damageDust(at: Set(positions))
+        let awakened = wakeSleepingLeos(near: Set(positions))
+        let advanced = advanceRescue(near: Set(positions))
+        message = advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
@@ -295,7 +477,58 @@ final class GameModel: ObservableObject {
         }
     }
 
+    private func damageDust(at positions: Set<Position>) -> Int {
+        var damaged = 0
+        for position in positions where dustLayers[position.row][position.col] > 0 {
+            dustLayers[position.row][position.col] -= 1
+            damaged += 1
+        }
+        return damaged
+    }
+
+    private func wakeSleepingLeos(near positions: Set<Position>) -> Int {
+        let awakened = sleepingLeos.filter { sleeper in
+            positions.contains { cleared in
+                abs(cleared.row - sleeper.row) <= 1 && abs(cleared.col - sleeper.col) <= 1
+            }
+        }
+        guard !awakened.isEmpty else { return 0 }
+        let awakenedSet = Set(awakened)
+        sleepingLeos.subtract(awakenedSet)
+        barkBursts.formUnion(awakenedSet)
+        Task {
+            try? await Task.sleep(for: .milliseconds(720))
+            barkBursts.subtract(awakenedSet)
+        }
+        return awakenedSet.count
+    }
+
+    private func advanceRescue(near positions: Set<Position>) -> Int {
+        guard level.guidesHenry, rescueProgress < rescuePath.count else { return 0 }
+        let target = rescuePath[rescueProgress]
+        let reached = positions.contains { cleared in
+            abs(cleared.row - target.row) <= 1 && abs(cleared.col - target.col) <= 1
+        }
+        guard reached else { return 0 }
+        let newlyReached: Set<Position> = [target]
+        rescueProgress += 1
+        rescueBursts.formUnion(newlyReached)
+        Task {
+            try? await Task.sleep(for: .milliseconds(650))
+            rescueBursts.subtract(newlyReached)
+        }
+        return 1
+    }
+
     private func win() {
+#if DEBUG
+        if isDeveloperPreview {
+            showingWin = true
+            message = "Developer preview complete — saved progress was not changed."
+            haptic(.success)
+            return
+        }
+#endif
         wins = max(wins, levelIndex + 1)
         unlocked = min(Self.levels.count, max(unlocked, levelIndex + 2))
         UserDefaults.standard.set(wins, forKey: "gardenWins")
@@ -317,6 +550,45 @@ final class GameModel: ObservableObject {
             }
         }
         return result
+    }
+
+    private func freshDustLayers() -> [[Int]] {
+        var result = Array(repeating: Array(repeating: 0, count: Self.size), count: Self.size)
+        guard level.clearsDust else { return result }
+        let pattern: [Position] = [
+            .init(row: 3, col: 3), .init(row: 3, col: 4), .init(row: 4, col: 3), .init(row: 4, col: 4),
+            .init(row: 2, col: 3), .init(row: 2, col: 4), .init(row: 5, col: 3), .init(row: 5, col: 4),
+            .init(row: 3, col: 2), .init(row: 4, col: 2), .init(row: 3, col: 5), .init(row: 4, col: 5),
+            .init(row: 1, col: 2), .init(row: 1, col: 5), .init(row: 6, col: 2), .init(row: 6, col: 5),
+            .init(row: 2, col: 1), .init(row: 5, col: 1), .init(row: 2, col: 6), .init(row: 5, col: 6),
+            .init(row: 0, col: 1), .init(row: 0, col: 6), .init(row: 7, col: 1), .init(row: 7, col: 6)
+        ]
+        for position in pattern.prefix(level.dustCells) {
+            result[position.row][position.col] = max(1, level.dustDepth)
+        }
+        return result
+    }
+
+    private func freshSleepingLeos() -> Set<Position> {
+        guard level.wakesLeo else { return [] }
+        let pattern: [Position] = [
+            .init(row: 1, col: 1), .init(row: 1, col: 6), .init(row: 6, col: 1), .init(row: 6, col: 6),
+            .init(row: 3, col: 3), .init(row: 4, col: 4), .init(row: 2, col: 4), .init(row: 5, col: 3),
+            .init(row: 3, col: 1), .init(row: 4, col: 6), .init(row: 1, col: 3), .init(row: 6, col: 4)
+        ]
+        return Set(pattern.prefix(level.sleepingCells))
+    }
+
+    private func freshRescuePath() -> [Position] {
+        guard level.guidesHenry else { return [] }
+        let path: [Position] = [
+            .init(row: 6, col: 0), .init(row: 6, col: 1), .init(row: 5, col: 1),
+            .init(row: 5, col: 2), .init(row: 4, col: 2), .init(row: 4, col: 3),
+            .init(row: 3, col: 3), .init(row: 3, col: 4), .init(row: 2, col: 4),
+            .init(row: 2, col: 5), .init(row: 1, col: 5), .init(row: 1, col: 6),
+            .init(row: 1, col: 7)
+        ]
+        return Array(path.prefix(level.rescueSteps))
     }
 
     private func matchInfo() -> MatchInfo {

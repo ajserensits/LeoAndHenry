@@ -2,9 +2,12 @@
 
 A private, native iPhone match-three garden game starring Leo and Henry. Mischievous Leo steals Henry's toy, snack, meal, or treasured object, and protective little brother Henry follows the clues while helping Leo through the things that frighten him.
 
-## What is in this first playable build
+## What is in the playable build
 
-- A ten-level opening chapter with a storybook level map
+- Three ten-level chapters with chapter-specific storybook maps
+- Chapter Two's first new objective: one- and two-layer vacuum dust tiles
+- Sleeping-Leo objectives where nearby matches trigger Henry's wake-up bark
+- Under-the-bed rescue routes that move Henry toward Leo one pawstep at a time
 - Original title artwork based on the supplied photos of Leo and Henry
 - Distinct illustrated Leo expression pieces and a Henry map portrait
 - Portrait and landscape play, including a full-height centered landscape board
@@ -23,7 +26,7 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 - [Development Roadmap](docs/ROADMAP.md) — gameplay varieties and the path from prototype to complete chapters
 - [Claude Handoff](CLAUDE.md) — repository-specific instructions for anyone continuing the implementation or artwork
 
-The current ten levels are a polished gameplay prototype for Chapter One. The broader fear-and-rescue story and the distinct objective types in the documents above are planned work, not all implemented yet.
+Chapter One contains the original collection levels. Chapter Two, **The Vacuum Awakens**, adds a hallway setting, layered dust-clearing levels, and sleeping-Leo wake-up levels. Chapter Three, **Under the Bed**, adds sequential rescue routes that guide Henry to Leo. Drop-item, comfort, clue, protection, and story-card systems remain planned work.
 
 ## Run it on an iPhone
 

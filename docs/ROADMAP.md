@@ -4,23 +4,25 @@
 
 - Native SwiftUI iPhone app targeting iOS 17.
 - Eight-by-eight match-three board with tap and swipe controls.
-- Cascades and move-limited collection goals.
+- Cascades, move-limited collection goals, and layered dust-clearing goals.
 - Row and column rockets from four-piece matches.
 - Rainbow paw from a straight five-piece match.
 - Garden bomb from an L- or T-shaped match.
 - Unlimited lives, shuffle, water, and hint helpers.
-- Ten-level opening map with saved progression.
+- Three ten-level chapter maps with continuous saved progression.
 - Portrait and landscape layouts.
-- Chapter One garden background and character-driven map styling.
+- Chapter-specific garden and vacuum-hallway backgrounds with character-driven map styling.
 
-The current ten levels mainly vary the target expression, quantity, and move count. The story events and objective varieties below remain future implementation work.
+Chapter One's ten levels mainly vary the target expression, quantity, and move count. Chapter Two's first playable slice introduces one- and two-layer dust objectives. The remaining story events and objective varieties below remain future implementation work.
 
 ## Gameplay variety plan
 
 | Objective | Player action | Possible story use |
 |---|---|---|
 | Collect | Match a specified Leo expression or story item | Follow Leo's trail or gather comfort objects |
-| Clear blockers | Match beside layered obstacles to remove them | Bags, cans, garden clutter, or vacuum dust |
+| Clear blockers | Match through layered obstacles to remove them | Vacuum dust is implemented; bags, cans, and garden clutter remain planned |
+| Wake sleeping Leo | Match on or beside sleeping Leo pieces to trigger Henry's bark | Implemented in Chapter Two levels 6 and 9 |
+| Rescue route | Match on or beside the highlighted next pawstep to move Henry toward Leo | Implemented throughout Chapter Three |
 | Drop items | Clear space beneath an item until it reaches the bottom | Return a toy, biscuit, bug, bowl, or parcel |
 | Rescue Leo | Clear or match around Leo's hiding place | Help Leo come out from under the bed |
 | Guide Henry | Open a connected route across the board | Reach Leo without crossing the pool edge or mower path |
@@ -35,11 +37,11 @@ Avoid real-time timers as the default difficulty tool. Difficulty should come fr
 
 The release experience should require the player to complete levels in order. Development builds need a separate testing path so new mechanics can be reviewed without replaying the entire story.
 
-Implement a `#if DEBUG` developer menu that can:
+The app now includes a `#if DEBUG` developer console that can preview any current level without changing genuine progress, unlock all current levels, mark progress through the selected level, and reset progress. As objective and chapter systems are added, extend it to:
 
-- Open any level without altering the player's genuine saved progress.
+- Open any level or chapter without altering the player's genuine saved progress. *(Current levels implemented.)*
 - Preview every objective and obstacle type.
-- Reset or seed progress deliberately.
+- Reset or seed progress deliberately. *(Reset and unlock-all implemented.)*
 - Grant a chosen power-up for testing.
 - Display board and save-state diagnostics.
 
@@ -47,18 +49,18 @@ Never expose this menu in Release or TestFlight builds intended for normal play.
 
 ## Recommended milestone order
 
-### Milestone 1: Chapter One vertical slice
+### Milestone 1: Chapter system and first variety *(in progress)*
 
 - Convert three existing levels into three genuinely different objectives.
 - Add one layered blocker, one drop-item goal, and one route or rescue goal.
 - Add short pre-level and post-level story cards.
-- Add the DEBUG-only level picker.
+- Add the DEBUG-only level picker. *(Implemented for chapters 1–2.)*
 - Preserve existing save data through a versioned save model.
 
 ### Milestone 2: Fear-event mechanics
 
-- Vacuum behavior and dust blockers.
-- Under-the-bed rescue board.
+- Vacuum behavior and dust blockers. *(Layered dust implemented; active vacuum behavior remains.)*
+- Under-the-bed rescue board. *(Sequential rescue route implemented; story panels and props remain.)*
 - Thunderstorm comfort-spreading mechanic.
 - Lawnmower route hazard.
 - Bags and cans as movable or layered blockers.
