@@ -1,0 +1,19 @@
+Use your built-in image generation tool to create exactly ONE image, then save it as a PNG at the output path given below. Do not edit, create, or delete any other files. Do not run git. Generate a wide landscape image (1536x1024).
+
+This is a chapter background for a cozy iPhone match-three game starring two real family dogs, Leo and Henry. The attached images are the approved style and character references. The first attachment (chapter-one-garden) is the exact composition model: match its rendering style, lighting quality, saturation, depth of field, and layout.
+
+STYLE: Premium storybook illustration with a soft painterly 3D rendering, like a high-end animated film still. Rich saturated colors, soft fur detail, gentle depth of field. Cozy, funny, affectionate mood, never threatening. Small dogs in a world that feels large from their eye level. Scary objects are big from the dogs' viewpoint but toy-like, rounded, harmless, and a little silly, with no faces.
+
+LEO: small, very round, extremely fluffy dog with a long golden-ginger coat, cream muzzle and chest, full cheek fur, short muzzle, small dark-brown nose, dark round eyes, long feathered floppy ears. Wider and rounder than Henry. Exactly like the golden dog in the references.
+
+HENRY: small, alert, long-coated dog whose coat is predominantly a rich dark chocolate brown (NOT black), with a white-and-cream muzzle, chest ruff and paws, tan eyebrow spots and cheek markings, large brown eyes, small brownish nose, tall pointed upright fringed ears. Slimmer and more upright than Leo. Exactly like the chocolate-brown dog in the references.
+
+COMPOSITION RULES (critical, a square game board will cover the middle):
+- The central 55% of the width must be calm, open, softly detailed, with NO characters, no bright focal objects, and no strong contrast. A path, floor, rug, lawn, or patio receding into the distance works well.
+- Put the dogs and story props only in the far-left and far-right edge margins, partly framed by foreground objects, exactly like the reference.
+- Keep the top-right corner soft and low in contrast.
+- The narrow vertical center strip must still look pleasant on its own.
+- Exactly two dogs. No people with visible faces. No extra animals.
+- Absolutely no text, letters, numbers, logos, labels, signatures, or watermarks.
+
+SCENE:
