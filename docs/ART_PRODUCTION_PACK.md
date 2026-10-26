@@ -139,5 +139,6 @@ When an asset is approved, add a row below so the generation prompt, crop, dimen
 | `chapter-08-pool-day.png` | Yes (2026-10-25) | same | same | Chapter 8 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
 | `chapter-09-special-delivery.png` | Yes (2026-10-25) | same | same | Chapter 9 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
 | `chapter-10-birthday-pad.png` | Yes (2026-10-25) | same | same | Chapter 10 gameplay backdrop and map; copied to `SproutAndSmiles/Artwork/` |
+| `LeoPieces/leo-nervous.png` | Yes (2026-10-26) | `ArtworkSource/prompts/pieces/leo-nervous.txt` (variant B, "peeking over paws"); references: `leo-excited`, `leo-guilty`, `leo-happy`, `leo-expression-sheet` | Generated 1024×1024, scaled to 512×512; the app crops it to a circle | Yellow match piece (`Veggie.pepper`, "Nervous Leo"); replaces the former `leo-excited.png`, which read too much like Guilty |
 
 Chapter backgrounds were generated with the Codex CLI bundled in ChatGPT.app (`codex exec` with image generation), attaching `chapter-one-garden.png`, `henry-map-marker.png`, and `leo-henry-garden-chase.png` as references. Raw outputs were finished with `ArtworkSource/tools/finish_background.py`.

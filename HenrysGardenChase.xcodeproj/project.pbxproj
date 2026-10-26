@@ -11,7 +11,7 @@
 		1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F186D3BAA33C371B5D9E9106 /* GameModel.swift */; };
 		A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */; };
 		2C6A4CC6FB0FD8C799B43E41 /* leo-lick.png in Resources */ = {isa = PBXBuildFile; fileRef = 75F1962D5CC71EE060E5734C /* leo-lick.png */; };
-		45AC493C43E2BBC0121B3D31 /* leo-excited.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312EA7F985878D50D4461E3 /* leo-excited.png */; };
+		45AC493C43E2BBC0121B3D31 /* leo-nervous.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312EA7F985878D50D4461E3 /* leo-nervous.png */; };
 		5F8B118CF46B2214365D1DDD /* leo-henry-garden-chase.png in Resources */ = {isa = PBXBuildFile; fileRef = 4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */; };
 		669F420AD0C180D235D2CCE8 /* leo-side-eye.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */; };
 		66E69415744920F6D037E2CF /* VeggieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */; };
@@ -51,7 +51,7 @@
 		B2026C09B2026C09B2026C09 /* chapter-09-special-delivery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-09-special-delivery.png"; sourceTree = "<group>"; };
 		B2026C10B2026C10B2026C10 /* chapter-10-birthday-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-10-birthday-pad.png"; sourceTree = "<group>"; };
 		5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-expression-sheet.png"; sourceTree = "<group>"; };
-		6312EA7F985878D50D4461E3 /* leo-excited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-excited.png"; sourceTree = "<group>"; };
+		6312EA7F985878D50D4461E3 /* leo-nervous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-nervous.png"; sourceTree = "<group>"; };
 		6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-guilty.png"; sourceTree = "<group>"; };
 		75F1962D5CC71EE060E5734C /* leo-lick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-lick.png"; sourceTree = "<group>"; };
 		943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterMapView.swift; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		9144EF00766C5A9982D45C66 /* LeoPieces */ = {
 			isa = PBXGroup;
 			children = (
-				6312EA7F985878D50D4461E3 /* leo-excited.png */,
+				6312EA7F985878D50D4461E3 /* leo-nervous.png */,
 				0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */,
 				6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */,
 				32C766664A10B7B8F39CEA06 /* leo-happy.png */,
@@ -198,7 +198,7 @@
 				A2026C09A2026C09A2026C09 /* chapter-09-special-delivery.png in Resources */,
 				A2026C10A2026C10A2026C10 /* chapter-10-birthday-pad.png in Resources */,
 				85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */,
-				45AC493C43E2BBC0121B3D31 /* leo-excited.png in Resources */,
+				45AC493C43E2BBC0121B3D31 /* leo-nervous.png in Resources */,
 				C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */,
 				FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */,
 				C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */,

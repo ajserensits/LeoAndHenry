@@ -1,0 +1,13 @@
+Use your built-in image generation tool to create exactly ONE image, then save it as a PNG at the output path given below. Do not edit, create, or delete any other files. Do not run git. Generate a SQUARE image (1024x1024).
+
+This is a single match-three game piece for a cozy iPhone game starring a real family dog named Leo. The attached images are the approved existing pieces and expression sheet. Match their rendering style EXACTLY: premium storybook illustration with soft painterly 3D rendering, rich saturated color, very detailed soft fur, a bright saturated radial sunburst background, Leo's head and chest filling almost the entire frame, centered, framed so it reads well when cropped to a circle.
+
+LEO (must match the references exactly): small, very round, extremely fluffy dog with a long golden-ginger coat, cream muzzle and chest ruff, full cheek fur, short muzzle, small dark-brown nose, dark round eyes, long feathered floppy ears. Same coat color, markings, ear shape and proportions as the references. Do not change his breed or colors.
+
+THE NEW EXPRESSION: "Nervous Leo". It must be instantly distinguishable at 45 points on a phone from the existing pieces, especially from "guilty" (wide eyes glancing sideways, closed mouth) and "excited" (wide eyes, closed mouth). So do NOT use the plain wide-eyed sideways glance with a closed mouth. Change the eyes, mouth, ear position, head angle and silhouette, as described below.
+
+BACKGROUND: a saturated YELLOW-to-golden radial sunburst exactly like the excited piece's background (rays radiating from behind the head). No other props or scenery.
+
+No text, letters, numbers, logos, borders, frames, or circle outlines. Keep everything important inside the central circle; corners will be cropped away.
+
+VARIANT B, "peeking over paws": Leo has both fluffy front paws raised and pressed against the lower half of his face, covering his mouth and nose so only his eyes, brows and ears show above his paws. Ears flattened back. Eyes wide, glossy and worried, looking straight at the viewer, brows tilted up in the middle. The two paws across the bottom of the face make the silhouette clearly different from every other piece. Comedic and endearing.

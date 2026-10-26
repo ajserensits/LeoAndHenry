@@ -12,7 +12,7 @@ enum Veggie: String, CaseIterable, Codable {
         case .tomato: "Happy Leo"
         case .carrot: "Side-eye Leo"
         case .onion: "Guilty Leo"
-        case .pepper: "Excited Leo"
+        case .pepper: "Nervous Leo"
         case .eggplant: "Grumpy Leo"
         case .pea: "Snack-time Leo"
         }
@@ -23,7 +23,7 @@ enum Veggie: String, CaseIterable, Codable {
         case .tomato: "leo-happy"
         case .carrot: "leo-side-eye"
         case .onion: "leo-guilty"
-        case .pepper: "leo-excited"
+        case .pepper: "leo-nervous"
         case .eggplant: "leo-grumpy"
         case .pea: "leo-lick"
         }
