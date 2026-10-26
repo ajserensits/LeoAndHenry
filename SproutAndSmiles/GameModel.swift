@@ -79,11 +79,14 @@ struct Level {
     var rescueSteps: Int = 0
     var comfortCells: Int = 0
     var thunderEvery: Int = 0
+    var quietRouteSteps: Int = 0
+    var mowerEvery: Int = 0
 
     var clearsDust: Bool { dustCells > 0 }
     var wakesLeo: Bool { sleepingCells > 0 }
     var guidesHenry: Bool { rescueSteps > 0 }
     var spreadsComfort: Bool { comfortCells > 0 }
+    var followsQuietRoute: Bool { quietRouteSteps > 0 }
 }
 
 struct Chapter: Identifiable {
@@ -141,14 +144,26 @@ final class GameModel: ObservableObject {
         .init(goal: .eggplant, amount: 0, moves: 23, title: "The Loudest Clap", stolenItem: "brave moment", clue: "The biggest boom yet. Henry pulls the blanket wider.", chapterIndex: 3, comfortCells: 28, thunderEvery: 4),
         .init(goal: .tomato, amount: 0, moves: 22, title: "Every Comfort Thing", stolenItem: "pile of toys", clue: "Henry carries every favorite toy to Leo, one trip at a time.", chapterIndex: 3, rescueSteps: 11, thunderEvery: 4),
         .init(goal: .carrot, amount: 0, moves: 22, title: "Rumbles Fading", stolenItem: "sleepy calm", clue: "The thunder rolls farther away. Just a little more blanket.", chapterIndex: 3, comfortCells: 34, thunderEvery: 6),
-        .init(goal: .pea, amount: 0, moves: 24, title: "Sharing the Blanket", stolenItem: "shared blanket", clue: "The storm passes. Spread the blanket wide enough for two.", chapterIndex: 3, comfortCells: 40, thunderEvery: 8)
+        .init(goal: .pea, amount: 0, moves: 24, title: "Sharing the Blanket", stolenItem: "shared blanket", clue: "The storm passes. Spread the blanket wide enough for two.", chapterIndex: 3, comfortCells: 40, thunderEvery: 8),
+
+        .init(goal: .carrot, amount: 20, moves: 25, title: "Ball Behind the Marigolds", stolenItem: "orange outdoor ball", clue: "Leo borrowed Henry's ball—and the mower just started across the yard.", chapterIndex: 4, mowerEvery: 4),
+        .init(goal: .tomato, amount: 0, moves: 25, title: "The Quiet Edge", stolenItem: "first safe pawsteps", clue: "Match beside the glowing leaf so Henry can show Leo the quiet way.", chapterIndex: 4, quietRouteSteps: 6, mowerEvery: 3),
+        .init(goal: .onion, amount: 0, moves: 24, title: "Past the Flowerpots", stolenItem: "flowerpot hiding place", clue: "Henry leads past the marigolds while the mower loops far away.", chapterIndex: 4, quietRouteSteps: 8, mowerEvery: 3),
+        .init(goal: .pepper, amount: 24, moves: 24, title: "Grass-Clipping Gust", stolenItem: "windblown ball", clue: "A puff of clippings rolls by. Henry stays between Leo and the noise.", chapterIndex: 4, mowerEvery: 3),
+        .init(goal: .eggplant, amount: 0, moves: 23, title: "Henry Leads the Way", stolenItem: "shady side path", clue: "Follow Henry's leafy trail along the quiet side of the lawn.", chapterIndex: 4, quietRouteSteps: 10, mowerEvery: 2),
+        .init(goal: .pea, amount: 0, moves: 23, title: "Leo Freezes", stolenItem: "brave little pause", clue: "The mower sounds close. Henry gives a gentle bark to get Leo moving.", chapterIndex: 4, sleepingCells: 8, mowerEvery: 2),
+        .init(goal: .tomato, amount: 0, moves: 22, title: "Around the Hydrangeas", stolenItem: "hydrangea shortcut", clue: "The long way is the calm way. Keep following Henry's safe leaves.", chapterIndex: 4, quietRouteSteps: 12, mowerEvery: 2),
+        .init(goal: .carrot, amount: 28, moves: 22, title: "The Orange Ball", stolenItem: "Henry's outdoor ball", clue: "The ball tumbles free, but Henry will not leave Leo behind.", chapterIndex: 4, mowerEvery: 3),
+        .init(goal: .onion, amount: 0, moves: 23, title: "Almost Back to Mom", stolenItem: "path toward Mom", clue: "Mom is waiting by the gate. Henry knows the safest loop home.", chapterIndex: 4, quietRouteSteps: 14, mowerEvery: 2),
+        .init(goal: .pea, amount: 0, moves: 25, title: "Home Along the Hedge", stolenItem: "shared orange ball", clue: "One last quiet stretch, then the brothers can bring the ball back together.", chapterIndex: 4, quietRouteSteps: 16, mowerEvery: 2)
     ]
 
     static let chapters: [Chapter] = [
         .init(id: 0, title: "The Bug in the Beans", subtitle: "Henry follows Leo's pawprints through the garden.", backgroundName: "chapter-one-garden", symbol: "leaf.fill", levelRange: 0..<10),
         .init(id: 1, title: "The Vacuum Awakens", subtitle: "Henry clears a safe path through the hallway.", backgroundName: "chapter-02-vacuum-hallway", symbol: "wind", levelRange: 10..<20),
         .init(id: 2, title: "Under the Bed", subtitle: "Henry follows Leo into the coziest hiding place.", backgroundName: "chapter-03-under-the-bed", symbol: "bed.double.fill", levelRange: 20..<30),
-        .init(id: 3, title: "Thunder over the Tomatoes", subtitle: "Henry keeps Leo cozy until the storm rolls past.", backgroundName: "chapter-04-thunder-tomatoes", symbol: "cloud.bolt.rain.fill", levelRange: 30..<40)
+        .init(id: 3, title: "Thunder over the Tomatoes", subtitle: "Henry keeps Leo cozy until the storm rolls past.", backgroundName: "chapter-04-thunder-tomatoes", symbol: "cloud.bolt.rain.fill", levelRange: 30..<40),
+        .init(id: 4, title: "The Lawnmower Loop", subtitle: "Henry leads Leo around the quiet side of the yard.", backgroundName: "chapter-05-lawnmower-loop", symbol: "leaf.arrow.triangle.circlepath", levelRange: 40..<50)
     ]
 
     @Published var board: [[Tile]] = []
@@ -166,6 +181,12 @@ final class GameModel: ObservableObject {
     @Published private(set) var initialCozyCells = 0
     @Published var comfortBursts = Set<Position>()
     @Published var thunderFlash = false
+    @Published var quietRoute: [Position] = []
+    @Published var quietProgress = 0
+    @Published var quietBursts = Set<Position>()
+    @Published var mowerLoop: [Position] = []
+    @Published var mowerProgress = 0
+    @Published var mowerBurst = false
     private var movesMade = 0
     @Published var mapChapterIndex = 0
     @Published var selected: Position?
@@ -184,11 +205,13 @@ final class GameModel: ObservableObject {
     var level: Level { Self.levels[levelIndex] }
     var chapter: Chapter { Self.chapters[level.chapterIndex] }
     var remainingDust: Int { dustLayers.flatMap { $0 }.reduce(0, +) }
+    var mowerPosition: Position? { mowerLoop.isEmpty ? nil : mowerLoop[mowerProgress % mowerLoop.count] }
     var objectiveAmount: Int {
         if level.clearsDust { return initialDustLayers }
         if level.wakesLeo { return level.sleepingCells }
         if level.guidesHenry { return rescuePath.count }
         if level.spreadsComfort { return level.comfortCells }
+        if level.followsQuietRoute { return quietRoute.count }
         return level.amount
     }
     var objectiveProgress: Int {
@@ -196,6 +219,7 @@ final class GameModel: ObservableObject {
         if level.wakesLeo { return level.sleepingCells - sleepingLeos.count }
         if level.guidesHenry { return rescueProgress }
         if level.spreadsComfort { return cozyCells.count - initialCozyCells }
+        if level.followsQuietRoute { return quietProgress }
         return collected
     }
     var objectiveComplete: Bool {
@@ -203,6 +227,7 @@ final class GameModel: ObservableObject {
         if level.wakesLeo { return sleepingLeos.isEmpty }
         if level.guidesHenry { return rescueProgress >= rescuePath.count }
         if level.spreadsComfort { return cozyCells.count - initialCozyCells >= level.comfortCells }
+        if level.followsQuietRoute { return quietProgress >= quietRoute.count }
         return collected >= level.amount
     }
     var objectiveLabel: String {
@@ -210,6 +235,7 @@ final class GameModel: ObservableObject {
         if level.wakesLeo { return "WAKE LEO" }
         if level.guidesHenry { return "REACH LEO" }
         if level.spreadsComfort { return "SPREAD COMFORT" }
+        if level.followsQuietRoute { return "QUIET ROUTE" }
         return "COLLECT"
     }
     var objectiveInstruction: String {
@@ -217,14 +243,17 @@ final class GameModel: ObservableObject {
         if level.wakesLeo { return "Match on or beside sleeping Leos." }
         if level.guidesHenry { return "Match beside the glowing next pawstep." }
         if level.spreadsComfort { return "Match on or beside the cozy blanket to spread it." }
+        if level.followsQuietRoute { return "Match beside the glowing leaf to lead Leo safely." }
         return level.goal.name
     }
 
     init() {
         let defaults = UserDefaults.standard
-        unlocked = max(1, defaults.integer(forKey: "unlockedLevels"))
-        wins = defaults.integer(forKey: "gardenWins")
+        let savedWins = min(Self.levels.count, max(0, defaults.integer(forKey: "gardenWins")))
+        wins = savedWins
+        unlocked = min(Self.levels.count, max(1, max(defaults.integer(forKey: "unlockedLevels"), savedWins + 1)))
         soundOn = defaults.object(forKey: "soundOn") == nil ? true : defaults.bool(forKey: "soundOn")
+        defaults.set(unlocked, forKey: "unlockedLevels")
         let savedLevel = min(max(0, defaults.integer(forKey: "currentLevel")), unlocked - 1)
         start(level: savedLevel)
     }
@@ -253,6 +282,12 @@ final class GameModel: ObservableObject {
         initialCozyCells = cozyCells.count
         comfortBursts.removeAll()
         thunderFlash = false
+        quietRoute = freshQuietRoute()
+        quietProgress = 0
+        quietBursts.removeAll()
+        mowerLoop = freshMowerLoop()
+        mowerProgress = 0
+        mowerBurst = false
         movesMade = 0
         mapChapterIndex = level.chapterIndex
         message = level.clue
@@ -345,6 +380,8 @@ final class GameModel: ObservableObject {
             candidates = [rescuePath[rescueProgress]][...]
         } else if level.spreadsComfort {
             candidates = comfortFrontier().shuffled().prefix(4)
+        } else if level.followsQuietRoute, quietProgress < quietRoute.count {
+            candidates = [quietRoute[quietProgress]][...]
         } else {
             candidates = positions(of: level.goal).shuffled().prefix(5)
         }
@@ -408,6 +445,9 @@ final class GameModel: ObservableObject {
     private func finishMove() {
         movesMade += 1
         if objectiveComplete { win() }
+        else if level.mowerEvery > 0, movesMade.isMultiple(of: level.mowerEvery) {
+            advanceMower()
+        }
         else if level.thunderEvery > 0, movesMade.isMultiple(of: level.thunderEvery) {
             rollThunder()
         }
@@ -436,7 +476,11 @@ final class GameModel: ObservableObject {
             let awakened = wakeSleepingLeos(near: removed)
             let advanced = advanceRescue(near: removed)
             let warmed = spreadComfort(from: removed)
-            if warmed > 0 {
+            let quietSteps = advanceQuietRoute(near: removed)
+            if quietSteps > 0 {
+                message = quietProgress == quietRoute.count ? "Henry found the quiet way home! Leo is right behind him." : "This way, Leo! Henry led them one safe leaf farther."
+                haptic(.success)
+            } else if warmed > 0 {
                 message = objectiveComplete ? "Everyone is snug under the blanket." : "Henry tucked the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")."
                 haptic(.success)
             } else if advanced > 0 {
@@ -477,7 +521,8 @@ final class GameModel: ObservableObject {
         let awakened = wakeSleepingLeos(near: clearSet)
         let advanced = advanceRescue(near: clearSet)
         let warmed = spreadComfort(from: clearSet)
-        message = warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
+        let quietSteps = advanceQuietRoute(near: clearSet)
+        message = quietSteps > 0 ? "Power-up path! Henry bounded along the quiet route!" : warmed > 0 ? "Power-up hug! The blanket spread over \(warmed) spots!" : positions.contains { board[$0.row][$0.col].powerUp == .rainbowPaw }
             ? "Rainbow paw! Every matching Leo joins the chase!"
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
@@ -496,7 +541,8 @@ final class GameModel: ObservableObject {
         let awakened = wakeSleepingLeos(near: Set(positions))
         let advanced = advanceRescue(near: Set(positions))
         let warmed = spreadComfort(from: Set(positions))
-        message = warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
+        let quietSteps = advanceQuietRoute(near: Set(positions))
+        message = quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
@@ -591,6 +637,34 @@ final class GameModel: ObservableObject {
             comfortBursts.subtract(warmed)
         }
         return warmed.count
+    }
+
+    private func advanceQuietRoute(near positions: Set<Position>) -> Int {
+        guard level.followsQuietRoute, quietProgress < quietRoute.count else { return 0 }
+        let target = quietRoute[quietProgress]
+        let reached = positions.contains { cleared in
+            abs(cleared.row - target.row) <= 1 && abs(cleared.col - target.col) <= 1
+        }
+        guard reached else { return 0 }
+        quietProgress += 1
+        quietBursts.insert(target)
+        Task {
+            try? await Task.sleep(for: .milliseconds(650))
+            quietBursts.remove(target)
+        }
+        return 1
+    }
+
+    /// The mower travels a separate outer loop. It adds motion and story pressure but never erases progress.
+    private func advanceMower() {
+        guard !mowerLoop.isEmpty else { return }
+        mowerProgress = (mowerProgress + 1) % mowerLoop.count
+        mowerBurst = true
+        haptic(.soft)
+        Task {
+            try? await Task.sleep(for: .milliseconds(520))
+            mowerBurst = false
+        }
     }
 
     /// Cold cells directly beside the blanket.
@@ -695,6 +769,32 @@ final class GameModel: ObservableObject {
         guard level.spreadsComfort else { return [] }
         // Leo's blanket spot at the bottom center of the board.
         return [.init(row: 7, col: 3), .init(row: 7, col: 4)]
+    }
+
+    private func freshQuietRoute() -> [Position] {
+        guard level.followsQuietRoute else { return [] }
+        let path: [Position] = [
+            .init(row: 7, col: 0), .init(row: 6, col: 0), .init(row: 6, col: 1),
+            .init(row: 5, col: 1), .init(row: 5, col: 2), .init(row: 6, col: 2),
+            .init(row: 6, col: 3), .init(row: 5, col: 3), .init(row: 5, col: 4),
+            .init(row: 6, col: 4), .init(row: 6, col: 5), .init(row: 5, col: 5),
+            .init(row: 5, col: 6), .init(row: 6, col: 6), .init(row: 6, col: 7),
+            .init(row: 5, col: 7)
+        ]
+        return Array(path.prefix(level.quietRouteSteps))
+    }
+
+    private func freshMowerLoop() -> [Position] {
+        guard level.mowerEvery > 0 else { return [] }
+        return [
+            .init(row: 0, col: 7), .init(row: 0, col: 6), .init(row: 0, col: 5),
+            .init(row: 0, col: 4), .init(row: 0, col: 3), .init(row: 0, col: 2),
+            .init(row: 0, col: 1), .init(row: 0, col: 0), .init(row: 1, col: 0),
+            .init(row: 2, col: 0), .init(row: 3, col: 0), .init(row: 3, col: 1),
+            .init(row: 3, col: 2), .init(row: 3, col: 3), .init(row: 3, col: 4),
+            .init(row: 3, col: 5), .init(row: 3, col: 6), .init(row: 3, col: 7),
+            .init(row: 2, col: 7), .init(row: 1, col: 7)
+        ]
     }
 
     private func matchInfo() -> MatchInfo {

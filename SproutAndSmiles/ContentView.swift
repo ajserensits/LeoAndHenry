@@ -86,7 +86,7 @@ struct ContentView: View {
         .onChange(of: showingIntro) { _, isShowingIntro in
             MapMusicPlayer.shared.setPlaying(game.soundOn && !isShowingIntro)
         }
-        .alert(game.levelIndex == GameModel.levels.count - 1 ? "The brothers share the feast!" : "Henry got it back!", isPresented: $game.showingWin) {
+        .alert(game.levelIndex == GameModel.levels.count - 1 ? "The brothers made it home!" : "Henry got it back!", isPresented: $game.showingWin) {
             Button("Follow Leo") {
                 game.continueGarden()
                 withAnimation { showingMap = true }
@@ -187,6 +187,8 @@ struct ContentView: View {
                         RescueGoalIcon(size: 32)
                     } else if game.level.spreadsComfort {
                         ComfortGoalIcon(size: 32)
+                    } else if game.level.followsQuietRoute {
+                        QuietRouteGoalIcon(size: 32)
                     } else {
                         VeggieView(veggie: game.level.goal, size: 32)
                     }
@@ -348,6 +350,8 @@ struct ContentView: View {
                     RescueGoalIcon(size: 37)
                 } else if game.level.spreadsComfort {
                     ComfortGoalIcon(size: 37)
+                } else if game.level.followsQuietRoute {
+                    QuietRouteGoalIcon(size: 37)
                 } else {
                     VeggieView(veggie: game.level.goal, size: 37)
                 }
@@ -378,6 +382,7 @@ struct ContentView: View {
                     let col = index % GameModel.size
                     let position = Position(row: row, col: col)
                     let rescueStep = game.rescuePath.firstIndex(of: position)
+                    let quietStep = game.quietRoute.firstIndex(of: position)
                     GameTileCell(
                         veggie: game.board[row][col].veggie,
                         powerUp: game.board[row][col].powerUp,
@@ -392,6 +397,12 @@ struct ContentView: View {
                         rescueBurst: game.rescueBursts.contains(position),
                         cozy: game.cozyCells.contains(position),
                         comfortBurst: game.comfortBursts.contains(position),
+                        quietStep: quietStep,
+                        quietProgress: game.quietProgress,
+                        quietTotal: game.quietRoute.count,
+                        quietBurst: game.quietBursts.contains(position),
+                        mower: game.mowerPosition == position,
+                        mowerBurst: game.mowerBurst && game.mowerPosition == position,
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -432,6 +443,12 @@ struct GameTileCell: View {
     let rescueBurst: Bool
     let cozy: Bool
     let comfortBurst: Bool
+    let quietStep: Int?
+    let quietProgress: Int
+    let quietTotal: Int
+    let quietBurst: Bool
+    let mower: Bool
+    let mowerBurst: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -456,6 +473,16 @@ struct GameTileCell: View {
                     size: size
                 )
             }
+            if let quietStep {
+                QuietRouteOverlay(
+                    step: quietStep,
+                    progress: quietProgress,
+                    total: quietTotal,
+                    bursting: quietBurst,
+                    size: size
+                )
+            }
+            if mower { MowerMarkerOverlay(bursting: mowerBurst, size: size) }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -523,6 +550,134 @@ struct RescueGoalIcon: View {
         }
         .frame(width: size, height: size)
         .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+struct QuietRouteGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.34, green: 0.68, blue: 0.31).gradient)
+            Image(systemName: "leaf.fill")
+                .font(.system(size: size * 0.43, weight: .bold))
+                .foregroundStyle(.white)
+            Image(systemName: "pawprint.fill")
+                .font(.system(size: size * 0.19, weight: .black))
+                .foregroundStyle(Color(red: 0.33, green: 0.20, blue: 0.11))
+                .offset(x: size * 0.19, y: size * 0.18)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+/// The leafy safe route stays around the piece rim so Leo's expression remains readable.
+private struct QuietRouteOverlay: View {
+    let step: Int
+    let progress: Int
+    let total: Int
+    let bursting: Bool
+    let size: CGFloat
+
+    private var completed: Bool { step < progress }
+    private var active: Bool { step == progress }
+    private var destination: Bool { step == total - 1 }
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    completed ? Color.green.opacity(0.78) : active ? Color.yellow.opacity(0.98) : Color.white.opacity(0.46),
+                    style: StrokeStyle(lineWidth: active ? size * 0.075 : size * 0.045, lineCap: .round, dash: active || completed ? [] : [3, 4])
+                )
+
+            Image(systemName: completed ? "checkmark.circle.fill" : "leaf.fill")
+                .font(.system(size: size * 0.17, weight: .black))
+                .foregroundStyle(completed ? .green : active ? Color(red: 0.28, green: 0.66, blue: 0.24) : .white.opacity(0.78))
+                .padding(size * 0.05)
+                .background(.white.opacity(0.86), in: Circle())
+                .offset(x: -size * 0.31, y: size * 0.29)
+
+            if active, let portrait = UIImage(named: "henry-map-marker") {
+                Image(uiImage: portrait)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size * 0.34, height: size * 0.34)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 2))
+                    .offset(x: -size * 0.30, y: -size * 0.28)
+            }
+
+            if destination {
+                Image(systemName: "house.fill")
+                    .font(.system(size: size * 0.15, weight: .black))
+                    .foregroundStyle(Color(red: 0.82, green: 0.39, blue: 0.18))
+                    .padding(size * 0.055)
+                    .background(.white.opacity(0.88), in: Circle())
+                    .offset(x: size * 0.31, y: -size * 0.29)
+            }
+
+            if bursting {
+                Text(destination && progress >= total ? "HOME!" : "SAFE WAY!")
+                    .font(.system(size: size * 0.10, weight: .black, design: .rounded))
+                    .foregroundStyle(Color(red: 0.20, green: 0.38, blue: 0.17))
+                    .padding(.horizontal, size * 0.07)
+                    .padding(.vertical, size * 0.035)
+                    .background(.white, in: Capsule())
+                    .overlay(Capsule().stroke(Color.green, lineWidth: 1.5))
+                    .offset(y: -size * 0.31)
+            }
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel(active ? "Henry's next quiet leaf" : completed ? "Completed quiet leaf" : "Future quiet leaf")
+    }
+}
+
+/// A compact mower badge travels around the board edge without covering the match piece.
+private struct MowerMarkerOverlay: View {
+    let bursting: Bool
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(Color.red.opacity(bursting ? 0.92 : 0.62), lineWidth: size * 0.055)
+            ZStack {
+                RoundedRectangle(cornerRadius: size * 0.035)
+                    .fill(Color(red: 0.88, green: 0.18, blue: 0.13))
+                    .frame(width: size * 0.25, height: size * 0.14)
+                HStack(spacing: size * 0.11) {
+                    Circle().fill(Color.black.opacity(0.80)).frame(width: size * 0.075, height: size * 0.075)
+                    Circle().fill(Color.black.opacity(0.80)).frame(width: size * 0.075, height: size * 0.075)
+                }
+                .offset(y: size * 0.075)
+                Path { path in
+                    path.move(to: CGPoint(x: size * 0.08, y: size * 0.08))
+                    path.addLine(to: CGPoint(x: size * 0.01, y: -size * 0.11))
+                }
+                .stroke(Color.white, style: StrokeStyle(lineWidth: size * 0.035, lineCap: .round))
+            }
+            .frame(width: size * 0.38, height: size * 0.38)
+            .padding(size * 0.025)
+            .background(.white.opacity(0.90), in: Circle())
+            .offset(x: size * 0.29, y: -size * 0.28)
+
+            if bursting {
+                Text("BRRRM")
+                    .font(.system(size: size * 0.10, weight: .black, design: .rounded))
+                    .foregroundStyle(.red)
+                    .padding(.horizontal, size * 0.06)
+                    .padding(.vertical, size * 0.025)
+                    .background(.white, in: Capsule())
+                    .offset(x: -size * 0.18, y: -size * 0.31)
+            }
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityLabel("Lawnmower on its outer loop")
     }
 }
 

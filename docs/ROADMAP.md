@@ -9,7 +9,7 @@
 - Rainbow paw from a straight five-piece match.
 - Garden bomb from an L- or T-shaped match.
 - Unlimited lives, shuffle, water, and hint helpers.
-- Four ten-level chapter maps with continuous saved progression.
+- Five ten-level chapter maps with continuous saved progression.
 - Portrait and landscape layouts.
 - Chapter-specific garden and vacuum-hallway backgrounds with character-driven map styling.
 
@@ -25,7 +25,7 @@ Chapter One's ten levels mainly vary the target expression, quantity, and move c
 | Rescue route | Match on or beside the highlighted next pawstep to move Henry toward Leo | Implemented throughout Chapter Three |
 | Drop items | Clear space beneath an item until it reaches the bottom | Return a toy, biscuit, bug, bowl, or parcel |
 | Rescue Leo | Clear or match around Leo's hiding place | Help Leo come out from under the bed |
-| Guide Henry | Open a connected route across the board | Reach Leo without crossing the pool edge or mower path |
+| Guide Henry | Open a connected route across the board | Chapter Five uses sequential quiet leaves while a harmless mower marker loops around the board edge |
 | Spread comfort | Match on or beside the blanket; each touching group of cleared cells becomes cozy | Implemented in Chapter Four (levels 2, 3, 5, 7, 9, 10) |
 | Find clues | Reveal hidden clue tiles under grass, leaves, or furniture | Find Mom or trace stolen-item pawprints |
 | Protect | Clear approaching nuisance tiles before they reach a protected area | Delivery knock, storm puddles, or noisy objects |
@@ -62,7 +62,7 @@ Never expose this menu in Release or TestFlight builds intended for normal play.
 - Vacuum behavior and dust blockers. *(Layered dust implemented; active vacuum behavior remains.)*
 - Under-the-bed rescue board. *(Sequential rescue route implemented; story panels and props remain.)*
 - Thunderstorm comfort-spreading mechanic. *(Implemented with cosmetic thunder every few moves; a slow glow that Reduce Motion disables.)*
-- Lawnmower route hazard.
+- Lawnmower route hazard. *(Implemented in Chapter Five with quiet-route levels and a moving, non-punitive mower loop.)*
 - Bags and cans as movable or layered blockers.
 
 ### Milestone 3: Story systems

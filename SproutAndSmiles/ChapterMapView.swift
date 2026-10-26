@@ -270,6 +270,8 @@ struct ChapterMapView: View {
             RescueGoalIcon(size: 28)
         } else if GameModel.levels[index].spreadsComfort {
             ComfortGoalIcon(size: 28)
+        } else if GameModel.levels[index].followsQuietRoute {
+            QuietRouteGoalIcon(size: 28)
         } else {
             VeggieView(veggie: GameModel.levels[index].goal, size: 28)
         }
@@ -344,6 +346,8 @@ private struct DeveloperConsoleView: View {
                                             RescueGoalIcon(size: 34)
                                         } else if level.spreadsComfort {
                                             ComfortGoalIcon(size: 34)
+                                        } else if level.followsQuietRoute {
+                                            QuietRouteGoalIcon(size: 34)
                                         } else {
                                             VeggieView(veggie: level.goal, size: 34)
                                         }
