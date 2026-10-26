@@ -189,6 +189,8 @@ struct ContentView: View {
                         ComfortGoalIcon(size: 32)
                     } else if game.level.followsQuietRoute {
                         QuietRouteGoalIcon(size: 32)
+                    } else if game.level.quietsNoise {
+                        NoiseGoalIcon(size: 32)
                     } else {
                         VeggieView(veggie: game.level.goal, size: 32)
                     }
@@ -352,6 +354,8 @@ struct ContentView: View {
                     ComfortGoalIcon(size: 37)
                 } else if game.level.followsQuietRoute {
                     QuietRouteGoalIcon(size: 37)
+                } else if game.level.quietsNoise {
+                    NoiseGoalIcon(size: 37)
                 } else {
                     VeggieView(veggie: game.level.goal, size: 37)
                 }
@@ -403,6 +407,9 @@ struct ContentView: View {
                         quietBurst: game.quietBursts.contains(position),
                         mower: game.mowerPosition == position,
                         mowerBurst: game.mowerBurst && game.mowerPosition == position,
+                        noise: game.noisyObjects[position],
+                        noiseBurst: game.noiseBursts.contains(position),
+                        breezeGust: game.breezeGust,
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -449,6 +456,9 @@ struct GameTileCell: View {
     let quietBurst: Bool
     let mower: Bool
     let mowerBurst: Bool
+    let noise: NoisyObject?
+    let noiseBurst: Bool
+    let breezeGust: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -483,6 +493,8 @@ struct GameTileCell: View {
                 )
             }
             if mower { MowerMarkerOverlay(bursting: mowerBurst, size: size) }
+            if let noise { NoisyObjectOverlay(object: noise, gust: breezeGust, size: size) }
+            if noiseBurst { HushBurst(cleared: noise == nil, size: size) }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -570,6 +582,98 @@ struct QuietRouteGoalIcon: View {
         }
         .frame(width: size, height: size)
         .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+struct NoiseGoalIcon: View {
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.24)
+                .fill(Color(red: 0.42, green: 0.53, blue: 0.62).gradient)
+            Image(systemName: "speaker.slash.fill")
+                .font(.system(size: size * 0.40, weight: .bold))
+                .foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size * 0.24).stroke(.white, lineWidth: 2))
+    }
+}
+
+/// A rattly can or flapping bag: a rim plus an edge badge, so Leo's face stays readable.
+private struct NoisyObjectOverlay: View {
+    let object: NoisyObject
+    let gust: Bool
+    let size: CGFloat
+
+    private var isBag: Bool { object.kind == .bag }
+    private var rimColor: Color {
+        isBag ? Color(red: 0.62, green: 0.82, blue: 0.93) : Color(red: 0.56, green: 0.60, blue: 0.64)
+    }
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    rimColor.opacity(0.95),
+                    style: StrokeStyle(lineWidth: size * 0.09, lineCap: .round, dash: isBag ? [6, 3] : [])
+                )
+
+            Image(systemName: isBag ? "bag.fill" : "cylinder.fill")
+                .font(.system(size: size * 0.21, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: size * 0.38, height: size * 0.38)
+                .background(isBag ? Color(red: 0.36, green: 0.62, blue: 0.82) : Color(red: 0.40, green: 0.44, blue: 0.50), in: Circle())
+                .overlay(Circle().stroke(.white, lineWidth: 2))
+                .rotationEffect(.degrees(isBag && gust ? 18 : 0))
+                .offset(x: size * 0.29, y: -size * 0.28)
+
+            if object.hits > 1 {
+                Text("\(object.hits)")
+                    .font(.system(size: size * 0.15, weight: .black, design: .rounded))
+                    .foregroundStyle(.white)
+                    .frame(width: size * 0.25, height: size * 0.25)
+                    .background(Color(red: 0.36, green: 0.40, blue: 0.45), in: Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 1.5))
+                    .offset(x: -size * 0.30, y: size * 0.29)
+            }
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .animation(.spring(response: 0.3, dampingFraction: 0.5), value: gust)
+        .allowsHitTesting(false)
+        .accessibilityLabel(isBag ? "Flapping plastic bag" : object.hits > 1 ? "Rattling can, \(object.hits) clatters left" : "Rattling can")
+    }
+}
+
+/// Henry pops in to settle a noise; shows "SHH!" while it still rattles, "QUIET!" once it's gone.
+private struct HushBurst: View {
+    let cleared: Bool
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            if let portrait = UIImage(named: "henry-map-marker") {
+                Image(uiImage: portrait)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size * 0.34, height: size * 0.34)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 2))
+                    .offset(x: -size * 0.30, y: -size * 0.28)
+            }
+            Text(cleared ? "QUIET!" : "SHH!")
+                .font(.system(size: size * 0.11, weight: .black, design: .rounded))
+                .foregroundStyle(Color(red: 0.24, green: 0.33, blue: 0.42))
+                .padding(.horizontal, size * 0.07)
+                .padding(.vertical, size * 0.035)
+                .background(.white, in: Capsule())
+                .overlay(Capsule().stroke(Color(red: 0.42, green: 0.53, blue: 0.62), lineWidth: 1.5))
+                .offset(y: size * 0.31)
+        }
+        .frame(width: size * 0.94, height: size * 0.94)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }
 

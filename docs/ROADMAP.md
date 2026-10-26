@@ -9,7 +9,7 @@
 - Rainbow paw from a straight five-piece match.
 - Garden bomb from an L- or T-shaped match.
 - Unlimited lives, shuffle, water, and hint helpers.
-- Five ten-level chapter maps with continuous saved progression.
+- Six ten-level chapter maps with continuous saved progression.
 - Portrait and landscape layouts.
 - Chapter-specific garden and vacuum-hallway backgrounds with character-driven map styling.
 
@@ -20,7 +20,7 @@ Chapter One's ten levels mainly vary the target expression, quantity, and move c
 | Objective | Player action | Possible story use |
 |---|---|---|
 | Collect | Match a specified Leo expression or story item | Follow Leo's trail or gather comfort objects |
-| Clear blockers | Match through layered obstacles to remove them | Vacuum dust is implemented; bags, cans, and garden clutter remain planned |
+| Clear blockers | Match through layered obstacles to remove them | Vacuum dust is implemented; Chapter Six adds cans (one or two rattles) and breeze-drifting bags cleared by matches on or beside them; garden clutter remains planned |
 | Wake sleeping Leo | Match on or beside sleeping Leo pieces to trigger Henry's bark | Implemented in Chapter Two levels 6 and 9 |
 | Rescue route | Match on or beside the highlighted next pawstep to move Henry toward Leo | Implemented throughout Chapter Three |
 | Drop items | Clear space beneath an item until it reaches the bottom | Return a toy, biscuit, bug, bowl, or parcel |
@@ -63,7 +63,7 @@ Never expose this menu in Release or TestFlight builds intended for normal play.
 - Under-the-bed rescue board. *(Sequential rescue route implemented; story panels and props remain.)*
 - Thunderstorm comfort-spreading mechanic. *(Implemented with cosmetic thunder every few moves; a slow glow that Reduce Motion disables.)*
 - Lawnmower route hazard. *(Implemented in Chapter Five with quiet-route levels and a moving, non-punitive mower loop.)*
-- Bags and cans as movable or layered blockers.
+- Bags and cans as movable or layered blockers. *(Implemented in Chapter Six: layered cans, bags that drift one square on each breeze, never punitive.)*
 
 ### Milestone 3: Story systems
 
