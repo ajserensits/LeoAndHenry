@@ -8,6 +8,7 @@ struct ChapterMapView: View {
     let visitGarden: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State private var animateCurrentLevel = false
 #if DEBUG
     @State private var showingDeveloperConsole = false
@@ -102,22 +103,32 @@ struct ChapterMapView: View {
 #endif
     }
 
+    /// Landscape phones get a shorter header so the trail keeps most of the screen.
+    private var compactHeader: Bool { verticalSizeClass == .compact }
+
     private var chapterHeader: some View {
-        VStack(spacing: 9) {
+        VStack(spacing: compactHeader ? 6 : 9) {
             HStack {
                 ZStack {
                     Circle().fill(LinearGradient(colors: [Cute.leaf, Cute.leafDeep], startPoint: .top, endPoint: .bottom))
                     Image(systemName: mapChapter.symbol).font(.system(size: 20, weight: .black)).foregroundStyle(.white)
                 }
-                .frame(width: 50, height: 50)
+                .frame(width: compactHeader ? 42 : 50, height: compactHeader ? 42 : 50)
                 .overlay(Circle().stroke(.white, lineWidth: 3))
                 .shadow(color: Cute.leafDeep.opacity(0.5), radius: 0, y: 3)
-                VStack(alignment: .leading, spacing: 3) {
-                    CutePill(text: "CHAPTER \(game.mapChapterIndex + 1)", size: 9)
-                    StickerText(mapChapter.title, size: 25)
+                VStack(alignment: .leading, spacing: compactHeader ? 2 : 3) {
+                    HStack(spacing: 8) {
+                        CutePill(text: "CHAPTER \(game.mapChapterIndex + 1)", size: 9)
+                        if compactHeader {
+                            Text(mapChapter.subtitle).font(Cute.font(11, .bold)).foregroundStyle(Cute.cocoaSoft).lineLimit(1)
+                        }
+                    }
+                    StickerText(mapChapter.title, size: compactHeader ? 22 : 25)
                         .lineLimit(1)
                         .minimumScaleFactor(0.6)
-                    Text(mapChapter.subtitle).font(Cute.font(12, .bold)).foregroundStyle(Cute.cocoaSoft)
+                    if !compactHeader {
+                        Text(mapChapter.subtitle).font(Cute.font(12, .bold)).foregroundStyle(Cute.cocoaSoft)
+                    }
                 }
                 Spacer()
                 Button { game.selectMapChapter(game.mapChapterIndex - 1) } label: {
@@ -153,17 +164,26 @@ struct ChapterMapView: View {
                 }
                 .buttonStyle(CuteCircleButtonStyle(size: 42))
             }
-            CuteProgressBar(value: Double(chapterCompleted), total: Double(mapChapter.levelRange.count), height: 11)
-            HStack(spacing: 6) {
-                Image(systemName: "pawprint.fill")
-                Text(chapterCompleted == mapChapter.levelRange.count ? "Chapter complete!" : "Next stop: Level \(henryLevel - mapChapter.levelRange.lowerBound + 1)")
-                Spacer()
-                Text("\(chapterCompleted) of \(mapChapter.levelRange.count) complete")
+            if compactHeader {
+                HStack(spacing: 10) {
+                    nextStopLabel
+                    CuteProgressBar(value: Double(chapterCompleted), total: Double(mapChapter.levelRange.count), height: 10)
+                    completedLabel
+                }
+                .font(Cute.font(11, .heavy))
+                .foregroundStyle(Cute.leafDeep)
+            } else {
+                CuteProgressBar(value: Double(chapterCompleted), total: Double(mapChapter.levelRange.count), height: 11)
+                HStack(spacing: 6) {
+                    nextStopLabel
+                    Spacer()
+                    completedLabel
+                }
+                .font(Cute.font(11, .heavy))
+                .foregroundStyle(Cute.leafDeep)
             }
-            .font(Cute.font(11, .heavy))
-            .foregroundStyle(Cute.leafDeep)
         }
-        .padding(.horizontal, 20).padding(.top, 12).padding(.bottom, 14)
+        .padding(.horizontal, 20).padding(.top, compactHeader ? 8 : 12).padding(.bottom, compactHeader ? 12 : 14)
         .background(Cute.cream.opacity(0.96))
         .overlay(alignment: .bottom) {
             StitchLine()
@@ -173,6 +193,18 @@ struct ChapterMapView: View {
         }
         .overlay(alignment: .bottom) { Rectangle().fill(.white).frame(height: 2.5) }
         .shadow(color: Cute.cocoa.opacity(0.16), radius: 0, y: 3)
+    }
+
+    private var nextStopLabel: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "pawprint.fill")
+            Text(chapterCompleted == mapChapter.levelRange.count ? "Chapter complete!" : "Next stop: Level \(henryLevel - mapChapter.levelRange.lowerBound + 1)")
+        }
+        .fixedSize()
+    }
+
+    private var completedLabel: some View {
+        Text("\(chapterCompleted) of \(mapChapter.levelRange.count) complete").fixedSize()
     }
 
     @ViewBuilder

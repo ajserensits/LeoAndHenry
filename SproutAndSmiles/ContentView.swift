@@ -208,7 +208,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 if sideSpace >= 150 {
-                    HenrySpeechBubble(message: game.message, portraitSize: 40, fontSize: 12, lineLimit: 4)
+                    HenrySpeechBubble(message: game.message, portraitSize: 40, fontSize: 12, lineLimit: 5)
                         .frame(width: min(230, sideSpace - 30))
                 }
                 Spacer()
