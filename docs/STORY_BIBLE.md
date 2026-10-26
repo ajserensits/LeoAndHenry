@@ -2,7 +2,7 @@
 
 ## The heart of the game
 
-Leo and Henry are brothers. Leo is the older, rounder golden-brown dog, but he is frightened by almost everything. Henry is about a year younger, black and white, alert, and naturally protective of Leo.
+Leo and Henry are brothers. Leo is the older, rounder golden-brown dog, but he is frightened by almost everything. Henry is about a year younger, dark chocolate brown with tan and white markings, alert, and naturally protective of Leo.
 
 Leo still steals Henry's toys, treats, meals, and interesting little treasures. That mischief starts the chase, but Leo is never the villain. When an ordinary household event becomes scary, Henry stops worrying about the stolen item and helps his brother feel safe. Their relationship should always land on affection, comedy, and reassurance.
 
@@ -27,7 +27,7 @@ The recurring emotional pattern is:
 
 ### Henry
 
-- Small black-and-white dog with pointed ears, cream eyebrow markings, a white muzzle and chest, and large brown eyes.
+- Small dark-chocolate-brown dog with tall pointed ears, tan eyebrow and cheek markings, a white-and-cream muzzle and chest, and large brown eyes.
 - About a year younger than Leo.
 - Brave, attentive, patient, and protective.
 - Usually the active hero: he finds the route, clears the danger, locates Mom, or stays beside Leo until the frightening thing passes.

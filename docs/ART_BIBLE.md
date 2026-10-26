@@ -19,8 +19,9 @@ The current Chapter One art establishes the target rendering style: storybook-re
 
 ### Henry
 
-- Predominantly black coat with a white muzzle and chest.
-- Cream eyebrow spots and cheek markings.
+- Long, predominantly dark chocolate-brown coat (not black) with a white-and-cream muzzle, chest ruff, and paws.
+- Tan eyebrow spots and cheek markings.
+- `henry-map-marker.png` is the reference for his exact coat color.
 - Tall, pointed ears are essential to his silhouette.
 - Large brown eyes and a small brownish nose.
 - Slightly more alert, upright, and angular than Leo.
@@ -109,7 +110,7 @@ Chapter One currently uses `SproutAndSmiles/Artwork/chapter-one-garden.png`.
 
 - Does each dog still look like the correct real dog?
 - Is Leo round, golden-brown, and floppy-eared?
-- Is Henry black and white with pointed ears and cream eyebrows?
+- Is Henry dark chocolate brown (not black) with white-and-cream chest, tan eyebrows, and pointed ears?
 - Is the emotion immediately readable on a phone?
 - Does Henry's pose support or protect Leo when the scene calls for it?
 - Is the center clear where gameplay requires it?

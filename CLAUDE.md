@@ -11,7 +11,7 @@ Before changing story, gameplay, or artwork, read:
 ## Non-negotiable product rules
 
 - Leo is the older golden-brown dog who steals things and is afraid of ordinary objects.
-- Henry is the younger black-and-white dog who protects and helps Leo.
+- Henry is the younger dark-chocolate-brown dog with tan and white markings, who protects and helps Leo.
 - Henry should help Leo whenever the story allows.
 - The game has unlimited lives and no ads, purchases, required account, or tracking.
 - Normal match pieces are all circular. Special states and power-ups follow the dust-overlay pattern: preserve the Leo face and identifying background, keep the center clear, and communicate the state with a translucent rim, perimeter detail, or compact edge badge. Never let an overlay dominate the underlying piece. Only a true non-matchable blocker may fully cover its cell.
