@@ -64,7 +64,15 @@ struct Blocker: Equatable {
     enum Kind: Equatable { case pot, crate, stone, beetle }
     var kind: Kind
     var hits: Int
+    let startingHits: Int
     var breaksFromNearbyMatches: Bool { kind != .stone }
+    var isCracked: Bool { hits < startingHits }
+
+    init(kind: Kind, hits: Int) {
+        self.kind = kind
+        self.hits = hits
+        startingHits = hits
+    }
 }
 
 struct Tile: Identifiable, Equatable {

@@ -1913,8 +1913,8 @@ struct BlockerTileView: View {
     private var imageName: String {
         switch blocker.kind {
         case .pot: "blocker-pot"
-        case .crate: blocker.hits >= 2 ? "blocker-crate" : "blocker-crate-cracked"
-        case .stone: blocker.hits >= 2 ? "blocker-stone" : "blocker-stone-cracked"
+        case .crate: blocker.isCracked ? "blocker-crate-cracked" : "blocker-crate"
+        case .stone: blocker.isCracked ? "blocker-stone-cracked" : "blocker-stone"
         case .beetle: "blocker-beetle"
         }
     }
@@ -1980,7 +1980,7 @@ struct GooRimOverlay: View {
     var body: some View {
         ZStack {
             Circle()
-                .strokeBorder(color.opacity(0.88), lineWidth: size * 0.13)
+                .strokeBorder(color.opacity(frosting ? 0.6 : 0.8), lineWidth: size * 0.09)
             Circle()
                 .strokeBorder(.white.opacity(frosting ? 0.55 : 0.22), style: StrokeStyle(lineWidth: size * 0.025, dash: [size * 0.05, size * 0.09]))
                 .padding(size * 0.035)

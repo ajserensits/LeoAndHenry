@@ -328,59 +328,78 @@ struct OutOfMovesCard: View {
 
     var body: some View {
         GeometryReader { proxy in
+            let wide = proxy.size.width > proxy.size.height
             ScrollView {
-                card
-                    .padding(24)
-                    .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+                Group {
+                    if wide {
+                        // Landscape: Henry and the message on the left, choices on the right.
+                        HStack(spacing: 22) {
+                            VStack(spacing: 10) { portrait(64); headline }
+                                .frame(maxWidth: 280)
+                            VStack(spacing: 12) { buttons }
+                                .frame(maxWidth: 260)
+                        }
+                        .padding(22)
+                        .frame(maxWidth: 620)
+                    } else {
+                        VStack(spacing: 12) { portrait(82); headline; buttons }
+                            .padding(22)
+                            .frame(maxWidth: 380)
+                    }
+                }
+                .quiltedCard(corner: 30)
+                .padding(wide ? 14 : 24)
+                .frame(maxWidth: .infinity, minHeight: proxy.size.height)
             }
             .scrollBounceBehavior(.basedOnSize)
         }
         .background(Color.black.opacity(0.38).ignoresSafeArea())
     }
 
-    private var card: some View {
-        VStack(spacing: 12) {
-            if let portrait = UIImage(named: "henry-map-marker") {
-                Image(uiImage: portrait)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 82, height: 82)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(.white, lineWidth: 4))
-                    .shadow(color: Cute.cocoa.opacity(0.25), radius: 0, y: 4)
-                    .accessibilityHidden(true)
-            }
-            CutePill(text: "OUT OF MOVES", icon: "hourglass", fill: Cute.berry, size: 10)
-            StickerText(secondWindMoves == nil ? "Let's try again!" : "So close!", size: 28, colors: [Cute.honey, Cute.honeyDeep])
-                .multilineTextAlignment(.center)
-            CuteProgressBar(value: Double(progress), total: Double(max(goal, 1)), height: 12)
-                .frame(maxWidth: 240)
-            Text(secondWindMoves.map { "Henry found a snack in his pocket. Take \($0) more moves to finish?" }
-                 ?? "\(progress) of \(goal) done. Henry is ready to start the chase again—lives never run out.")
-                .font(Cute.font(15, .semibold))
-                .foregroundStyle(Cute.cocoaSoft)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-            if let secondWindMoves {
-                Button(action: secondWind) {
-                    Label("+\(secondWindMoves) moves", systemImage: "takeoutbag.and.cup.and.straw.fill")
-                }
-                .buttonStyle(CuteCandyButtonStyle(colors: [Cute.leaf, Cute.leafDeep]))
-            }
-            Button(action: retry) {
-                Label("Try again", systemImage: "arrow.counterclockwise")
-            }
-            .buttonStyle(CuteCandyButtonStyle())
-            Button(action: map) {
-                Text("Back to the map")
-                    .font(Cute.font(14, .heavy))
-                    .foregroundStyle(Cute.cocoaSoft)
-                    .underline()
-            }
-            .buttonStyle(.plain)
+    @ViewBuilder private func portrait(_ size: CGFloat) -> some View {
+        if let image = UIImage(named: "henry-map-marker") {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: size, height: size)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(.white, lineWidth: 4))
+                .shadow(color: Cute.cocoa.opacity(0.25), radius: 0, y: 4)
+                .accessibilityHidden(true)
         }
-        .padding(22)
-        .frame(maxWidth: 380)
-        .quiltedCard(corner: 30)
+    }
+
+    @ViewBuilder private var headline: some View {
+        CutePill(text: "OUT OF MOVES", icon: "hourglass", fill: Cute.berry, size: 10)
+        StickerText(secondWindMoves == nil ? "Let's try again!" : "So close!", size: 28, colors: [Cute.honey, Cute.honeyDeep])
+            .multilineTextAlignment(.center)
+        CuteProgressBar(value: Double(progress), total: Double(max(goal, 1)), height: 12)
+            .frame(maxWidth: 240)
+        Text(secondWindMoves.map { "Henry found a snack in his pocket. Take \($0) more moves to finish?" }
+             ?? "\(progress) of \(goal) done. Henry is ready to start the chase again—lives never run out.")
+            .font(Cute.font(15, .semibold))
+            .foregroundStyle(Cute.cocoaSoft)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    @ViewBuilder private var buttons: some View {
+        if let secondWindMoves {
+            Button(action: secondWind) {
+                Label("+\(secondWindMoves) moves", systemImage: "takeoutbag.and.cup.and.straw.fill")
+            }
+            .buttonStyle(CuteCandyButtonStyle(colors: [Cute.leaf, Cute.leafDeep]))
+        }
+        Button(action: retry) {
+            Label("Try again", systemImage: "arrow.counterclockwise")
+        }
+        .buttonStyle(CuteCandyButtonStyle())
+        Button(action: map) {
+            Text("Back to the map")
+                .font(Cute.font(14, .heavy))
+                .foregroundStyle(Cute.cocoaSoft)
+                .underline()
+        }
+        .buttonStyle(.plain)
     }
 }
