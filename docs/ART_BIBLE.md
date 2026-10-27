@@ -35,7 +35,7 @@ The current Chapter One art establishes the target rendering style: storybook-re
 - Leo's face should occupy most of the 512 × 512 source image and remain readable around 42–50 points on an iPhone.
 - Power-ups are communicated with separate badges and effects layered by the app.
 
-Current piece files live in `SproutAndSmiles/Artwork/LeoPieces/`: happy (red), side-eye (orange), guilty (magenta), nervous (yellow, peeking over his paws), grumpy (violet), and lick (green). Nervous replaced the earlier excited piece because the two wide-eyed sideways glances were too easy to confuse.
+Current piece files live in `SproutAndSmiles/Artwork/LeoPieces/`: happy (red), side-eye (orange), guilty (magenta), nervous (yellow, peeking over his paws), grumpy (blue), and lick (green). Nervous replaced the earlier excited piece because the two wide-eyed sideways glances were too easy to confuse, and grumpy moved from violet to blue because it looked too much like the magenta guilty piece.
 
 ### Special-state overlay standard
 

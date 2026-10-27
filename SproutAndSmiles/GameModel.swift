@@ -35,7 +35,7 @@ enum Veggie: String, CaseIterable, Codable {
         case .carrot: Color(red: 0.95, green: 0.56, blue: 0.22)
         case .onion: Color(red: 0.80, green: 0.57, blue: 0.78)
         case .pepper: Color(red: 0.94, green: 0.75, blue: 0.24)
-        case .eggplant: Color(red: 0.39, green: 0.29, blue: 0.56)
+        case .eggplant: Color(red: 0.24, green: 0.48, blue: 0.86)
         case .pea: Color(red: 0.38, green: 0.67, blue: 0.35)
         }
     }
