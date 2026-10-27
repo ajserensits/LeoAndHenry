@@ -108,10 +108,12 @@ struct ContentView: View {
         }
         .fullScreenCover(isPresented: $showGarden) { YardView(game: game) }
         .onChange(of: game.soundOn) { _, isOn in
-            MapMusicPlayer.shared.setPlaying(isOn && !showingIntro)
+            GameAudio.shared.setMusicPlaying(isOn && !showingIntro)
         }
+        .onAppear { GameAudio.shared.setTheme(musicTheme) }
+        .onChange(of: musicTheme) { _, theme in GameAudio.shared.setTheme(theme) }
         .onChange(of: showingIntro) { _, isShowingIntro in
-            MapMusicPlayer.shared.setPlaying(game.soundOn && !isShowingIntro)
+            GameAudio.shared.setMusicPlaying(game.soundOn && !isShowingIntro)
         }
         .overlay {
             if showingFinale {
@@ -140,6 +142,11 @@ struct ContentView: View {
             }
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: winAlertPresented.wrappedValue)
+    }
+
+    /// The yard has its own theme; otherwise play the chapter on screen.
+    private var musicTheme: Int {
+        showGarden ? GameAudio.yardTheme : showingMap ? game.mapChapterIndex : game.level.chapterIndex
     }
 
     private var showingFinale: Bool { game.showingWin && game.levelIndex == GameModel.levels.count - 1 }

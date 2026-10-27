@@ -1,4 +1,3 @@
-import AVFoundation
 import SwiftUI
 
 struct ChapterMapView: View {
@@ -86,13 +85,13 @@ struct ChapterMapView: View {
             }
         }
         .onAppear {
-            MapMusicPlayer.shared.setPlaying(game.soundOn)
+            GameAudio.shared.setMusicPlaying(game.soundOn)
             guard !reduceMotion else { return }
             withAnimation(.easeInOut(duration: 0.85).repeatForever(autoreverses: true)) {
                 animateCurrentLevel = true
             }
         }
-        .onChange(of: game.soundOn) { _, isOn in MapMusicPlayer.shared.setPlaying(isOn) }
+        .onChange(of: game.soundOn) { _, isOn in GameAudio.shared.setMusicPlaying(isOn) }
 #if DEBUG
         .sheet(isPresented: $showingDeveloperConsole) {
             DeveloperConsoleView(game: game) { level in
@@ -541,92 +540,5 @@ private struct GardenTrail: Shape {
             else { path.addCurve(to: CGPoint(x: x, y: y), control1: CGPoint(x: rect.midX, y: y - 70), control2: CGPoint(x: rect.midX, y: y - 35)) }
         }
         return path
-    }
-}
-
-/// A tiny original garden tune synthesized at runtime. Using an ambient audio
-/// session means it respects the phone's silent switch and never interrupts the
-/// music the player already has playing.
-@MainActor
-final class MapMusicPlayer {
-    static let shared = MapMusicPlayer()
-
-    private let engine = AVAudioEngine()
-    private let player = AVAudioPlayerNode()
-    private let format = AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 1)!
-    private lazy var loop = makeGardenLoop()
-    private var configured = false
-
-    func setPlaying(_ shouldPlay: Bool) {
-        shouldPlay ? play() : stop()
-    }
-
-    func play() {
-        guard !player.isPlaying else { return }
-        do {
-            let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.ambient, mode: .default, options: [.mixWithOthers])
-            try session.setActive(true)
-
-            if !configured {
-                engine.attach(player)
-                engine.connect(player, to: engine.mainMixerNode, format: format)
-                configured = true
-            }
-
-            player.scheduleBuffer(loop, at: nil, options: .loops)
-            engine.prepare()
-            try engine.start()
-            player.volume = 0.22
-            player.play()
-        } catch {
-            // Music is decorative; gameplay must remain available if audio fails.
-            stop()
-        }
-    }
-
-    func stop() {
-        player.stop()
-        engine.stop()
-    }
-
-    private func makeGardenLoop() -> AVAudioPCMBuffer {
-        let sampleRate = format.sampleRate
-        let stepDuration = 0.30
-        let melody: [Int] = [
-            72, 76, 79, 76, 74, 77, 81, 77,
-            76, 79, 83, 79, 74, 77, 81, 79,
-            72, 76, 79, 84, 83, 79, 76, 74,
-            77, 81, 79, 76, 74, 71, 72, -1
-        ]
-        let frameCount = AVAudioFrameCount(Double(melody.count) * stepDuration * sampleRate)
-        let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount)!
-        buffer.frameLength = frameCount
-        let samples = buffer.floatChannelData![0]
-        let chordRoots = [48, 53, 55, 48]
-
-        for frame in 0..<Int(frameCount) {
-            let time = Double(frame) / sampleRate
-            let step = min(melody.count - 1, Int(time / stepDuration))
-            let withinStep = time.truncatingRemainder(dividingBy: stepDuration)
-            let attack = min(1, withinStep / 0.018)
-            let pluck = attack * exp(-4.2 * withinStep / stepDuration)
-
-            var value = 0.0
-            if melody[step] >= 0 {
-                let frequency = 440.0 * pow(2.0, Double(melody[step] - 69) / 12.0)
-                value += sin(2 * .pi * frequency * time) * pluck * 0.30
-                value += sin(2 * .pi * frequency * 2 * time) * pluck * 0.07
-            }
-
-            let chord = min(3, step / 8)
-            let arpeggioNote = chordRoots[chord] + [0, 7, 12, 7][step % 4]
-            let arpeggioFrequency = 440.0 * pow(2.0, Double(arpeggioNote - 69) / 12.0)
-            let softPulse = 0.55 + 0.45 * cos(2 * .pi * withinStep / stepDuration)
-            value += sin(2 * .pi * arpeggioFrequency * time) * softPulse * 0.09
-
-            samples[frame] = Float(max(-0.72, min(0.72, value)))
-        }
-        return buffer
     }
 }

@@ -617,7 +617,7 @@ final class GameModel: ObservableObject {
 
     func tap(_ position: Position) {
         guard !isBusy else { return }
-        guard let old = selected else { selected = position; return }
+        guard let old = selected else { selected = position; sound(.select); return }
         if old == position { selected = nil; return }
         guard old.isAdjacent(to: position) else { selected = position; return }
         selected = nil
@@ -642,6 +642,7 @@ final class GameModel: ObservableObject {
         board = freshBoard()
         message = "Everyone found a fresh patch of sunshine."
         haptic(.soft)
+        sound(.shuffle)
     }
 
     func water() {
@@ -726,6 +727,7 @@ final class GameModel: ObservableObject {
             swap(a, b)
             message = "Those two would rather stay neighbors."
             haptic(.rigid)
+            sound(.nope)
             isBusy = false
             return
         }
@@ -821,6 +823,7 @@ final class GameModel: ObservableObject {
                 message = combo > 1 ? "\(combo)x cascade! Leo is everywhere." : "Lovely! A happy little row."
                 haptic(.soft)
             }
+            sound(creation != nil ? .powerUpMade : .pop(combo: combo))
             try? await Task.sleep(for: .milliseconds(260))
             collapse(removed)
             popping.removeAll()
@@ -830,6 +833,7 @@ final class GameModel: ObservableObject {
     }
 
     private func activatePowerUps(at positions: [Position], swapped: (Position, Position)) async {
+        let activatedKinds = positions.compactMap { board[$0.row][$0.col].powerUp }
         var clearSet = Set(positions)
         var rainbowTargets: [Position: Veggie] = [:]
         for position in positions where board[position.row][position.col].powerUp == .rainbowPaw {
@@ -852,6 +856,7 @@ final class GameModel: ObservableObject {
             ? "Rainbow paw! Every matching Leo joins the chase!"
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
+        sound(powerUpSound(for: activatedKinds))
         try? await Task.sleep(for: .milliseconds(320))
         collapse(clearSet)
         popping.removeAll()
@@ -874,6 +879,7 @@ final class GameModel: ObservableObject {
         let delivered = dropParcels(afterClearing: Set(positions))
         message = delivered > 0 ? "The water swept \(delivered) \(level.parcelIsPad ? "pad" : "parcel")\(delivered == 1 ? "" : "s") down to \(level.parcelIsPad ? "Mom" : "the mat")!" : dried > 0 ? "Henry soaked up \(dried) splash\(dried == 1 ? "" : "es") with a towel." : cluesFound > 0 ? "The water uncovered \(cluesFound) familiar clue\(cluesFound == 1 ? "" : "s")!" : hushed > 0 ? "A splash of water hushed \(hushed) clatter\(hushed == 1 ? "" : "s")." : quietSteps > 0 ? "Henry found the next quiet leaf!" : warmed > 0 ? "Henry dragged the blanket over \(warmed) more spot\(warmed == 1 ? "" : "s")." : advanced > 0 ? "Henry splashed ahead \(advanced) pawstep\(advanced == 1 ? "" : "s")!" : awakened > 0 ? "WOOF! Henry woke \(awakened)!" : dustHit > 0 ? "The water settled \(dustHit) dusty spot\(dustHit == 1 ? "" : "s")." : "A little rain works wonders."
         haptic(.soft)
+        sound(.water)
         try? await Task.sleep(for: .milliseconds(260))
         collapse(Set(positions))
         popping.removeAll()
@@ -1143,6 +1149,7 @@ final class GameModel: ObservableObject {
         message = lines[(movesMade / max(1, level.partyEvery) - 1) % lines.count]
         partyPop = true
         haptic(.soft)
+        sound(.party)
         Task {
             try? await Task.sleep(for: .milliseconds(600))
             partyPop = false
@@ -1158,6 +1165,7 @@ final class GameModel: ObservableObject {
         message = lines[(movesMade / max(1, level.knockEvery) - 1) % lines.count]
         doorKnock = true
         haptic(.soft)
+        sound(.knock)
         Task {
             try? await Task.sleep(for: .milliseconds(600))
             doorKnock = false
@@ -1210,6 +1218,7 @@ final class GameModel: ObservableObject {
         message = lines[(movesMade / max(1, level.thunderEvery) - 1) % lines.count]
         thunderFlash = true
         haptic(.rigid)
+        sound(.thunder)
         Task {
             try? await Task.sleep(for: .milliseconds(450))
             thunderFlash = false
@@ -1234,6 +1243,7 @@ final class GameModel: ObservableObject {
         UserDefaults.standard.set(min(levelIndex + 1, unlocked - 1), forKey: "currentLevel")
         showingWin = true
         haptic(.success)
+        sound(.win)
     }
 
     private func freshBoard() -> [[Tile]] {
@@ -1515,6 +1525,17 @@ final class GameModel: ObservableObject {
     }
 
     private func swap(_ a: Position, _ b: Position) { board.swapAt(a, b) }
+
+    private func sound(_ effect: GameAudio.Effect) {
+        guard soundOn else { return }
+        GameAudio.shared.play(effect)
+    }
+
+    private func powerUpSound(for kinds: [PowerUp]) -> GameAudio.Effect {
+        if kinds.contains(.rainbowPaw) { return .rainbowPaw }
+        if kinds.contains(.gardenBomb) { return .gardenBomb }
+        return .rocket
+    }
 
     private func haptic(_ kind: UINotificationFeedbackGenerator.FeedbackType) {
         guard soundOn else { return }

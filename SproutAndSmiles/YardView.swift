@@ -297,6 +297,7 @@ struct YardView: View {
             say(spot.henryLine, for: 7)
         }
         UINotificationFeedbackGenerator().notificationOccurred(.success)
+        if game.soundOn { GameAudio.shared.play(.yardBuild) }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) { justBuilt = nil }
         }
@@ -309,6 +310,7 @@ struct YardView: View {
         }
         say("Ooh, the \(spot.styles[style].name.lowercased())! Leo approves.")
         UISelectionFeedbackGenerator().selectionChanged()
+        if game.soundOn { GameAudio.shared.play(.yardStyle) }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) { justBuilt = nil }
         }

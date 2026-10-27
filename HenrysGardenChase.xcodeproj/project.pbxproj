@@ -61,6 +61,7 @@
 		A2027D19A2027D19A2027D19 /* yard-dog-leo.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D19B2027D19B2027D19 /* yard-dog-leo.png */; };
 		A2027D1AA2027D1AA2027D1A /* yard-dog-henry.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */; };
 		A2027E01A2027E01A2027E01 /* YardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2027E01B2027E01B2027E01 /* YardView.swift */; };
+		A2027F01A2027F01A2027F01 /* GameAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2027F01B2027F01B2027F01 /* GameAudio.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +120,7 @@
 		B2027D19B2027D19B2027D19 /* yard-dog-leo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-leo.png"; sourceTree = "<group>"; };
 		B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-henry.png"; sourceTree = "<group>"; };
 		B2027E01B2027E01B2027E01 /* YardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YardView.swift; sourceTree = "<group>"; };
+		B2027F01B2027F01B2027F01 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -144,6 +146,7 @@
 				B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */,
 				B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */,
 				B2027E01B2027E01B2027E01 /* YardView.swift */,
+				B2027F01B2027F01B2027F01 /* GameAudio.swift */,
 				943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */,
 				F59D290CA682A7C220C2BB08 /* ContentView.swift */,
 				F186D3BAA33C371B5D9E9106 /* GameModel.swift */,
@@ -341,6 +344,7 @@
 				A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */,
 				A2026CA7A2026CA7A2026CA7 /* CuteTheme.swift in Sources */,
 				A2027E01A2027E01A2027E01 /* YardView.swift in Sources */,
+				A2027F01A2027F01A2027F01 /* GameAudio.swift in Sources */,
 				15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */,
 				7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */,
 				1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */,
