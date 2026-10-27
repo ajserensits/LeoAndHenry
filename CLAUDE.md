@@ -19,6 +19,7 @@ Before changing story, gameplay, or artwork, read:
 - Player progression remains sequential and saved on-device.
 - Starting-booster inventory and completed Booster Basket events are also saved on-device. Do not make the levels 3 and 7 reward event repeatable without an explicit economy decision.
 - Yard treats come only from first-time level wins (one per level) and are derived as wins minus the cost of built yard projects. Built projects and chosen styles are saved on-device. Treats can never be bought.
+- Running out of moves is a real loss with a free, unlimited retry. Extra moves come only from Henry's one-time second wind (goal at least 75% done) and in-board treat-bag pieces; the watering can is limited per attempt. Never sell moves. After changing level objectives, blockers, or move counts, re-run the balance bot in `tools/balance/` (see `docs/BLOCKERS.md`).
 - Any level-unlock/testing interface must be compiled only under `#if DEBUG` and must not corrupt genuine saved progress.
 - Preserve portrait and both landscape orientations.
 

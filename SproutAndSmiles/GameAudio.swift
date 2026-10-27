@@ -23,6 +23,10 @@ final class GameAudio {
         case party
         case yardBuild
         case yardStyle
+        case extraMoves
+        case blockerHit
+        case gooClean
+        case outOfMoves
     }
 
     /// The yard's music, after the ten chapter themes.
@@ -434,6 +438,20 @@ enum SoundEffects {
             return arpeggio([79, 84, 88, 91, 96], spacing: 0.06, length: 0.8, level: 0.18, format)
         case .yardStyle:
             return render(.pop(combo: 3), format: format)
+        case .extraMoves:
+            return arpeggio([76, 79, 84, 88], spacing: 0.05, length: 0.5, level: 0.18, format)
+        case .blockerHit:
+            // A soft wooden "tock" with a little crunch.
+            return make(0.25, format) { t in
+                (noise(t) * exp(-35 * t) * 0.22 + sin(2 * .pi * 230 * t) * exp(-24 * t) * 0.3) * min(1, t / 0.003)
+            }
+        case .gooClean:
+            // A squishy downward bloop.
+            return make(0.24, format) { t in
+                sin(2 * .pi * (520 * t - 500 * t * t)) * exp(-11 * t) * min(1, t / 0.005) * 0.28
+            }
+        case .outOfMoves:
+            return arpeggio([67, 64, 60], spacing: 0.14, length: 0.9, level: 0.16, format)
         }
     }
 

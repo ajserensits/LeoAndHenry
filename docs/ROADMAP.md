@@ -10,7 +10,8 @@
 - Garden bomb from an L- or T-shaped match.
 - Henry's Booster Basket appears once before levels 3 and 7 of every chapter and awards up to three starting boosters.
 - Earned starting boosters persist on-device and can be selected before any standard level.
-- Unlimited lives, shuffle, water, and hint helpers.
+- Unlimited lives, shuffle, hint, and a watering can (3 uses per attempt). Running out of moves is a real loss with a free retry; Henry's one-time +5 second wind and rare +2 treat-bag pieces are the ways to earn extra moves.
+- Blockers from Chapter Two onward that ramp up by chapter: flowerpots, multi-hit toy crates, power-up-only garden stones, wandering beetles, and spreading mud or birthday frosting. Move counts are calibrated with a headless bot. See `docs/BLOCKERS.md`.
 - An original synthesized music theme for each chapter plus the yard, crossfading as the player moves between them, and cute synthesized sound effects for matches, cascades, power-ups, helpers, chapter events, wins, and the yard. See `docs/AUDIO.md`.
 - Leo & Henry's Yard (replaces the old Cozy Corner): each first-time level win earns one treat; eight painted yard projects (1 to 20 treats, 79 in total) are fixed up with treats and then switched freely among three painted styles each. See `docs/YARD.md`.
 - Ten ten-level chapter maps (100 levels) with continuous saved progression.

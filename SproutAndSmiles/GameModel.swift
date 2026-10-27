@@ -58,10 +58,21 @@ struct HiddenClue: Equatable {
     var cover: Int
 }
 
+/// Something that takes up a whole board cell instead of a Leo piece. Pots, crates, and beetles
+/// break from matches beside them; stones only crack from power-ups. Beetles wander after each move.
+struct Blocker: Equatable {
+    enum Kind: Equatable { case pot, crate, stone, beetle }
+    var kind: Kind
+    var hits: Int
+    var breaksFromNearbyMatches: Bool { kind != .stone }
+}
+
 struct Tile: Identifiable, Equatable {
     let id = UUID()
     var veggie: Veggie
     var powerUp: PowerUp? = nil
+    /// A little treat bag on the piece's edge: clearing it gives this many extra moves.
+    var bonusMoves = 0
 }
 
 enum PowerUp: Equatable {
@@ -118,6 +129,13 @@ struct Level {
     var knockEvery: Int = 0
     var parcelIsPad = false
     var partyEvery: Int = 0
+    var potCells: Int = 0
+    var crateCells: Int = 0
+    var crateDepth: Int = 2
+    var stoneCells: Int = 0
+    var stoneDepth: Int = 1
+    var beetleCount: Int = 0
+    var gooCells: Int = 0
 
     var clearsDust: Bool { dustCells > 0 }
     var wakesLeo: Bool { sleepingCells > 0 }
@@ -164,115 +182,115 @@ struct Chapter: Identifiable {
 final class GameModel: ObservableObject {
     nonisolated static let size = boardSize
     static let levels: [Level] = [
-        .init(goal: .tomato, amount: 16, moves: 25, title: "The Bug in the Beans", stolenItem: "red plush bug", clue: "Leo dashed toward the tomato patch!"),
-        .init(goal: .carrot, amount: 20, moves: 24, title: "The Missing Biscuit", stolenItem: "crunchy biscuit", clue: "A trail of crumbs leads past the carrots."),
-        .init(goal: .onion, amount: 22, moves: 24, title: "Dinner on the Run", stolenItem: "dinner bowl", clue: "Henry heard a suspicious clink by the herbs."),
-        .init(goal: .pepper, amount: 25, moves: 23, title: "The Squeaky Hedge", stolenItem: "squeaky toy", clue: "Squeak! Leo is hiding near the peppers."),
-        .init(goal: .eggplant, amount: 27, moves: 23, title: "Sock Among the Lavender", stolenItem: "favorite sock", clue: "A fluffy brown tail vanished by the gate."),
-        .init(goal: .pea, amount: 30, moves: 22, title: "The Picnic Pilferer", stolenItem: "picnic snack", clue: "Leo left tiny pawprints through the peas."),
-        .init(goal: .tomato, amount: 32, moves: 22, title: "Ball in the Brambles", stolenItem: "red ball", clue: "Henry spotted the ball beyond the tomatoes."),
-        .init(goal: .carrot, amount: 34, moves: 21, title: "The Great Carrot Caper", stolenItem: "carrot treat", clue: "This clue has Leo written all over it."),
-        .init(goal: .onion, amount: 36, moves: 21, title: "Moonlight Munchies", stolenItem: "bedtime snack", clue: "A midnight rustle wakes determined Henry."),
-        .init(goal: .pea, amount: 40, moves: 20, title: "The Garden Feast", stolenItem: "celebration supper", clue: "One last chase before the brothers share."),
+        .init(goal: .tomato, amount: 16, moves: 21, title: "The Bug in the Beans", stolenItem: "red plush bug", clue: "Leo dashed toward the tomato patch!"),
+        .init(goal: .carrot, amount: 20, moves: 25, title: "The Missing Biscuit", stolenItem: "crunchy biscuit", clue: "A trail of crumbs leads past the carrots."),
+        .init(goal: .onion, amount: 22, moves: 28, title: "Dinner on the Run", stolenItem: "dinner bowl", clue: "Henry heard a suspicious clink by the herbs."),
+        .init(goal: .pepper, amount: 25, moves: 32, title: "The Squeaky Hedge", stolenItem: "squeaky toy", clue: "Squeak! Leo is hiding near the peppers."),
+        .init(goal: .eggplant, amount: 27, moves: 33, title: "Sock Among the Lavender", stolenItem: "favorite sock", clue: "A fluffy brown tail vanished by the gate."),
+        .init(goal: .pea, amount: 30, moves: 35, title: "The Picnic Pilferer", stolenItem: "picnic snack", clue: "Leo left tiny pawprints through the peas."),
+        .init(goal: .tomato, amount: 32, moves: 38, title: "Ball in the Brambles", stolenItem: "red ball", clue: "Henry spotted the ball beyond the tomatoes."),
+        .init(goal: .carrot, amount: 34, moves: 40, title: "The Great Carrot Caper", stolenItem: "carrot treat", clue: "This clue has Leo written all over it."),
+        .init(goal: .onion, amount: 36, moves: 45, title: "Moonlight Munchies", stolenItem: "bedtime snack", clue: "A midnight rustle wakes determined Henry."),
+        .init(goal: .pea, amount: 40, moves: 48, title: "The Garden Feast", stolenItem: "celebration supper", clue: "One last chase before the brothers share."),
 
-        .init(goal: .carrot, amount: 18, moves: 25, title: "Follow the Crumbs", stolenItem: "crunchy biscuit", clue: "Henry spots biscuit crumbs beside the laundry basket.", chapterIndex: 1),
-        .init(goal: .tomato, amount: 0, moves: 25, title: "Dust Bunny Detour", stolenItem: "dusty pawprints", clue: "Match on the dusty tiles to clear a quiet path.", chapterIndex: 1, dustCells: 8, dustDepth: 1),
-        .init(goal: .onion, amount: 0, moves: 24, title: "Behind the Basket", stolenItem: "hidden biscuit", clue: "Leo is tucked behind the basket. Clear the dust so Henry can see him.", chapterIndex: 1, dustCells: 12, dustDepth: 1),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "The Vacuum Wakes", stolenItem: "dropped biscuit", clue: "The vacuum rumbles. Henry stands between it and Leo.", chapterIndex: 1, dustCells: 10, dustDepth: 2),
-        .init(goal: .eggplant, amount: 0, moves: 23, title: "A Quiet Corner", stolenItem: "comfort blanket", clue: "Clear the thickest dust and make Leo a quiet corner.", chapterIndex: 1, dustCells: 14, dustDepth: 2),
-        .init(goal: .pea, amount: 0, moves: 23, title: "Nap Behind the Hamper", stolenItem: "runaway biscuit", clue: "Make matches beside sleeping Leos so Henry can bark them awake.", chapterIndex: 1, sleepingCells: 6),
-        .init(goal: .tomato, amount: 0, moves: 22, title: "Two Layers of Trouble", stolenItem: "favorite toy", clue: "Some dust bunnies need two good matches before they tumble away.", chapterIndex: 1, dustCells: 18, dustDepth: 2),
-        .init(goal: .carrot, amount: 0, moves: 22, title: "Henry Takes the Lead", stolenItem: "safe hallway", clue: "Henry leads the way one clean pawstep at a time.", chapterIndex: 1, dustCells: 20, dustDepth: 2),
-        .init(goal: .onion, amount: 0, moves: 21, title: "The Great Wake-Up Call", stolenItem: "doorway clue", clue: "Henry needs one more chorus of barks before everyone heads outside.", chapterIndex: 1, sleepingCells: 12),
-        .init(goal: .pea, amount: 0, moves: 24, title: "Safe in the Sunshine", stolenItem: "shared biscuit", clue: "One final cleanup, then Henry and Leo can share the biscuit outside.", chapterIndex: 1, dustCells: 24, dustDepth: 2),
+        .init(goal: .carrot, amount: 18, moves: 23, title: "Follow the Crumbs", stolenItem: "crunchy biscuit", clue: "Henry spots biscuit crumbs beside the laundry basket.", chapterIndex: 1),
+        .init(goal: .tomato, amount: 0, moves: 23, title: "Dust Bunny Detour", stolenItem: "dusty pawprints", clue: "Match on the dusty tiles to clear a quiet path.", chapterIndex: 1, dustCells: 8, dustDepth: 1),
+        .init(goal: .onion, amount: 0, moves: 25, title: "Behind the Basket", stolenItem: "hidden biscuit", clue: "Leo is tucked behind the basket. Clear the dust so Henry can see him.", chapterIndex: 1, dustCells: 12, dustDepth: 1),
+        .init(goal: .pepper, amount: 0, moves: 30, title: "The Vacuum Wakes", stolenItem: "dropped biscuit", clue: "The vacuum rumbles. Henry stands between it and Leo.", chapterIndex: 1, dustCells: 10, dustDepth: 2),
+        .init(goal: .eggplant, amount: 0, moves: 36, title: "A Quiet Corner", stolenItem: "comfort blanket", clue: "Clear the thickest dust and make Leo a quiet corner.", chapterIndex: 1, dustCells: 14, dustDepth: 2, potCells: 2),
+        .init(goal: .pea, amount: 0, moves: 13, title: "Nap Behind the Hamper", stolenItem: "runaway biscuit", clue: "Make matches beside sleeping Leos so Henry can bark them awake.", chapterIndex: 1, sleepingCells: 6),
+        .init(goal: .tomato, amount: 0, moves: 50, title: "Two Layers of Trouble", stolenItem: "favorite toy", clue: "Some dust bunnies need two good matches before they tumble away.", chapterIndex: 1, dustCells: 18, dustDepth: 2, potCells: 3),
+        .init(goal: .carrot, amount: 0, moves: 50, title: "Henry Takes the Lead", stolenItem: "safe hallway", clue: "Henry leads the way one clean pawstep at a time.", chapterIndex: 1, dustCells: 20, dustDepth: 2),
+        .init(goal: .onion, amount: 0, moves: 17, title: "The Great Wake-Up Call", stolenItem: "doorway clue", clue: "Henry needs one more chorus of barks before everyone heads outside.", chapterIndex: 1, sleepingCells: 12, potCells: 4),
+        .init(goal: .pea, amount: 0, moves: 50, title: "Safe in the Sunshine", stolenItem: "shared biscuit", clue: "One final cleanup, then Henry and Leo can share the biscuit outside.", chapterIndex: 1, dustCells: 24, dustDepth: 2),
 
-        .init(goal: .tomato, amount: 18, moves: 25, title: "The Noise Upstairs", stolenItem: "red plush ladybug", clue: "A sudden thump sends Leo—and Henry's ladybug—under the bed.", chapterIndex: 2),
-        .init(goal: .carrot, amount: 0, moves: 25, title: "Dust Under the Bed", stolenItem: "dusty pawprints", clue: "Clear the soft dust bunnies so Henry can crawl underneath.", chapterIndex: 2, dustCells: 10, dustDepth: 1),
-        .init(goal: .onion, amount: 0, moves: 24, title: "Henry Squeezes In", stolenItem: "first pawsteps", clue: "Match beside the glowing pawstep to guide Henry toward Leo.", chapterIndex: 2, rescueSteps: 6),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "Between the Slippers", stolenItem: "safe route", clue: "Follow the pawprints around the slippers and boxes.", chapterIndex: 2, rescueSteps: 8),
-        .init(goal: .eggplant, amount: 0, moves: 23, title: "The Sock Fort", stolenItem: "striped sock", clue: "Two layers of fluff stand between the brothers.", chapterIndex: 2, dustCells: 14, dustDepth: 2),
-        .init(goal: .pea, amount: 0, moves: 23, title: "Follow My Pawsteps", stolenItem: "comfort trail", clue: "Henry keeps crawling, one gentle pawstep at a time.", chapterIndex: 2, rescueSteps: 10),
-        .init(goal: .tomato, amount: 24, moves: 22, title: "The Ladybug Clue", stolenItem: "red plush ladybug", clue: "Henry spots a flash of red beside Leo's fluffy paw.", chapterIndex: 2),
-        .init(goal: .carrot, amount: 0, moves: 22, title: "Almost There, Leo", stolenItem: "shared blanket", clue: "Only a few more careful pawsteps to reach Leo.", chapterIndex: 2, rescueSteps: 12),
-        .init(goal: .onion, amount: 0, moves: 22, title: "A Gentle Wake-Up", stolenItem: "cozy hiding place", clue: "A few quiet woofs let Leo know Henry is close.", chapterIndex: 2, sleepingCells: 8),
-        .init(goal: .pea, amount: 0, moves: 24, title: "Out From Under", stolenItem: "red plush ladybug", clue: "Guide Henry all the way to Leo, then bring the ladybug into the light.", chapterIndex: 2, rescueSteps: 13),
+        .init(goal: .tomato, amount: 18, moves: 21, title: "The Noise Upstairs", stolenItem: "red plush ladybug", clue: "A sudden thump sends Leo—and Henry's ladybug—under the bed.", chapterIndex: 2),
+        .init(goal: .carrot, amount: 0, moves: 21, title: "Dust Under the Bed", stolenItem: "dusty pawprints", clue: "Clear the soft dust bunnies so Henry can crawl underneath.", chapterIndex: 2, dustCells: 10, dustDepth: 1, potCells: 3),
+        .init(goal: .onion, amount: 0, moves: 16, title: "Henry Squeezes In", stolenItem: "first pawsteps", clue: "Match beside the glowing pawstep to guide Henry toward Leo.", chapterIndex: 2, rescueSteps: 6),
+        .init(goal: .pepper, amount: 0, moves: 24, title: "Between the Slippers", stolenItem: "safe route", clue: "Follow the pawprints around the slippers and boxes.", chapterIndex: 2, rescueSteps: 8, crateCells: 2),
+        .init(goal: .eggplant, amount: 0, moves: 26, title: "The Sock Fort", stolenItem: "striped sock", clue: "Two layers of fluff stand between the brothers.", chapterIndex: 2, dustCells: 14, dustDepth: 2),
+        .init(goal: .pea, amount: 0, moves: 21, title: "Follow My Pawsteps", stolenItem: "comfort trail", clue: "Henry keeps crawling, one gentle pawstep at a time.", chapterIndex: 2, rescueSteps: 10, potCells: 2, crateCells: 2),
+        .init(goal: .tomato, amount: 24, moves: 24, title: "The Ladybug Clue", stolenItem: "red plush ladybug", clue: "Henry spots a flash of red beside Leo's fluffy paw.", chapterIndex: 2),
+        .init(goal: .carrot, amount: 0, moves: 28, title: "Almost There, Leo", stolenItem: "shared blanket", clue: "Only a few more careful pawsteps to reach Leo.", chapterIndex: 2, rescueSteps: 12, crateCells: 4),
+        .init(goal: .onion, amount: 0, moves: 10, title: "A Gentle Wake-Up", stolenItem: "cozy hiding place", clue: "A few quiet woofs let Leo know Henry is close.", chapterIndex: 2, sleepingCells: 8),
+        .init(goal: .pea, amount: 0, moves: 30, title: "Out From Under", stolenItem: "red plush ladybug", clue: "Guide Henry all the way to Leo, then bring the ladybug into the light.", chapterIndex: 2, rescueSteps: 13, potCells: 2, crateCells: 3),
 
-        .init(goal: .eggplant, amount: 20, moves: 25, title: "The Cozy Spot Thief", stolenItem: "cozy blanket spot", clue: "Leo has claimed Henry's blanket spot—just as the first thunder rumbles.", chapterIndex: 3, thunderEvery: 6),
-        .init(goal: .tomato, amount: 0, moves: 25, title: "Tuck In, Leo", stolenItem: "warm blanket", clue: "Match beside the blanket to spread it over Leo's shivery side.", chapterIndex: 3, comfortCells: 10, thunderEvery: 6),
-        .init(goal: .carrot, amount: 0, moves: 24, title: "Henry Brings a Slipper", stolenItem: "Mom's slipper", clue: "Henry fetches a slipper that smells like Mom. The blanket grows.", chapterIndex: 3, comfortCells: 16, thunderEvery: 5),
-        .init(goal: .onion, amount: 0, moves: 24, title: "Ladybug Delivery", stolenItem: "red plush ladybug", clue: "Guide Henry across the sunroom to bring Leo his favorite ladybug.", chapterIndex: 3, rescueSteps: 8, thunderEvery: 5),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "Rain on the Windows", stolenItem: "quiet corner", clue: "Raindrops drum on the glass. Keep the blanket spreading.", chapterIndex: 3, comfortCells: 22, thunderEvery: 5),
-        .init(goal: .pea, amount: 26, moves: 23, title: "A Snack for Courage", stolenItem: "storm snack", clue: "Leo is too nervous to eat—unless Henry shares his snack.", chapterIndex: 3, thunderEvery: 5),
-        .init(goal: .eggplant, amount: 0, moves: 23, title: "The Loudest Clap", stolenItem: "brave moment", clue: "The biggest boom yet. Henry pulls the blanket wider.", chapterIndex: 3, comfortCells: 28, thunderEvery: 4),
-        .init(goal: .tomato, amount: 0, moves: 22, title: "Every Comfort Thing", stolenItem: "pile of toys", clue: "Henry carries every favorite toy to Leo, one trip at a time.", chapterIndex: 3, rescueSteps: 11, thunderEvery: 4),
-        .init(goal: .carrot, amount: 0, moves: 22, title: "Rumbles Fading", stolenItem: "sleepy calm", clue: "The thunder rolls farther away. Just a little more blanket.", chapterIndex: 3, comfortCells: 34, thunderEvery: 6),
-        .init(goal: .pea, amount: 0, moves: 24, title: "Sharing the Blanket", stolenItem: "shared blanket", clue: "The storm passes. Spread the blanket wide enough for two.", chapterIndex: 3, comfortCells: 40, thunderEvery: 8),
+        .init(goal: .eggplant, amount: 20, moves: 22, title: "The Cozy Spot Thief", stolenItem: "cozy blanket spot", clue: "Leo has claimed Henry's blanket spot—just as the first thunder rumbles.", chapterIndex: 3, thunderEvery: 6, potCells: 2),
+        .init(goal: .tomato, amount: 0, moves: 10, title: "Tuck In, Leo", stolenItem: "warm blanket", clue: "Match beside the blanket to spread it over Leo's shivery side.", chapterIndex: 3, comfortCells: 10, thunderEvery: 6, crateCells: 2),
+        .init(goal: .carrot, amount: 0, moves: 10, title: "Henry Brings a Slipper", stolenItem: "Mom's slipper", clue: "Henry fetches a slipper that smells like Mom. The blanket grows.", chapterIndex: 3, comfortCells: 16, thunderEvery: 5, potCells: 3),
+        .init(goal: .onion, amount: 0, moves: 21, title: "Ladybug Delivery", stolenItem: "red plush ladybug", clue: "Guide Henry across the sunroom to bring Leo his favorite ladybug.", chapterIndex: 3, rescueSteps: 8, thunderEvery: 5, potCells: 2, crateCells: 2),
+        .init(goal: .pepper, amount: 0, moves: 13, title: "Rain on the Windows", stolenItem: "quiet corner", clue: "Raindrops drum on the glass. Keep the blanket spreading.", chapterIndex: 3, comfortCells: 22, thunderEvery: 5, crateCells: 3),
+        .init(goal: .pea, amount: 26, moves: 26, title: "A Snack for Courage", stolenItem: "storm snack", clue: "Leo is too nervous to eat—unless Henry shares his snack.", chapterIndex: 3, thunderEvery: 5, potCells: 4),
+        .init(goal: .eggplant, amount: 0, moves: 16, title: "The Loudest Clap", stolenItem: "brave moment", clue: "The biggest boom yet. Henry pulls the blanket wider.", chapterIndex: 3, comfortCells: 28, thunderEvery: 4, potCells: 2, crateCells: 3),
+        .init(goal: .tomato, amount: 0, moves: 23, title: "Every Comfort Thing", stolenItem: "pile of toys", clue: "Henry carries every favorite toy to Leo, one trip at a time.", chapterIndex: 3, rescueSteps: 11, thunderEvery: 4, crateCells: 4),
+        .init(goal: .carrot, amount: 0, moves: 18, title: "Rumbles Fading", stolenItem: "sleepy calm", clue: "The thunder rolls farther away. Just a little more blanket.", chapterIndex: 3, comfortCells: 34, thunderEvery: 6, potCells: 3, crateCells: 2),
+        .init(goal: .pea, amount: 0, moves: 22, title: "Sharing the Blanket", stolenItem: "shared blanket", clue: "The storm passes. Spread the blanket wide enough for two.", chapterIndex: 3, comfortCells: 40, thunderEvery: 8, potCells: 2, crateCells: 4),
 
-        .init(goal: .carrot, amount: 20, moves: 25, title: "Ball Behind the Marigolds", stolenItem: "orange outdoor ball", clue: "Leo borrowed Henry's ball—and the mower just started across the yard.", chapterIndex: 4, mowerEvery: 4),
-        .init(goal: .tomato, amount: 0, moves: 25, title: "The Quiet Edge", stolenItem: "first safe pawsteps", clue: "Match beside the glowing leaf so Henry can show Leo the quiet way.", chapterIndex: 4, quietRouteSteps: 6, mowerEvery: 3),
-        .init(goal: .onion, amount: 0, moves: 24, title: "Past the Flowerpots", stolenItem: "flowerpot hiding place", clue: "Henry leads past the marigolds while the mower loops far away.", chapterIndex: 4, quietRouteSteps: 8, mowerEvery: 3),
-        .init(goal: .pepper, amount: 24, moves: 24, title: "Grass-Clipping Gust", stolenItem: "windblown ball", clue: "A puff of clippings rolls by. Henry stays between Leo and the noise.", chapterIndex: 4, mowerEvery: 3),
-        .init(goal: .eggplant, amount: 0, moves: 23, title: "Henry Leads the Way", stolenItem: "shady side path", clue: "Follow Henry's leafy trail along the quiet side of the lawn.", chapterIndex: 4, quietRouteSteps: 10, mowerEvery: 2),
-        .init(goal: .pea, amount: 0, moves: 23, title: "Leo Freezes", stolenItem: "brave little pause", clue: "The mower sounds close. Henry gives a gentle bark to get Leo moving.", chapterIndex: 4, sleepingCells: 8, mowerEvery: 2),
-        .init(goal: .tomato, amount: 0, moves: 22, title: "Around the Hydrangeas", stolenItem: "hydrangea shortcut", clue: "The long way is the calm way. Keep following Henry's safe leaves.", chapterIndex: 4, quietRouteSteps: 12, mowerEvery: 2),
-        .init(goal: .carrot, amount: 28, moves: 22, title: "The Orange Ball", stolenItem: "Henry's outdoor ball", clue: "The ball tumbles free, but Henry will not leave Leo behind.", chapterIndex: 4, mowerEvery: 3),
-        .init(goal: .onion, amount: 0, moves: 23, title: "Almost Back to Mom", stolenItem: "path toward Mom", clue: "Mom is waiting by the gate. Henry knows the safest loop home.", chapterIndex: 4, quietRouteSteps: 14, mowerEvery: 2),
-        .init(goal: .pea, amount: 0, moves: 25, title: "Home Along the Hedge", stolenItem: "shared orange ball", clue: "One last quiet stretch, then the brothers can bring the ball back together.", chapterIndex: 4, quietRouteSteps: 16, mowerEvery: 2),
+        .init(goal: .carrot, amount: 20, moves: 24, title: "Ball Behind the Marigolds", stolenItem: "orange outdoor ball", clue: "Leo borrowed Henry's ball—and the mower just started across the yard.", chapterIndex: 4, mowerEvery: 4, potCells: 3),
+        .init(goal: .tomato, amount: 0, moves: 24, title: "The Quiet Edge", stolenItem: "first safe pawsteps", clue: "Match beside the glowing leaf so Henry can show Leo the quiet way.", chapterIndex: 4, quietRouteSteps: 6, mowerEvery: 3, crateCells: 3),
+        .init(goal: .onion, amount: 0, moves: 30, title: "Past the Flowerpots", stolenItem: "flowerpot hiding place", clue: "Henry leads past the marigolds while the mower loops far away.", chapterIndex: 4, quietRouteSteps: 8, mowerEvery: 3, stoneCells: 2),
+        .init(goal: .pepper, amount: 24, moves: 26, title: "Grass-Clipping Gust", stolenItem: "windblown ball", clue: "A puff of clippings rolls by. Henry stays between Leo and the noise.", chapterIndex: 4, mowerEvery: 3, potCells: 2, crateCells: 2),
+        .init(goal: .eggplant, amount: 0, moves: 30, title: "Henry Leads the Way", stolenItem: "shady side path", clue: "Follow Henry's leafy trail along the quiet side of the lawn.", chapterIndex: 4, quietRouteSteps: 10, mowerEvery: 2, potCells: 2, stoneCells: 2),
+        .init(goal: .pea, amount: 0, moves: 15, title: "Leo Freezes", stolenItem: "brave little pause", clue: "The mower sounds close. Henry gives a gentle bark to get Leo moving.", chapterIndex: 4, sleepingCells: 8, mowerEvery: 2, crateCells: 4),
+        .init(goal: .tomato, amount: 0, moves: 38, title: "Around the Hydrangeas", stolenItem: "hydrangea shortcut", clue: "The long way is the calm way. Keep following Henry's safe leaves.", chapterIndex: 4, quietRouteSteps: 12, mowerEvery: 2, crateCells: 2, stoneCells: 3),
+        .init(goal: .carrot, amount: 28, moves: 31, title: "The Orange Ball", stolenItem: "Henry's outdoor ball", clue: "The ball tumbles free, but Henry will not leave Leo behind.", chapterIndex: 4, mowerEvery: 3, potCells: 4, stoneCells: 2),
+        .init(goal: .onion, amount: 0, moves: 43, title: "Almost Back to Mom", stolenItem: "path toward Mom", clue: "Mom is waiting by the gate. Henry knows the safest loop home.", chapterIndex: 4, quietRouteSteps: 14, mowerEvery: 2, crateCells: 4, stoneCells: 2),
+        .init(goal: .pea, amount: 0, moves: 50, title: "Home Along the Hedge", stolenItem: "shared orange ball", clue: "One last quiet stretch, then the brothers can bring the ball back together.", chapterIndex: 4, quietRouteSteps: 16, mowerEvery: 2, potCells: 2, crateCells: 3, stoneCells: 3),
 
-        .init(goal: .pea, amount: 22, moves: 25, title: "Snack Bowl Snoop", stolenItem: "Henry's snack bowl", clue: "Leo is sniffing Henry's snack bowl—and the porch breeze is picking up.", chapterIndex: 5, breezeEvery: 5),
-        .init(goal: .tomato, amount: 0, moves: 25, title: "The First Clatter", stolenItem: "tipped-over can", clue: "Cans rolled out of the bin. Match beside them so Henry can nudge them quiet.", chapterIndex: 5, canCells: 6),
-        .init(goal: .carrot, amount: 0, moves: 25, title: "The Flapping Bag", stolenItem: "brave sniff", clue: "A plastic bag flaps like a ghost. Henry shoos it away for Leo.", chapterIndex: 5, bagCells: 3, breezeEvery: 3),
-        .init(goal: .onion, amount: 0, moves: 24, title: "Rattle and Roll", stolenItem: "rolling can", clue: "Some cans rattle twice before they settle down.", chapterIndex: 5, canCells: 7, canDepth: 2),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "Henry Stands Firm", stolenItem: "porch step", clue: "Henry plants his paws between Leo and the noise.", chapterIndex: 5, canCells: 6, bagCells: 3, breezeEvery: 3),
-        .init(goal: .eggplant, amount: 0, moves: 24, title: "Back to the Bench", stolenItem: "bench hideout", clue: "Leo darted under the bench. Henry follows the paw prints to him.", chapterIndex: 5, rescueSteps: 9, breezeEvery: 4),
-        .init(goal: .pea, amount: 0, moves: 23, title: "A Gust of Bags", stolenItem: "fluttering courage", clue: "Whoosh! More bags tumble across the porch. Henry chases each one off.", chapterIndex: 5, bagCells: 6, breezeEvery: 3),
-        .init(goal: .tomato, amount: 0, moves: 23, title: "The Recycling Tumble", stolenItem: "tumbled bin", clue: "The whole bin tipped over. Henry clears the noisy path one can at a time.", chapterIndex: 5, canCells: 10, canDepth: 2),
-        .init(goal: .carrot, amount: 0, moves: 23, title: "Almost Quiet", stolenItem: "quiet porch", clue: "Only a few clatters left. Leo peeks out from behind Henry.", chapterIndex: 5, canCells: 8, canDepth: 2, bagCells: 4, breezeEvery: 3),
-        .init(goal: .pea, amount: 0, moves: 25, title: "Sharing the Snack", stolenItem: "shared snack", clue: "Quiet the last cans and bags, then Henry shares his snack with Leo.", chapterIndex: 5, canCells: 10, canDepth: 2, bagCells: 5, breezeEvery: 2),
+        .init(goal: .pea, amount: 22, moves: 24, title: "Snack Bowl Snoop", stolenItem: "Henry's snack bowl", clue: "Leo is sniffing Henry's snack bowl—and the porch breeze is picking up.", chapterIndex: 5, breezeEvery: 5, crateCells: 3),
+        .init(goal: .tomato, amount: 0, moves: 10, title: "The First Clatter", stolenItem: "tipped-over can", clue: "Cans rolled out of the bin. Match beside them so Henry can nudge them quiet.", chapterIndex: 5, canCells: 6, beetleCount: 1),
+        .init(goal: .carrot, amount: 0, moves: 10, title: "The Flapping Bag", stolenItem: "brave sniff", clue: "A plastic bag flaps like a ghost. Henry shoos it away for Leo.", chapterIndex: 5, bagCells: 3, breezeEvery: 3, potCells: 2, beetleCount: 2),
+        .init(goal: .onion, amount: 0, moves: 16, title: "Rattle and Roll", stolenItem: "rolling can", clue: "Some cans rattle twice before they settle down.", chapterIndex: 5, canCells: 7, canDepth: 2, crateCells: 2, stoneCells: 2),
+        .init(goal: .pepper, amount: 0, moves: 10, title: "Henry Stands Firm", stolenItem: "porch step", clue: "Henry plants his paws between Leo and the noise.", chapterIndex: 5, canCells: 6, bagCells: 3, breezeEvery: 3, crateCells: 2, beetleCount: 2),
+        .init(goal: .eggplant, amount: 0, moves: 20, title: "Back to the Bench", stolenItem: "bench hideout", clue: "Leo darted under the bench. Henry follows the paw prints to him.", chapterIndex: 5, rescueSteps: 9, breezeEvery: 4, stoneCells: 2, beetleCount: 2),
+        .init(goal: .pea, amount: 0, moves: 13, title: "A Gust of Bags", stolenItem: "fluttering courage", clue: "Whoosh! More bags tumble across the porch. Henry chases each one off.", chapterIndex: 5, bagCells: 6, breezeEvery: 3, potCells: 3, crateCells: 3, crateDepth: 3),
+        .init(goal: .tomato, amount: 0, moves: 17, title: "The Recycling Tumble", stolenItem: "tumbled bin", clue: "The whole bin tipped over. Henry clears the noisy path one can at a time.", chapterIndex: 5, canCells: 10, canDepth: 2, crateCells: 2, beetleCount: 3),
+        .init(goal: .carrot, amount: 0, moves: 16, title: "Almost Quiet", stolenItem: "quiet porch", clue: "Only a few clatters left. Leo peeks out from behind Henry.", chapterIndex: 5, canCells: 8, canDepth: 2, bagCells: 4, breezeEvery: 3, potCells: 2, stoneCells: 2, beetleCount: 3),
+        .init(goal: .pea, amount: 0, moves: 17, title: "Sharing the Snack", stolenItem: "shared snack", clue: "Quiet the last cans and bags, then Henry shares his snack with Leo.", chapterIndex: 5, canCells: 10, canDepth: 2, bagCells: 5, breezeEvery: 2, crateCells: 3, stoneCells: 2, beetleCount: 3),
 
-        .init(goal: .carrot, amount: 22, moves: 25, title: "Crumbs at the Gate", stolenItem: "crumb trail", clue: "The brothers followed snack crumbs too far—and now they cannot see Mom.", chapterIndex: 6),
-        .init(goal: .tomato, amount: 0, moves: 25, title: "Mom's Pink Slipper", stolenItem: "familiar slipper", clue: "Match beside the leafy patches. Henry smells something familiar underneath.", chapterIndex: 6, clueCells: 3),
-        .init(goal: .onion, amount: 0, moves: 25, title: "Keys in the Flowers", stolenItem: "keys with the paw charm", clue: "A tiny jingle! Henry searches the flowers while Leo stays close.", chapterIndex: 6, clueCells: 4),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "Which Way, Henry?", stolenItem: "safe garden turn", clue: "Henry chooses the gentle path and makes sure Leo follows.", chapterIndex: 6, quietRouteSteps: 8),
-        .init(goal: .eggplant, amount: 0, moves: 24, title: "Leaves over the Path", stolenItem: "hidden familiar things", clue: "Some clues are tucked beneath two layers of leaves.", chapterIndex: 6, clueCells: 6, clueDepth: 2),
-        .init(goal: .pea, amount: 0, moves: 24, title: "Leo Starts to Worry", stolenItem: "a little reassurance", clue: "Henry gathers comforting signs of home and stays beside Leo.", chapterIndex: 6, comfortCells: 18),
-        .init(goal: .tomato, amount: 0, moves: 23, title: "Familiar Footsteps", stolenItem: "Mom's footsteps", clue: "Slipper, keys, pawprints—every clue says they are heading home.", chapterIndex: 6, clueCells: 8, clueDepth: 2),
-        .init(goal: .carrot, amount: 0, moves: 23, title: "The Porch Light", stolenItem: "warm light ahead", clue: "Henry spots the porch light and leads Leo toward it one pawstep at a time.", chapterIndex: 6, rescueSteps: 11),
-        .init(goal: .onion, amount: 0, moves: 23, title: "Almost Home", stolenItem: "last garden clues", clue: "The cottage is close. Find the final familiar signs along the path.", chapterIndex: 6, clueCells: 10, clueDepth: 2),
-        .init(goal: .pea, amount: 0, moves: 25, title: "There You Are, Mom!", stolenItem: "the way back to Mom", clue: "Henry follows every clue until Leo sees Mom waiting in the warm window.", chapterIndex: 6, clueCells: 12, clueDepth: 2),
+        .init(goal: .carrot, amount: 22, moves: 23, title: "Crumbs at the Gate", stolenItem: "crumb trail", clue: "The brothers followed snack crumbs too far—and now they cannot see Mom.", chapterIndex: 6, gooCells: 2),
+        .init(goal: .tomato, amount: 0, moves: 10, title: "Mom's Pink Slipper", stolenItem: "familiar slipper", clue: "Match beside the leafy patches. Henry smells something familiar underneath.", chapterIndex: 6, clueCells: 3, crateCells: 2, gooCells: 2),
+        .init(goal: .onion, amount: 0, moves: 10, title: "Keys in the Flowers", stolenItem: "keys with the paw charm", clue: "A tiny jingle! Henry searches the flowers while Leo stays close.", chapterIndex: 6, clueCells: 4, beetleCount: 1, gooCells: 3),
+        .init(goal: .pepper, amount: 0, moves: 26, title: "Which Way, Henry?", stolenItem: "safe garden turn", clue: "Henry chooses the gentle path and makes sure Leo follows.", chapterIndex: 6, quietRouteSteps: 8, stoneCells: 2, gooCells: 2),
+        .init(goal: .eggplant, amount: 0, moves: 14, title: "Leaves over the Path", stolenItem: "hidden familiar things", clue: "Some clues are tucked beneath two layers of leaves.", chapterIndex: 6, clueCells: 6, clueDepth: 2, gooCells: 4),
+        .init(goal: .pea, amount: 0, moves: 10, title: "Leo Starts to Worry", stolenItem: "a little reassurance", clue: "Henry gathers comforting signs of home and stays beside Leo.", chapterIndex: 6, comfortCells: 18, crateCells: 3, gooCells: 3),
+        .init(goal: .tomato, amount: 0, moves: 14, title: "Familiar Footsteps", stolenItem: "Mom's footsteps", clue: "Slipper, keys, pawprints—every clue says they are heading home.", chapterIndex: 6, clueCells: 8, clueDepth: 2, beetleCount: 2, gooCells: 3),
+        .init(goal: .carrot, amount: 0, moves: 23, title: "The Porch Light", stolenItem: "warm light ahead", clue: "Henry spots the porch light and leads Leo toward it one pawstep at a time.", chapterIndex: 6, rescueSteps: 11, stoneCells: 2, gooCells: 4),
+        .init(goal: .onion, amount: 0, moves: 15, title: "Almost Home", stolenItem: "last garden clues", clue: "The cottage is close. Find the final familiar signs along the path.", chapterIndex: 6, clueCells: 10, clueDepth: 2, potCells: 2, crateCells: 3, gooCells: 4),
+        .init(goal: .pea, amount: 0, moves: 16, title: "There You Are, Mom!", stolenItem: "the way back to Mom", clue: "Henry follows every clue until Leo sees Mom waiting in the warm window.", chapterIndex: 6, clueCells: 12, clueDepth: 2, stoneCells: 2, beetleCount: 2, gooCells: 5),
 
-        .init(goal: .tomato, amount: 22, moves: 25, title: "Leo Spots the Pool", stolenItem: "Henry's pool ring", clue: "Mom wants everyone outside by the pool. Leo grabbed Henry's ring and froze.", chapterIndex: 7),
-        .init(goal: .carrot, amount: 0, moves: 25, title: "First Little Splash", stolenItem: "dry paws", clue: "Splashes creep from the pool. Match on or beside them before they reach Leo's towel.", chapterIndex: 7, splashCount: 5, splashEvery: 3),
-        .init(goal: .onion, amount: 0, moves: 24, title: "The Dry Way", stolenItem: "dry stepping stones", clue: "Henry shows Leo the dry stones along the edge of the patio.", chapterIndex: 7, quietRouteSteps: 8),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "Cannonball Next Door", stolenItem: "splash-free corner", clue: "A neighbor's cannonball sends drops flying. Henry stays between Leo and the water.", chapterIndex: 7, splashCount: 7, splashEvery: 3),
-        .init(goal: .eggplant, amount: 0, moves: 24, title: "Wet Paws, Brave Paws", stolenItem: "brave little step", clue: "The splashes come a little faster. Henry nudges back any that get too close.", chapterIndex: 7, splashCount: 8, splashEvery: 2),
-        .init(goal: .pea, amount: 0, moves: 24, title: "Sunny Towel Nap", stolenItem: "warm towel", clue: "Leo dozed off on the warm towel. Henry gives gentle woofs to wake him.", chapterIndex: 7, sleepingCells: 8),
-        .init(goal: .tomato, amount: 0, moves: 23, title: "Pool Toy Parade", stolenItem: "floating duck", clue: "Pool toys bob by and splash the deck. Keep Leo's towel dry.", chapterIndex: 7, splashCount: 9, splashEvery: 2),
-        .init(goal: .carrot, amount: 0, moves: 23, title: "Between Leo and the Water", stolenItem: "path to Mom's chair", clue: "Henry walks on the pool side so Leo can walk on the dry side.", chapterIndex: 7, quietRouteSteps: 12),
-        .init(goal: .onion, amount: 0, moves: 23, title: "The Big Splash", stolenItem: "Mom's sun hat", clue: "Mom dives in! Clear the big wave of splashes before it reaches Leo.", chapterIndex: 7, splashCount: 11, splashEvery: 2),
-        .init(goal: .pea, amount: 0, moves: 25, title: "Dry and Proud", stolenItem: "shared pool ring", clue: "One last splash wave, then Leo hands Henry's ring back beside Mom's chair.", chapterIndex: 7, splashCount: 12, splashEvery: 2),
+        .init(goal: .tomato, amount: 22, moves: 21, title: "Leo Spots the Pool", stolenItem: "Henry's pool ring", clue: "Mom wants everyone outside by the pool. Leo grabbed Henry's ring and froze.", chapterIndex: 7, potCells: 2, crateCells: 3),
+        .init(goal: .carrot, amount: 0, moves: 12, title: "First Little Splash", stolenItem: "dry paws", clue: "Splashes creep from the pool. Match on or beside them before they reach Leo's towel.", chapterIndex: 7, splashCount: 5, splashEvery: 3),
+        .init(goal: .onion, amount: 0, moves: 24, title: "The Dry Way", stolenItem: "dry stepping stones", clue: "Henry shows Leo the dry stones along the edge of the patio.", chapterIndex: 7, quietRouteSteps: 8, stoneCells: 3, beetleCount: 2),
+        .init(goal: .pepper, amount: 0, moves: 14, title: "Cannonball Next Door", stolenItem: "splash-free corner", clue: "A neighbor's cannonball sends drops flying. Henry stays between Leo and the water.", chapterIndex: 7, splashCount: 7, splashEvery: 3),
+        .init(goal: .eggplant, amount: 0, moves: 16, title: "Wet Paws, Brave Paws", stolenItem: "brave little step", clue: "The splashes come a little faster. Henry nudges back any that get too close.", chapterIndex: 7, splashCount: 8, splashEvery: 2, crateCells: 3, crateDepth: 3, gooCells: 3),
+        .init(goal: .pea, amount: 0, moves: 10, title: "Sunny Towel Nap", stolenItem: "warm towel", clue: "Leo dozed off on the warm towel. Henry gives gentle woofs to wake him.", chapterIndex: 7, sleepingCells: 8),
+        .init(goal: .tomato, amount: 0, moves: 15, title: "Pool Toy Parade", stolenItem: "floating duck", clue: "Pool toys bob by and splash the deck. Keep Leo's towel dry.", chapterIndex: 7, splashCount: 9, splashEvery: 2, potCells: 3, stoneCells: 2, gooCells: 3),
+        .init(goal: .carrot, amount: 0, moves: 25, title: "Between Leo and the Water", stolenItem: "path to Mom's chair", clue: "Henry walks on the pool side so Leo can walk on the dry side.", chapterIndex: 7, quietRouteSteps: 12),
+        .init(goal: .onion, amount: 0, moves: 18, title: "The Big Splash", stolenItem: "Mom's sun hat", clue: "Mom dives in! Clear the big wave of splashes before it reaches Leo.", chapterIndex: 7, splashCount: 11, splashEvery: 2, crateCells: 4, beetleCount: 3),
+        .init(goal: .pea, amount: 0, moves: 20, title: "Dry and Proud", stolenItem: "shared pool ring", clue: "One last splash wave, then Leo hands Henry's ring back beside Mom's chair.", chapterIndex: 7, splashCount: 12, splashEvery: 2, stoneCells: 3, beetleCount: 2, gooCells: 4),
 
-        .init(goal: .tomato, amount: 22, moves: 25, title: "Squeak at the Door", stolenItem: "Henry's red squeaky bug", clue: "Leo carried Henry's toy to the front door—just as someone unfamiliar arrived.", chapterIndex: 8, knockEvery: 4),
-        .init(goal: .carrot, amount: 0, moves: 25, title: "A Box on the Mat", stolenItem: "first parcel", clue: "Clear matches beneath each parcel so it can travel safely down to the doormat.", chapterIndex: 8, parcelCount: 2, knockEvery: 4),
-        .init(goal: .onion, amount: 0, moves: 24, title: "Knock, Knock!", stolenItem: "couch-cushion hideout", clue: "The knock startles Leo. Henry gives a gentle bark from their cozy viewing spot.", chapterIndex: 8, sleepingCells: 7, knockEvery: 3),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "Bring It Inside", stolenItem: "three little parcels", clue: "Make room below the boxes while Henry keeps watch by the door.", chapterIndex: 8, parcelCount: 3, knockEvery: 3),
-        .init(goal: .eggplant, amount: 0, moves: 24, title: "The Cozy Viewing Spot", stolenItem: "safe route behind the couch", clue: "Henry shows Leo where they can watch without standing near the visitor.", chapterIndex: 8, quietRouteSteps: 9, knockEvery: 4),
-        .init(goal: .pea, amount: 0, moves: 23, title: "Another Delivery", stolenItem: "stack of boxes", clue: "More parcels wait outside. Clear beneath them and bring every one to the mat.", chapterIndex: 8, parcelCount: 4, knockEvery: 3),
-        .init(goal: .tomato, amount: 0, moves: 23, title: "Henry Stays Close", stolenItem: "shared couch blanket", clue: "Henry settles beside Leo until the footsteps at the door sound less scary.", chapterIndex: 8, comfortCells: 22, knockEvery: 3),
-        .init(goal: .carrot, amount: 0, moves: 23, title: "Packages in the Hall", stolenItem: "five safe parcels", clue: "The hallway fills with boxes, but Henry knows exactly where each one belongs.", chapterIndex: 8, parcelCount: 5, knockEvery: 2),
-        .init(goal: .onion, amount: 0, moves: 23, title: "The Visitor Leaves", stolenItem: "quiet front step", clue: "The footsteps fade. Henry checks the familiar clues that mean everything is safe.", chapterIndex: 8, clueCells: 8, clueDepth: 2, knockEvery: 4),
-        .init(goal: .pea, amount: 0, moves: 25, title: "Special Delivery", stolenItem: "shared squeaky bug", clue: "Bring in the last parcels, then Henry and Leo can share the toy by the sunny door.", chapterIndex: 8, parcelCount: 6, knockEvery: 2),
+        .init(goal: .tomato, amount: 22, moves: 22, title: "Squeak at the Door", stolenItem: "Henry's red squeaky bug", clue: "Leo carried Henry's toy to the front door—just as someone unfamiliar arrived.", chapterIndex: 8, knockEvery: 4, crateCells: 4, stoneCells: 2),
+        .init(goal: .carrot, amount: 0, moves: 37, title: "A Box on the Mat", stolenItem: "first parcel", clue: "Clear matches beneath each parcel so it can travel safely down to the doormat.", chapterIndex: 8, parcelCount: 2, knockEvery: 4),
+        .init(goal: .onion, amount: 0, moves: 12, title: "Knock, Knock!", stolenItem: "couch-cushion hideout", clue: "The knock startles Leo. Henry gives a gentle bark from their cozy viewing spot.", chapterIndex: 8, sleepingCells: 7, knockEvery: 3, crateCells: 3, crateDepth: 3, gooCells: 4),
+        .init(goal: .pepper, amount: 0, moves: 36, title: "Bring It Inside", stolenItem: "three little parcels", clue: "Make room below the boxes while Henry keeps watch by the door.", chapterIndex: 8, parcelCount: 3, knockEvery: 3),
+        .init(goal: .eggplant, amount: 0, moves: 28, title: "The Cozy Viewing Spot", stolenItem: "safe route behind the couch", clue: "Henry shows Leo where they can watch without standing near the visitor.", chapterIndex: 8, quietRouteSteps: 9, knockEvery: 4, stoneCells: 3, beetleCount: 3, gooCells: 3),
+        .init(goal: .pea, amount: 0, moves: 46, title: "Another Delivery", stolenItem: "stack of boxes", clue: "More parcels wait outside. Clear beneath them and bring every one to the mat.", chapterIndex: 8, parcelCount: 4, knockEvery: 3),
+        .init(goal: .tomato, amount: 0, moves: 12, title: "Henry Stays Close", stolenItem: "shared couch blanket", clue: "Henry settles beside Leo until the footsteps at the door sound less scary.", chapterIndex: 8, comfortCells: 22, knockEvery: 3, beetleCount: 3, gooCells: 5),
+        .init(goal: .carrot, amount: 0, moves: 50, title: "Packages in the Hall", stolenItem: "five safe parcels", clue: "The hallway fills with boxes, but Henry knows exactly where each one belongs.", chapterIndex: 8, parcelCount: 5, knockEvery: 2),
+        .init(goal: .onion, amount: 0, moves: 13, title: "The Visitor Leaves", stolenItem: "quiet front step", clue: "The footsteps fade. Henry checks the familiar clues that mean everything is safe.", chapterIndex: 8, clueCells: 8, clueDepth: 2, knockEvery: 4),
+        .init(goal: .pea, amount: 0, moves: 50, title: "Special Delivery", stolenItem: "shared squeaky bug", clue: "Bring in the last parcels, then Henry and Leo can share the toy by the sunny door.", chapterIndex: 8, parcelCount: 6, knockEvery: 2),
 
-        .init(goal: .pea, amount: 24, moves: 25, title: "Birthday Morning", stolenItem: "first birthday sniff", clue: "It's the brothers' birthday! Leo is already sniffing around the kitchen.", chapterIndex: 9, partyEvery: 5),
-        .init(goal: .tomato, amount: 0, moves: 25, title: "Party Prep Dust", stolenItem: "tidy kitchen floor", clue: "Mom tidies up for the party. Clear the dust so Leo has a calm spot.", chapterIndex: 9, dustCells: 12, dustDepth: 1, partyEvery: 5),
-        .init(goal: .carrot, amount: 0, moves: 24, title: "Wrapping-Paper Rustle", stolenItem: "crinkly gift bag", clue: "Gift bags crinkle and cans clink. Henry quiets them one at a time.", chapterIndex: 9, canCells: 6, bagCells: 3, partyEvery: 4),
-        .init(goal: .onion, amount: 0, moves: 24, title: "Pads on the Counter", stolenItem: "peanut-butter pads", clue: "The peanut-butter pads are up high. Clear beneath them so they slide down to Mom.", chapterIndex: 9, parcelCount: 2, parcelIsPad: true, partyEvery: 4),
-        .init(goal: .pepper, amount: 0, moves: 24, title: "Leo Hides from the Hubbub", stolenItem: "quiet hiding spot", clue: "Too much party! Leo slipped away. Henry follows his pawsteps to him.", chapterIndex: 9, rescueSteps: 10, partyEvery: 4),
-        .init(goal: .tomato, amount: 16, moves: 24, title: "Too Much Commotion", stolenItem: "party noisemakers", clue: "Quiet the clattery noisemakers and gather happy Leos for the party.", chapterIndex: 9, canCells: 6, partyEvery: 3),
-        .init(goal: .eggplant, amount: 0, moves: 23, title: "The Hidden Treat", stolenItem: "hidden treat", clue: "Mom hid a surprise. Henry follows familiar clues while Leo stays close.", chapterIndex: 9, clueCells: 8, clueDepth: 2, partyEvery: 4),
-        .init(goal: .pea, amount: 16, moves: 24, title: "Spilled Water Bowl", stolenItem: "dry party paws", clue: "Someone bumped the water bowl! Keep Leo dry and gather snack-time Leos.", chapterIndex: 9, splashCount: 6, splashEvery: 3),
-        .init(goal: .carrot, amount: 0, moves: 24, title: "Two Pads, Two Brothers", stolenItem: "party blanket", clue: "Bring both pads down and spread the party blanket wide enough for two.", chapterIndex: 9, comfortCells: 12, parcelCount: 2, parcelIsPad: true, partyEvery: 3),
-        .init(goal: .pea, amount: 0, moves: 26, title: "The Peanut-Butter Pad", stolenItem: "shared birthday pad", clue: "One last birthday wish: bring the pads to Mom and make a cozy spot to share them.", chapterIndex: 9, comfortCells: 18, parcelCount: 2, parcelIsPad: true, partyEvery: 4)
+        .init(goal: .pea, amount: 24, moves: 24, title: "Birthday Morning", stolenItem: "first birthday sniff", clue: "It's the brothers' birthday! Leo is already sniffing around the kitchen.", chapterIndex: 9, partyEvery: 5, gooCells: 3),
+        .init(goal: .tomato, amount: 0, moves: 18, title: "Party Prep Dust", stolenItem: "tidy kitchen floor", clue: "Mom tidies up for the party. Clear the dust so Leo has a calm spot.", chapterIndex: 9, dustCells: 12, dustDepth: 1, partyEvery: 5, potCells: 3, crateCells: 3),
+        .init(goal: .carrot, amount: 0, moves: 10, title: "Wrapping-Paper Rustle", stolenItem: "crinkly gift bag", clue: "Gift bags crinkle and cans clink. Henry quiets them one at a time.", chapterIndex: 9, canCells: 6, bagCells: 3, partyEvery: 4, stoneCells: 3, gooCells: 4),
+        .init(goal: .onion, amount: 0, moves: 43, title: "Pads on the Counter", stolenItem: "peanut-butter pads", clue: "The peanut-butter pads are up high. Clear beneath them so they slide down to Mom.", chapterIndex: 9, parcelCount: 2, parcelIsPad: true, partyEvery: 4),
+        .init(goal: .pepper, amount: 0, moves: 21, title: "Leo Hides from the Hubbub", stolenItem: "quiet hiding spot", clue: "Too much party! Leo slipped away. Henry follows his pawsteps to him.", chapterIndex: 9, rescueSteps: 10, partyEvery: 4, crateCells: 4, crateDepth: 3, stoneCells: 3),
+        .init(goal: .tomato, amount: 16, moves: 20, title: "Too Much Commotion", stolenItem: "party noisemakers", clue: "Quiet the clattery noisemakers and gather happy Leos for the party.", chapterIndex: 9, canCells: 6, partyEvery: 3, potCells: 2, beetleCount: 3, gooCells: 4),
+        .init(goal: .eggplant, amount: 0, moves: 15, title: "The Hidden Treat", stolenItem: "hidden treat", clue: "Mom hid a surprise. Henry follows familiar clues while Leo stays close.", chapterIndex: 9, clueCells: 8, clueDepth: 2, partyEvery: 4, crateCells: 3, stoneCells: 3, gooCells: 5),
+        .init(goal: .pea, amount: 16, moves: 22, title: "Spilled Water Bowl", stolenItem: "dry party paws", clue: "Someone bumped the water bowl! Keep Leo dry and gather snack-time Leos.", chapterIndex: 9, splashCount: 6, splashEvery: 3, potCells: 3, crateCells: 4, crateDepth: 3, beetleCount: 3),
+        .init(goal: .carrot, amount: 0, moves: 41, title: "Two Pads, Two Brothers", stolenItem: "party blanket", clue: "Bring both pads down and spread the party blanket wide enough for two.", chapterIndex: 9, comfortCells: 12, parcelCount: 2, parcelIsPad: true, partyEvery: 3),
+        .init(goal: .pea, amount: 0, moves: 44, title: "The Peanut-Butter Pad", stolenItem: "shared birthday pad", clue: "One last birthday wish: bring the pads to Mom and make a cozy spot to share them.", chapterIndex: 9, comfortCells: 18, parcelCount: 2, parcelIsPad: true, partyEvery: 4)
     ]
 
     static let chapters: [Chapter] = [
@@ -326,6 +344,15 @@ final class GameModel: ObservableObject {
     @Published var parcelBursts = Set<Position>()
     @Published var doorKnock = false
     @Published var partyPop = false
+    @Published var blockers: [Position: Blocker] = [:]
+    @Published var blockerBursts = Set<Position>()
+    @Published var goo = Set<Position>()
+    @Published var gooBursts = Set<Position>()
+    @Published var bonusBursts = Set<Position>()
+    @Published var outOfMoves = false
+    @Published private(set) var secondWindUsed = false
+    @Published private(set) var watersLeft = GameModel.watersPerLevel
+    private var gooClearedThisMove = false
     private var movesMade = 0
     @Published var mapChapterIndex = 0
     @Published var selected: Position?
@@ -349,7 +376,15 @@ final class GameModel: ObservableObject {
     /// True when the level just won was a first-time win, which earns one yard treat.
     @Published private(set) var lastWinEarnedTreat = false
 
+    static let watersPerLevel = 3
+    static let secondWindMoves = 5
+    static let maxGoo = 18
+
     var level: Level { Self.levels[levelIndex] }
+    /// Chapter Ten's goo is birthday frosting; everywhere else it is garden mud.
+    var gooIsFrosting: Bool { level.chapterIndex == 9 }
+    /// Henry's second wind is offered once per attempt when the goal is at least three-quarters done.
+    var canTakeSecondWind: Bool { !secondWindUsed && objectiveProgress * 4 >= objectiveAmount * 3 }
     var chapter: Chapter { Self.chapters[level.chapterIndex] }
     var remainingDust: Int { dustLayers.flatMap { $0 }.reduce(0, +) }
     var remainingNoise: Int { noisyObjects.values.reduce(0) { $0 + $1.hits } }
@@ -535,6 +570,15 @@ final class GameModel: ObservableObject {
         parcelBursts.removeAll()
         doorKnock = false
         partyPop = false
+        blockers = freshBlockers()
+        blockerBursts.removeAll()
+        goo = freshGoo()
+        gooBursts.removeAll()
+        bonusBursts.removeAll()
+        outOfMoves = false
+        secondWindUsed = false
+        watersLeft = Self.watersPerLevel
+        gooClearedThisMove = false
         movesMade = 0
         mapChapterIndex = level.chapterIndex
         message = level.clue
@@ -616,7 +660,7 @@ final class GameModel: ObservableObject {
     }
 
     func tap(_ position: Position) {
-        guard !isBusy else { return }
+        guard !isBusy, !outOfMoves else { return }
         guard let old = selected else { selected = position; sound(.select); return }
         if old == position { selected = nil; return }
         guard old.isAdjacent(to: position) else { selected = position; return }
@@ -625,7 +669,7 @@ final class GameModel: ObservableObject {
     }
 
     func drag(from position: Position, translation: CGSize) {
-        guard !isBusy, max(abs(translation.width), abs(translation.height)) > 18 else { return }
+        guard !isBusy, !outOfMoves, max(abs(translation.width), abs(translation.height)) > 18 else { return }
         let target: Position
         if abs(translation.width) > abs(translation.height) {
             target = .init(row: position.row, col: position.col + (translation.width > 0 ? 1 : -1))
@@ -646,7 +690,12 @@ final class GameModel: ObservableObject {
     }
 
     func water() {
-        guard !isBusy else { return }
+        guard !isBusy, !outOfMoves else { return }
+        guard watersLeft > 0 else {
+            message = "The watering can is empty for this level."
+            haptic(.rigid)
+            return
+        }
         let candidates: ArraySlice<Position>
         if level.clearsDust {
             let dusty = (0..<Self.size).flatMap { row in
@@ -679,6 +728,7 @@ final class GameModel: ObservableObject {
             candidates = positions(of: level.goal).shuffled().prefix(5)
         }
         guard !candidates.isEmpty else { return }
+        watersLeft -= 1
         Task {
             isBusy = true
             await clear(Array(candidates))
@@ -709,7 +759,35 @@ final class GameModel: ObservableObject {
         start(level: min(levelIndex + 1, unlocked - 1))
     }
 
+    /// Henry's second wind: a few more moves, once per attempt, when the goal is nearly done.
+    func takeSecondWind() {
+        guard outOfMoves, canTakeSecondWind else { return }
+        secondWindUsed = true
+        moves += Self.secondWindMoves
+        outOfMoves = false
+        message = "Henry found a snack in his pocket! \(Self.secondWindMoves) more moves."
+        sound(.extraMoves)
+    }
+
+    func retryLevel() {
+#if DEBUG
+        if isDeveloperPreview {
+            startDeveloperPreview(level: levelIndex)
+            return
+        }
+#endif
+        start(level: levelIndex)
+    }
+
     private func attemptSwap(_ a: Position, _ b: Position) async {
+        if let stuck = [a, b].first(where: isFixed) {
+            message = blockers[stuck] != nil
+                ? "That \(blockerName(blockers[stuck]!.kind)) won't budge. Match beside it instead."
+                : "That Leo is stuck in the \(gooIsFrosting ? "frosting" : "mud"). Match on or beside him to clean him off."
+            haptic(.rigid)
+            sound(.nope)
+            return
+        }
         isBusy = true
         swap(a, b)
         try? await Task.sleep(for: .milliseconds(180))
@@ -757,9 +835,17 @@ final class GameModel: ObservableObject {
         else if level.partyEvery > 0, movesMade.isMultiple(of: level.partyEvery) {
             popPartyCommotion()
         }
+        if !objectiveComplete {
+            moveBeetles()
+            spreadGoo()
+            if possibleMove() == nil { reshuffleStuckBoard() }
+        }
+        gooClearedThisMove = false
         if !objectiveComplete, moves <= 0 {
-            moves += 10
-            message = "Ten extra moves, on the house!"
+            outOfMoves = true
+            message = canTakeSecondWind ? "So close! Henry has an idea…" : "Out of moves! Henry is ready to try again."
+            haptic(.warning)
+            sound(.outOfMoves)
         }
         isBusy = false
     }
@@ -775,7 +861,8 @@ final class GameModel: ObservableObject {
                 removed.remove(creation.position)
                 board[creation.position.row][creation.position.col].powerUp = creation.kind
             }
-            removed = expandedClearSet(from: removed)
+            let settled = settle(expandedClearSet(from: removed))
+            removed = settled.tiles
             popping = removed
             collected += removed.filter { board[$0.row][$0.col].veggie == level.goal }.count
             let dustHit = damageDust(at: removed)
@@ -813,6 +900,12 @@ final class GameModel: ObservableObject {
             } else if awakened > 0 {
                 message = "WOOF! Henry woke \(awakened) sleepy Leo\(awakened == 1 ? "" : "s")."
                 haptic(.success)
+            } else if settled.brokenBlockers > 0 {
+                message = blockerMessage(settled)
+                haptic(.success)
+            } else if settled.cleanedGoo > 0 {
+                message = "Henry licked \(settled.cleanedGoo) Leo\(settled.cleanedGoo == 1 ? "" : "s") clean of \(gooIsFrosting ? "frosting" : "mud")!"
+                haptic(.success)
             } else if let creation {
                 message = creationMessage(creation.kind)
                 haptic(.success)
@@ -824,8 +917,9 @@ final class GameModel: ObservableObject {
                 haptic(.soft)
             }
             sound(creation != nil ? .powerUpMade : .pop(combo: combo))
+            if settled.extraMoves > 0 { message = "A treat bag! Henry earned \(settled.extraMoves) extra moves." }
             try? await Task.sleep(for: .milliseconds(260))
-            collapse(removed)
+            collapse(removed.union(settled.freed))
             popping.removeAll()
             try? await Task.sleep(for: .milliseconds(260))
             current = matchInfo()
@@ -840,7 +934,8 @@ final class GameModel: ObservableObject {
             let other = position == swapped.0 ? swapped.1 : swapped.0
             rainbowTargets[position] = board[other.row][other.col].veggie
         }
-        clearSet = expandedClearSet(from: clearSet, rainbowTargets: rainbowTargets)
+        let settled = settle(expandedClearSet(from: clearSet, rainbowTargets: rainbowTargets), crackStones: activatedKinds.contains(.rainbowPaw))
+        clearSet = settled.tiles
         popping = clearSet
         collected += clearSet.filter { board[$0.row][$0.col].veggie == level.goal }.count
         _ = damageDust(at: clearSet)
@@ -857,15 +952,18 @@ final class GameModel: ObservableObject {
             : advanced > 0 ? "Power-up path! Henry bounded ahead \(advanced)!" : awakened > 0 ? "WOOF! Henry's power-up bark woke \(awakened)!" : "Power-up! The garden is flying!"
         haptic(.success)
         sound(powerUpSound(for: activatedKinds))
+        if settled.brokenBlockers > 0 { message = "Power-up! " + blockerMessage(settled) }
         try? await Task.sleep(for: .milliseconds(320))
-        collapse(clearSet)
+        collapse(clearSet.union(settled.freed))
         popping.removeAll()
         try? await Task.sleep(for: .milliseconds(260))
         let cascades = matchInfo()
         if !cascades.positions.isEmpty { await resolve(cascades) }
     }
 
-    private func clear(_ positions: [Position]) async {
+    private func clear(_ targeted: [Position]) async {
+        let settled = settle(Set(targeted))
+        let positions = Array(settled.tiles)
         popping = Set(positions)
         collected += positions.filter { board[$0.row][$0.col].veggie == level.goal }.count
         let dustHit = damageDust(at: Set(positions))
@@ -881,24 +979,167 @@ final class GameModel: ObservableObject {
         haptic(.soft)
         sound(.water)
         try? await Task.sleep(for: .milliseconds(260))
-        collapse(Set(positions))
+        collapse(Set(positions).union(settled.freed))
         popping.removeAll()
         try? await Task.sleep(for: .milliseconds(230))
         let newMatches = matchInfo()
         if !newMatches.positions.isEmpty { await resolve(newMatches) }
     }
 
+    /// Pieces fall within each stretch of a column between blockers and goo, which stay put.
+    /// Every stretch refills from its own top.
     private func collapse(_ removed: Set<Position>) {
         for col in 0..<Self.size {
-            var kept: [Tile] = []
-            for row in stride(from: Self.size - 1, through: 0, by: -1) where !removed.contains(.init(row: row, col: col)) {
-                kept.append(board[row][col])
-            }
-            for row in stride(from: Self.size - 1, through: 0, by: -1) {
-                let index = Self.size - 1 - row
-                board[row][col] = index < kept.count ? kept[index] : Tile(veggie: .allCases.randomElement()!)
+            var bottom = Self.size - 1
+            while bottom >= 0 {
+                if isFixed(Position(row: bottom, col: col)) {
+                    bottom -= 1
+                    continue
+                }
+                var top = bottom
+                while top > 0, !isFixed(Position(row: top - 1, col: col)) { top -= 1 }
+                var kept: [Tile] = []
+                for row in stride(from: bottom, through: top, by: -1) where !removed.contains(.init(row: row, col: col)) {
+                    kept.append(board[row][col])
+                }
+                for row in stride(from: bottom, through: top, by: -1) {
+                    let index = bottom - row
+                    board[row][col] = index < kept.count ? kept[index] : freshTile()
+                }
+                bottom = top - 1
             }
         }
+    }
+
+    /// A new piece. Now and then it carries a treat bag worth two extra moves.
+    private func freshTile() -> Tile {
+        let bags = board.joined().filter { $0.bonusMoves > 0 }.count
+        let bonus = bags < 2 && Double.random(in: 0..<1) < 0.025 ? 2 : 0
+        return Tile(veggie: .allCases.randomElement()!, bonusMoves: bonus)
+    }
+
+    private func isFixed(_ position: Position) -> Bool {
+        blockers[position] != nil || goo.contains(position)
+    }
+
+    private struct Settled {
+        /// Leo pieces that pop.
+        var tiles = Set<Position>()
+        /// Blocker cells that broke and now refill.
+        var freed = Set<Position>()
+        var brokenBlockers = 0
+        var cleanedGoo = 0
+        var extraMoves = 0
+    }
+
+    /// Works out what a set of targeted cells really does: blockers in the blast take a hit, goo
+    /// comes off (the Leo underneath stays), and pieces popping beside pots, crates, beetles, or
+    /// goo chip them too. Stones only crack from power-ups.
+    private func settle(_ targeted: Set<Position>, crackStones: Bool = false) -> Settled {
+        var result = Settled()
+        var hit = Set<Position>()
+        var cleaned = Set<Position>()
+        for position in targeted {
+            if blockers[position] != nil { hit.insert(position) }
+            else if goo.contains(position) { cleaned.insert(position) }
+            else { result.tiles.insert(position) }
+        }
+        for tile in result.tiles {
+            for neighbor in tile.neighbors {
+                if let blocker = blockers[neighbor], blocker.breaksFromNearbyMatches { hit.insert(neighbor) }
+                if goo.contains(neighbor) { cleaned.insert(neighbor) }
+            }
+        }
+        if crackStones { hit.formUnion(blockers.filter { $0.value.kind == .stone }.keys) }
+        for position in hit {
+            blockers[position]?.hits -= 1
+            if (blockers[position]?.hits ?? 0) <= 0 {
+                blockers[position] = nil
+                result.freed.insert(position)
+                result.brokenBlockers += 1
+            }
+        }
+        if !cleaned.isEmpty {
+            goo.subtract(cleaned)
+            gooClearedThisMove = true
+            result.cleanedGoo = cleaned.count
+        }
+        let bagged = result.tiles.filter { board[$0.row][$0.col].bonusMoves > 0 }
+        result.extraMoves = bagged.reduce(0) { $0 + board[$1.row][$1.col].bonusMoves }
+        if result.extraMoves > 0 {
+            moves += result.extraMoves
+            sound(.extraMoves)
+        }
+        if !hit.isEmpty { sound(.blockerHit) } else if !cleaned.isEmpty { sound(.gooClean) }
+        blockerBursts.formUnion(hit)
+        gooBursts.formUnion(cleaned)
+        bonusBursts.formUnion(bagged)
+        if !hit.isEmpty || !cleaned.isEmpty || !bagged.isEmpty {
+            Task {
+                try? await Task.sleep(for: .milliseconds(650))
+                blockerBursts.subtract(hit)
+                gooBursts.subtract(cleaned)
+                bonusBursts.subtract(bagged)
+            }
+        }
+        return result
+    }
+
+    private func blockerName(_ kind: Blocker.Kind) -> String {
+        switch kind {
+        case .pot: "flowerpot"
+        case .crate: "toy crate"
+        case .stone: "garden stone"
+        case .beetle: "beetle"
+        }
+    }
+
+    private func blockerMessage(_ settled: Settled) -> String {
+        settled.brokenBlockers == 1
+            ? "Crunch! Henry cleared a blocker out of Leo's way."
+            : "Crunch! Henry cleared \(settled.brokenBlockers) blockers out of Leo's way."
+    }
+
+    /// After each move, every beetle wanders one square, trading places with a Leo.
+    /// It never lands somewhere that would make an instant match.
+    private func moveBeetles() {
+        for (position, beetle) in blockers.filter({ $0.value.kind == .beetle }) {
+            let options = position.neighbors.filter { !isFixed($0) && board[$0.row][$0.col].powerUp == nil }.shuffled()
+            for target in options {
+                swap(position, target)
+                blockers[position] = nil
+                blockers[target] = beetle
+                if matchInfo().positions.isEmpty { break }
+                blockers[target] = nil
+                blockers[position] = beetle
+                swap(position, target)
+            }
+        }
+    }
+
+    /// Goo creeps onto one more Leo after any move that didn't clean some off.
+    private func spreadGoo() {
+        guard level.gooCells > 0, !goo.isEmpty, !gooClearedThisMove, goo.count < Self.maxGoo else { return }
+        let options = goo.flatMap(\.neighbors).filter { !isFixed($0) && board[$0.row][$0.col].powerUp == nil }
+        guard let target = options.randomElement() else { return }
+        goo.insert(target)
+        gooBursts.insert(target)
+        Task {
+            try? await Task.sleep(for: .milliseconds(650))
+            gooBursts.remove(target)
+        }
+        message = gooIsFrosting
+            ? "Splat! The frosting spread onto another Leo. Clean some off to stop it."
+            : "Squelch! The mud spread onto another Leo. Clean some off to stop it."
+    }
+
+    /// Blockers can leave the board with no possible swap. Henry stirs things up for free.
+    private func reshuffleStuckBoard() {
+        for _ in 0..<12 {
+            board = freshBoard()
+            if possibleMove() != nil { break }
+        }
+        message = "Nothing could move, so Henry gave everyone a fresh spot."
     }
 
     private func damageDust(at positions: Set<Position>) -> Int {
@@ -1282,7 +1523,7 @@ final class GameModel: ObservableObject {
     }
 
     private func placeStartingBoosters(_ boosters: Set<StartingBooster>) {
-        var open = (0..<(Self.size * Self.size)).map { Position(row: $0 / Self.size, col: $0 % Self.size) }.shuffled()
+        var open = (0..<(Self.size * Self.size)).map { Position(row: $0 / Self.size, col: $0 % Self.size) }.filter { !isFixed($0) }.shuffled()
         for booster in StartingBooster.allCases where boosters.contains(booster) {
             guard let position = open.popLast() else { break }
             switch booster {
@@ -1408,6 +1649,64 @@ final class GameModel: ObservableObject {
         return result
     }
 
+    /// Places the level's blockers on fixed spots, skipping any cell an objective already uses.
+    /// Parcel levels stay blocker-free because parcels slide down whole columns.
+    private func freshBlockers() -> [Position: Blocker] {
+        guard !level.deliversParcels else { return [:] }
+        var taken = objectiveCells()
+        var result: [Position: Blocker] = [:]
+        func place(_ pattern: [Position], count: Int, _ blocker: Blocker) {
+            for position in pattern.filter({ !taken.contains($0) }).prefix(count) {
+                result[position] = blocker
+                taken.insert(position)
+            }
+        }
+        place([.init(row: 3, col: 3), .init(row: 3, col: 4), .init(row: 4, col: 3), .init(row: 4, col: 4),
+               .init(row: 1, col: 1), .init(row: 1, col: 6), .init(row: 6, col: 1), .init(row: 6, col: 6),
+               .init(row: 0, col: 0), .init(row: 0, col: 7)],
+              count: level.crateCells, .init(kind: .crate, hits: max(2, level.crateDepth)))
+        place([.init(row: 4, col: 0), .init(row: 3, col: 7), .init(row: 7, col: 3), .init(row: 7, col: 4),
+               .init(row: 2, col: 0), .init(row: 5, col: 7), .init(row: 0, col: 2), .init(row: 0, col: 5)],
+              count: level.stoneCells, .init(kind: .stone, hits: max(1, level.stoneDepth)))
+        place([.init(row: 2, col: 2), .init(row: 2, col: 5), .init(row: 5, col: 2), .init(row: 5, col: 5),
+               .init(row: 0, col: 3), .init(row: 0, col: 4), .init(row: 7, col: 0), .init(row: 7, col: 7),
+               .init(row: 3, col: 0), .init(row: 4, col: 7)],
+              count: level.potCells, .init(kind: .pot, hits: 1))
+        place([.init(row: 1, col: 3), .init(row: 6, col: 4), .init(row: 2, col: 6), .init(row: 5, col: 1)],
+              count: level.beetleCount, .init(kind: .beetle, hits: 1))
+        return result
+    }
+
+    private func freshGoo() -> Set<Position> {
+        guard level.gooCells > 0, !level.deliversParcels else { return [] }
+        let taken = objectiveCells().union(blockers.keys)
+        let pattern: [Position] = [
+            .init(row: 7, col: 0), .init(row: 7, col: 7), .init(row: 0, col: 0), .init(row: 0, col: 7),
+            .init(row: 7, col: 1), .init(row: 7, col: 6), .init(row: 6, col: 0), .init(row: 6, col: 7)
+        ]
+        return Set(pattern.filter { !taken.contains($0) }.prefix(level.gooCells))
+    }
+
+    /// Cells an objective marks, so blockers and goo never sit on top of them.
+    private func objectiveCells() -> Set<Position> {
+        var cells = Set<Position>()
+        for row in 0..<Self.size { for col in 0..<Self.size where dustLayers[row][col] > 0 { cells.insert(.init(row: row, col: col)) } }
+        cells.formUnion(sleepingLeos)
+        cells.formUnion(rescuePath)
+        cells.formUnion(quietRoute)
+        cells.formUnion(cozyCells)
+        cells.formUnion(noisyObjects.keys)
+        cells.formUnion(hiddenClues.keys)
+        if level.spreadsComfort {
+            // Leave the blanket room to grow from the bottom center.
+            for row in 5..<Self.size { for col in 2...5 { cells.insert(.init(row: row, col: col)) } }
+        }
+        if level.keepsLeoDry {
+            for col in 2...5 { cells.insert(.init(row: Self.size - 1, col: col)) }
+        }
+        return cells
+    }
+
     private func freshParcels() -> Set<Position> {
         guard level.deliversParcels else { return [] }
         let columns = [1, 6, 3, 4, 0, 7]
@@ -1419,7 +1718,7 @@ final class GameModel: ObservableObject {
         for row in 0..<Self.size {
             var start = 0
             for col in 1...Self.size {
-                if col == Self.size || board[row][col].veggie != board[row][col - 1].veggie {
+                if col == Self.size || !matchable(.init(row: row, col: col), .init(row: row, col: col - 1)) {
                     if col - start >= 3 {
                         let run = (start..<col).map { Position(row: row, col: $0) }
                         info.horizontalRuns.append(run)
@@ -1432,7 +1731,7 @@ final class GameModel: ObservableObject {
         for col in 0..<Self.size {
             var start = 0
             for row in 1...Self.size {
-                if row == Self.size || board[row][col].veggie != board[row - 1][col].veggie {
+                if row == Self.size || !matchable(.init(row: row, col: col), .init(row: row - 1, col: col)) {
                     if row - start >= 3 {
                         let run = (start..<row).map { Position(row: $0, col: col) }
                         info.verticalRuns.append(run)
@@ -1443,6 +1742,11 @@ final class GameModel: ObservableObject {
             }
         }
         return info
+    }
+
+    /// Two neighbors can be part of the same run: same Leo, and neither is a blocker.
+    private func matchable(_ a: Position, _ b: Position) -> Bool {
+        blockers[a] == nil && blockers[b] == nil && board[a.row][a.col].veggie == board[b.row][b.col].veggie
     }
 
     private func choosePowerUp(for info: MatchInfo, preferred: [Position]) -> PowerUpCreation? {
@@ -1508,7 +1812,7 @@ final class GameModel: ObservableObject {
     private func possibleMove() -> [Position]? {
         for row in 0..<Self.size { for col in 0..<Self.size {
             let here = Position(row: row, col: col)
-            for next in [Position(row: row, col: col + 1), Position(row: row + 1, col: col)] where next.isValid {
+            for next in [Position(row: row, col: col + 1), Position(row: row + 1, col: col)] where next.isValid && !isFixed(here) && !isFixed(next) {
                 swap(here, next)
                 let works = !matchInfo().positions.isEmpty
                 swap(here, next)
@@ -1520,7 +1824,9 @@ final class GameModel: ObservableObject {
 
     private func positions(of veggie: Veggie) -> [Position] {
         var result: [Position] = []
-        for row in 0..<Self.size { for col in 0..<Self.size where board[row][col].veggie == veggie { result.append(.init(row: row, col: col)) } }
+        for row in 0..<Self.size { for col in 0..<Self.size where board[row][col].veggie == veggie && blockers[.init(row: row, col: col)] == nil {
+            result.append(.init(row: row, col: col))
+        } }
         return result
     }
 
@@ -1553,6 +1859,11 @@ struct Position: Hashable {
     let col: Int
     var isValid: Bool { (0..<boardSize).contains(row) && (0..<boardSize).contains(col) }
     func isAdjacent(to other: Position) -> Bool { abs(row - other.row) + abs(col - other.col) == 1 }
+    /// The up-to-four cells sharing an edge with this one.
+    var neighbors: [Position] {
+        [Position(row: row - 1, col: col), Position(row: row + 1, col: col),
+         Position(row: row, col: col - 1), Position(row: row, col: col + 1)].filter(\.isValid)
+    }
 }
 
 private extension Array where Element == [Tile] {

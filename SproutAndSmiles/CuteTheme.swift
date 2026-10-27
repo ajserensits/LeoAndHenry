@@ -315,3 +315,72 @@ struct LevelWinCard: View {
         .quiltedCard(corner: 30)
     }
 }
+
+/// Shown when a level runs out of moves. Lives are unlimited, so trying again is always free;
+/// when the goal is nearly done, Henry also offers a one-time second wind.
+struct OutOfMovesCard: View {
+    let progress: Int
+    let goal: Int
+    let secondWindMoves: Int?
+    let secondWind: () -> Void
+    let retry: () -> Void
+    let map: () -> Void
+
+    var body: some View {
+        GeometryReader { proxy in
+            ScrollView {
+                card
+                    .padding(24)
+                    .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .background(Color.black.opacity(0.38).ignoresSafeArea())
+    }
+
+    private var card: some View {
+        VStack(spacing: 12) {
+            if let portrait = UIImage(named: "henry-map-marker") {
+                Image(uiImage: portrait)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 82, height: 82)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 4))
+                    .shadow(color: Cute.cocoa.opacity(0.25), radius: 0, y: 4)
+                    .accessibilityHidden(true)
+            }
+            CutePill(text: "OUT OF MOVES", icon: "hourglass", fill: Cute.berry, size: 10)
+            StickerText(secondWindMoves == nil ? "Let's try again!" : "So close!", size: 28, colors: [Cute.honey, Cute.honeyDeep])
+                .multilineTextAlignment(.center)
+            CuteProgressBar(value: Double(progress), total: Double(max(goal, 1)), height: 12)
+                .frame(maxWidth: 240)
+            Text(secondWindMoves.map { "Henry found a snack in his pocket. Take \($0) more moves to finish?" }
+                 ?? "\(progress) of \(goal) done. Henry is ready to start the chase again—lives never run out.")
+                .font(Cute.font(15, .semibold))
+                .foregroundStyle(Cute.cocoaSoft)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            if let secondWindMoves {
+                Button(action: secondWind) {
+                    Label("+\(secondWindMoves) moves", systemImage: "takeoutbag.and.cup.and.straw.fill")
+                }
+                .buttonStyle(CuteCandyButtonStyle(colors: [Cute.leaf, Cute.leafDeep]))
+            }
+            Button(action: retry) {
+                Label("Try again", systemImage: "arrow.counterclockwise")
+            }
+            .buttonStyle(CuteCandyButtonStyle())
+            Button(action: map) {
+                Text("Back to the map")
+                    .font(Cute.font(14, .heavy))
+                    .foregroundStyle(Cute.cocoaSoft)
+                    .underline()
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(22)
+        .frame(maxWidth: 380)
+        .quiltedCard(corner: 30)
+    }
+}

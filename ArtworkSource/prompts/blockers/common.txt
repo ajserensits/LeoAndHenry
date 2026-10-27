@@ -1,0 +1,7 @@
+Use your built-in image generation tool to create exactly ONE image, then save it as a PNG at the output path given below. Do not edit, create, or delete any other files. Do not run git. Generate a SQUARE image (1024x1024) with a TRANSPARENT background (true alpha, no background color, no ground, no scenery).
+
+This is a single BLOCKER game piece for a cozy iPhone match-three game. Normal pieces are round portraits of a fluffy golden dog on bright sunburst circles (see the attached piece). This blocker sits in one square cell of the 8x8 board in place of a piece, so it must read instantly at 45 points on a phone and look clearly different from the round dog pieces: chunky, solid, simple silhouette, no sunburst, no circle frame. The attached images are the approved style references: match their painterly rendering exactly.
+
+STYLE: Premium storybook illustration with a soft painterly 3D rendering, like a high-end animated film still. Warm golden-hour light from the upper left, rich saturated colors, soft rounded toy-like shapes, friendly and never scary. Seen straight from the front, very slightly from above. The object is centered, fully visible with nothing cropped, and fills about 88% of the frame width. A very small soft contact shadow directly beneath.
+
+Isolated object only on a fully transparent background. No text, letters, numbers, logos, labels, signatures, or watermarks. No dogs, people, or animals unless described below.

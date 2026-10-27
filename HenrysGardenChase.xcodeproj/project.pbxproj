@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A2028B01A2028B01A2028B01 /* blocker-pot.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B01B2028B01B2028B01 /* blocker-pot.png */; };
+		A2028B02A2028B02A2028B02 /* blocker-crate.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B02B2028B02B2028B02 /* blocker-crate.png */; };
+		A2028B03A2028B03A2028B03 /* blocker-crate-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */; };
+		A2028B04A2028B04A2028B04 /* blocker-stone.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B04B2028B04B2028B04 /* blocker-stone.png */; };
+		A2028B05A2028B05A2028B05 /* blocker-stone-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */; };
+		A2028B06A2028B06A2028B06 /* blocker-beetle.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B06B2028B06B2028B06 /* blocker-beetle.png */; };
 		15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */; };
 		1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F186D3BAA33C371B5D9E9106 /* GameModel.swift */; };
 		A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */; };
@@ -65,6 +71,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B2028B01B2028B01B2028B01 /* blocker-pot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-pot.png"; sourceTree = "<group>"; };
+		B2028B02B2028B02B2028B02 /* blocker-crate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate.png"; sourceTree = "<group>"; };
+		B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate-cracked.png"; sourceTree = "<group>"; };
+		B2028B04B2028B04B2028B04 /* blocker-stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone.png"; sourceTree = "<group>"; };
+		B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone-cracked.png"; sourceTree = "<group>"; };
+		B2028B06B2028B06B2028B06 /* blocker-beetle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-beetle.png"; sourceTree = "<group>"; };
 		0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-side-eye.png"; sourceTree = "<group>"; };
 		0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-grumpy.png"; sourceTree = "<group>"; };
 		1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeggieView.swift; sourceTree = "<group>"; };
@@ -175,6 +187,7 @@
 				4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */,
 				9144EF00766C5A9982D45C66 /* LeoPieces */,
 				C2027D00C2027D00C2027D00 /* Yard */,
+				C2028B00C2028B00C2028B00 /* Blockers */,
 			);
 			path = Artwork;
 			sourceTree = "<group>";
@@ -190,6 +203,19 @@
 				0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */,
 			);
 			path = LeoPieces;
+			sourceTree = "<group>";
+		};
+		C2028B00C2028B00C2028B00 /* Blockers */ = {
+			isa = PBXGroup;
+			children = (
+				B2028B01B2028B01B2028B01 /* blocker-pot.png */,
+				B2028B02B2028B02B2028B02 /* blocker-crate.png */,
+				B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */,
+				B2028B04B2028B04B2028B04 /* blocker-stone.png */,
+				B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */,
+				B2028B06B2028B06B2028B06 /* blocker-beetle.png */,
+			);
+			path = Blockers;
 			sourceTree = "<group>";
 		};
 		C2027D00C2027D00C2027D00 /* Yard */ = {
@@ -295,6 +321,12 @@
 				A2026C08A2026C08A2026C08 /* chapter-08-pool-day.png in Resources */,
 				A2026C09A2026C09A2026C09 /* chapter-09-special-delivery.png in Resources */,
 				A2026C10A2026C10A2026C10 /* chapter-10-birthday-pad.png in Resources */,
+				A2028B01A2028B01A2028B01 /* blocker-pot.png in Resources */,
+				A2028B02A2028B02A2028B02 /* blocker-crate.png in Resources */,
+				A2028B03A2028B03A2028B03 /* blocker-crate-cracked.png in Resources */,
+				A2028B04A2028B04A2028B04 /* blocker-stone.png in Resources */,
+				A2028B05A2028B05A2028B05 /* blocker-stone-cracked.png in Resources */,
+				A2028B06A2028B06A2028B06 /* blocker-beetle.png in Resources */,
 				A2027D00A2027D00A2027D00 /* yard-background.png in Resources */,
 				A2027D01A2027D01A2027D01 /* yard-flowers-1.png in Resources */,
 				A2027D02A2027D02A2027D02 /* yard-flowers-2.png in Resources */,

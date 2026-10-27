@@ -142,6 +142,21 @@ struct ContentView: View {
             }
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: winAlertPresented.wrappedValue)
+        .overlay {
+            if game.outOfMoves && !game.showingWin && !showingMap {
+                OutOfMovesCard(
+                    progress: game.objectiveProgress,
+                    goal: game.objectiveAmount,
+                    secondWindMoves: game.canTakeSecondWind ? GameModel.secondWindMoves : nil,
+                    secondWind: game.takeSecondWind,
+                    retry: game.retryLevel,
+                    map: { withAnimation { showingMap = true } }
+                )
+                .transition(.opacity.combined(with: .scale(scale: 0.94)))
+                .zIndex(8)
+            }
+        }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: game.outOfMoves)
     }
 
     /// The yard has its own theme; otherwise play the chapter on screen.
@@ -479,6 +494,13 @@ struct ContentView: View {
                         parcel: game.parcels.contains(position),
                         parcelBurst: game.parcelBursts.contains(position),
                         parcelIsPad: game.level.parcelIsPad,
+                        blocker: game.blockers[position],
+                        blockerBurst: game.blockerBursts.contains(position),
+                        gooed: game.goo.contains(position),
+                        gooBurst: game.gooBursts.contains(position),
+                        frosting: game.gooIsFrosting,
+                        bonusMoves: game.board[row][col].bonusMoves,
+                        bonusBurst: game.bonusBursts.contains(position),
                         selected: game.selected == position,
                         popping: game.popping.contains(position),
                         hinting: game.hint.contains(position),
@@ -501,7 +523,7 @@ struct ContentView: View {
     private var boosters: some View {
         HStack(spacing: 6) {
             BoosterButton(icon: "arrow.triangle.2.circlepath", title: "Shuffle", action: game.shuffle)
-            BoosterButton(icon: "drop.fill", title: "Water", action: game.water)
+            BoosterButton(icon: "drop.fill", title: "Water", count: game.watersLeft, action: game.water)
             BoosterButton(icon: "sparkles", title: "Hint", action: game.showHint)
         }
     }
@@ -539,6 +561,13 @@ struct GameTileCell: View {
     let parcel: Bool
     let parcelBurst: Bool
     let parcelIsPad: Bool
+    let blocker: Blocker?
+    let blockerBurst: Bool
+    let gooed: Bool
+    let gooBurst: Bool
+    let frosting: Bool
+    let bonusMoves: Int
+    let bonusBurst: Bool
     let selected: Bool
     let popping: Bool
     let hinting: Bool
@@ -549,9 +578,17 @@ struct GameTileCell: View {
         ZStack(alignment: .bottomTrailing) {
             if cozy { CozyBlanketOverlay(size: size) }
             if towel { PoolTowelOverlay(size: size) }
-            VeggieView(veggie: veggie, size: size)
+            if let blocker {
+                BlockerTileView(blocker: blocker, bursting: blockerBurst, size: size)
+            } else {
+                VeggieView(veggie: veggie, size: size)
+                    .overlay(alignment: .topTrailing) {
+                        if bonusMoves > 0 { TreatBagBadge(moves: bonusMoves, size: size * 0.4) }
+                    }
+            }
+            if gooed { GooRimOverlay(frosting: frosting, size: size) }
             if cozy { CozyRimOverlay(bursting: comfortBurst, size: size) }
-            if let powerUp { PowerUpBadge(powerUp: powerUp, size: size * 0.43) }
+            if let powerUp, blocker == nil { PowerUpBadge(powerUp: powerUp, size: size * 0.43) }
             if dustLayers > 0 { DustTileOverlay(layers: dustLayers, size: size) }
             if sleeping { SleepingLeoOverlay(size: size) }
             if barking { HenryBarkBurst(size: size) }
@@ -582,6 +619,8 @@ struct GameTileCell: View {
             if dryBurst || nudgeBurst { HenryDryBurst(text: nudgeBurst ? "BACK YOU GO!" : "DRY!", size: size) }
             if parcel { ParcelOverlay(isPad: parcelIsPad, size: size) }
             if parcelBurst { ParcelDeliveryBurst(isPad: parcelIsPad, size: size) }
+            if gooBurst && !gooed { HenryDryBurst(text: "CLEAN!", size: size) }
+            if bonusBurst { HenryDryBurst(text: "+\(max(bonusMoves, 2)) MOVES", size: size) }
         }
             .frame(maxWidth: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -1801,12 +1840,15 @@ struct ChapterOneBackdropView: View {
 }
 
 struct BoosterButton: View {
-    let icon: String, title: String, action: () -> Void
+    let icon: String, title: String
+    /// Uses left this level, or nil when unlimited.
+    var count: Int? = nil
+    let action: () -> Void
     var body: some View {
         Button(action: action) {
             HStack(spacing: 6) {
                 Image(systemName: icon).frame(width: 35, height: 35).background(Color(red: 0.90, green: 0.84, blue: 0.72)).clipShape(Circle())
-                VStack(alignment: .leading, spacing: 0) { Text(title).font(.caption.bold()); Text("∞").font(.caption2).foregroundStyle(.secondary) }
+                VStack(alignment: .leading, spacing: 0) { Text(title).font(.caption.bold()); Text(count.map { "\($0) left" } ?? "∞").font(.caption2).foregroundStyle(.secondary) }
             }.frame(maxWidth: .infinity)
         }.buttonStyle(.plain)
     }
@@ -1861,3 +1903,122 @@ private struct PauseDestinationCard: View {
     }
 }
 
+/// A painted blocker filling its whole cell. Crates and stones show how many hits are left;
+/// stones carry a little burst badge because only power-ups can crack them.
+struct BlockerTileView: View {
+    let blocker: Blocker
+    let bursting: Bool
+    let size: CGFloat
+
+    private var imageName: String {
+        switch blocker.kind {
+        case .pot: "blocker-pot"
+        case .crate: blocker.hits >= 2 ? "blocker-crate" : "blocker-crate-cracked"
+        case .stone: blocker.hits >= 2 ? "blocker-stone" : "blocker-stone-cracked"
+        case .beetle: "blocker-beetle"
+        }
+    }
+
+    private var label: String {
+        switch blocker.kind {
+        case .pot: "Flowerpot blocker. Match beside it."
+        case .crate: "Toy crate blocker, \(blocker.hits) hits left. Match beside it."
+        case .stone: "Garden stone, \(blocker.hits) hits left. Only power-ups can crack it."
+        case .beetle: "Wandering beetle. Match beside it to shoo it away."
+        }
+    }
+
+    var body: some View {
+        ZStack(alignment: .bottomTrailing) {
+            Group {
+                if let image = UIImage(named: imageName) {
+                    Image(uiImage: image).resizable().scaledToFit()
+                } else {
+                    RoundedRectangle(cornerRadius: size * 0.2).fill(Color.brown.gradient)
+                }
+            }
+            .frame(width: size * 0.98, height: size * 0.98)
+            .shadow(color: .black.opacity(0.25), radius: 1.5, y: 2)
+
+            if blocker.kind == .stone {
+                Image(systemName: "burst.fill")
+                    .font(.system(size: size * 0.17, weight: .black))
+                    .foregroundStyle(.white)
+                    .frame(width: size * 0.3, height: size * 0.3)
+                    .background(Cute.berry, in: Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 1.5))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            }
+            if blocker.hits >= 2 {
+                Text("\(blocker.hits)")
+                    .font(.system(size: size * 0.2, weight: .black, design: .rounded))
+                    .foregroundStyle(Cute.cocoa)
+                    .frame(width: size * 0.3, height: size * 0.3)
+                    .background(Cute.cream, in: Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 1.5))
+            }
+        }
+        .frame(width: size, height: size)
+        .scaleEffect(bursting ? 1.12 : 1)
+        .rotationEffect(.degrees(bursting ? -4 : 0))
+        .animation(.spring(response: 0.25, dampingFraction: 0.45), value: bursting)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+    }
+}
+
+/// Mud or frosting stuck to a Leo. Following the overlay rule it stays on the rim with a few
+/// drips, so Leo's face and colored background remain clear.
+struct GooRimOverlay: View {
+    let frosting: Bool
+    let size: CGFloat
+
+    private var color: Color {
+        frosting ? Color(red: 0.98, green: 0.62, blue: 0.78) : Color(red: 0.45, green: 0.30, blue: 0.17)
+    }
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .strokeBorder(color.opacity(0.88), lineWidth: size * 0.13)
+            Circle()
+                .strokeBorder(.white.opacity(frosting ? 0.55 : 0.22), style: StrokeStyle(lineWidth: size * 0.025, dash: [size * 0.05, size * 0.09]))
+                .padding(size * 0.035)
+            ForEach(0..<3, id: \.self) { index in
+                Capsule()
+                    .fill(color.opacity(0.92))
+                    .frame(width: size * 0.09, height: size * [0.2, 0.14, 0.17][index])
+                    .offset(x: size * [-0.2, 0.02, 0.22][index], y: size * 0.44)
+            }
+            if frosting {
+                ForEach(0..<4, id: \.self) { index in
+                    Circle()
+                        .fill([Color.yellow, Color.cyan, Color.white, Color.green][index])
+                        .frame(width: size * 0.05, height: size * 0.05)
+                        .offset(x: size * [-0.38, 0.36, -0.1, 0.18][index], y: size * [-0.18, 0.1, -0.43, -0.4][index])
+                }
+            }
+        }
+        .frame(width: size, height: size)
+        .allowsHitTesting(false)
+        .accessibilityLabel(frosting ? "Stuck in frosting" : "Stuck in mud")
+    }
+}
+
+/// A compact edge badge for a piece carrying a treat bag of extra moves.
+struct TreatBagBadge: View {
+    let moves: Int
+    let size: CGFloat
+
+    var body: some View {
+        Text("+\(moves)")
+            .font(.system(size: size * 0.48, weight: .black, design: .rounded))
+            .foregroundStyle(.white)
+            .frame(width: size, height: size)
+            .background(LinearGradient(colors: [Cute.leaf, Cute.leafDeep], startPoint: .top, endPoint: .bottom), in: Circle())
+            .overlay(Circle().stroke(.white, lineWidth: 1.5))
+            .shadow(color: .black.opacity(0.2), radius: 0, y: 1)
+            .offset(x: size * 0.12, y: -size * 0.12)
+            .accessibilityLabel("Treat bag, \(moves) extra moves")
+    }
+}
