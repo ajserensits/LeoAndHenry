@@ -3,20 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A2028B01A2028B01A2028B01 /* blocker-pot.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B01B2028B01B2028B01 /* blocker-pot.png */; };
-		A2028B02A2028B02A2028B02 /* blocker-crate.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B02B2028B02B2028B02 /* blocker-crate.png */; };
-		A2028B03A2028B03A2028B03 /* blocker-crate-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */; };
-		A2028B04A2028B04A2028B04 /* blocker-stone.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B04B2028B04B2028B04 /* blocker-stone.png */; };
-		A2028B05A2028B05A2028B05 /* blocker-stone-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */; };
-		A2028B06A2028B06A2028B06 /* blocker-beetle.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B06B2028B06B2028B06 /* blocker-beetle.png */; };
+		A2029A01A2029A01A2029A01 /* Resources.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2029A01B2029A01B2029A01 /* Resources.xcassets */; };
+		A2029A02A2029A02A2029A02 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B2029A02B2029A02B2029A02 /* PrivacyInfo.xcprivacy */; };
 		15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */; };
 		1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F186D3BAA33C371B5D9E9106 /* GameModel.swift */; };
-		A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */; };
-		A2026CA7A2026CA7A2026CA7 /* CuteTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */; };
 		2C6A4CC6FB0FD8C799B43E41 /* leo-lick.png in Resources */ = {isa = PBXBuildFile; fileRef = 75F1962D5CC71EE060E5734C /* leo-lick.png */; };
 		45AC493C43E2BBC0121B3D31 /* leo-nervous.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312EA7F985878D50D4461E3 /* leo-nervous.png */; };
 		5F8B118CF46B2214365D1DDD /* leo-henry-garden-chase.png in Resources */ = {isa = PBXBuildFile; fileRef = 4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */; };
@@ -24,8 +18,7 @@
 		66E69415744920F6D037E2CF /* VeggieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */; };
 		7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59D290CA682A7C220C2BB08 /* ContentView.swift */; };
 		85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */ = {isa = PBXBuildFile; fileRef = B78A90852C6887B27854472A /* henry-map-marker.png */; };
-		B3D5516BE3A28B6ABEFA2704 /* SproutAndSmilesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */; };
-		B7FC63443AD33350026501C6 /* chapter-one-garden.png in Resources */ = {isa = PBXBuildFile; fileRef = 45EA98EFD288773DEA44B783 /* chapter-one-garden.png */; };
+		A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */; };
 		A2026C02A2026C02A2026C02 /* chapter-02-vacuum-hallway.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C02B2026C02B2026C02 /* chapter-02-vacuum-hallway.png */; };
 		A2026C03A2026C03A2026C03 /* chapter-03-under-the-bed.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C03B2026C03B2026C03 /* chapter-03-under-the-bed.png */; };
 		A2026C04A2026C04A2026C04 /* chapter-04-thunder-tomatoes.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */; };
@@ -35,10 +28,7 @@
 		A2026C08A2026C08A2026C08 /* chapter-08-pool-day.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C08B2026C08B2026C08 /* chapter-08-pool-day.png */; };
 		A2026C09A2026C09A2026C09 /* chapter-09-special-delivery.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C09B2026C09B2026C09 /* chapter-09-special-delivery.png */; };
 		A2026C10A2026C10A2026C10 /* chapter-10-birthday-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C10B2026C10B2026C10 /* chapter-10-birthday-pad.png */; };
-		B99465CC4BECECEC3A752EE8 /* leo-happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C766664A10B7B8F39CEA06 /* leo-happy.png */; };
-		C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */; };
-		C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */; };
-		FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */; };
+		A2026CA7A2026CA7A2026CA7 /* CuteTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */; };
 		A2027D00A2027D00A2027D00 /* yard-background.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D00B2027D00B2027D00 /* yard-background.png */; };
 		A2027D01A2027D01A2027D01 /* yard-flowers-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D01B2027D01B2027D01 /* yard-flowers-1.png */; };
 		A2027D02A2027D02A2027D02 /* yard-flowers-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D02B2027D02B2027D02 /* yard-flowers-2.png */; };
@@ -68,21 +58,35 @@
 		A2027D1AA2027D1AA2027D1A /* yard-dog-henry.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */; };
 		A2027E01A2027E01A2027E01 /* YardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2027E01B2027E01B2027E01 /* YardView.swift */; };
 		A2027F01A2027F01A2027F01 /* GameAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2027F01B2027F01B2027F01 /* GameAudio.swift */; };
+		A2028B01A2028B01A2028B01 /* blocker-pot.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B01B2028B01B2028B01 /* blocker-pot.png */; };
+		A2028B02A2028B02A2028B02 /* blocker-crate.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B02B2028B02B2028B02 /* blocker-crate.png */; };
+		A2028B03A2028B03A2028B03 /* blocker-crate-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */; };
+		A2028B04A2028B04A2028B04 /* blocker-stone.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B04B2028B04B2028B04 /* blocker-stone.png */; };
+		A2028B05A2028B05A2028B05 /* blocker-stone-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */; };
+		A2028B06A2028B06A2028B06 /* blocker-beetle.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B06B2028B06B2028B06 /* blocker-beetle.png */; };
+		B3D5516BE3A28B6ABEFA2704 /* SproutAndSmilesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */; };
+		B7FC63443AD33350026501C6 /* chapter-one-garden.png in Resources */ = {isa = PBXBuildFile; fileRef = 45EA98EFD288773DEA44B783 /* chapter-one-garden.png */; };
+		B99465CC4BECECEC3A752EE8 /* leo-happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C766664A10B7B8F39CEA06 /* leo-happy.png */; };
+		C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */; };
+		C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */; };
+		FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B2028B01B2028B01B2028B01 /* blocker-pot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-pot.png"; sourceTree = "<group>"; };
-		B2028B02B2028B02B2028B02 /* blocker-crate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate.png"; sourceTree = "<group>"; };
-		B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate-cracked.png"; sourceTree = "<group>"; };
-		B2028B04B2028B04B2028B04 /* blocker-stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone.png"; sourceTree = "<group>"; };
-		B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone-cracked.png"; sourceTree = "<group>"; };
-		B2028B06B2028B06B2028B06 /* blocker-beetle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-beetle.png"; sourceTree = "<group>"; };
+		B2029A01B2029A01B2029A01 /* Resources.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Resources.xcassets; sourceTree = "<group>"; };
+		B2029A02B2029A02B2029A02 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-side-eye.png"; sourceTree = "<group>"; };
 		0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-grumpy.png"; sourceTree = "<group>"; };
 		1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeggieView.swift; sourceTree = "<group>"; };
 		32C766664A10B7B8F39CEA06 /* leo-happy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-happy.png"; sourceTree = "<group>"; };
 		4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-henry-garden-chase.png"; sourceTree = "<group>"; };
 		45EA98EFD288773DEA44B783 /* chapter-one-garden.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-one-garden.png"; sourceTree = "<group>"; };
+		5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-expression-sheet.png"; sourceTree = "<group>"; };
+		6312EA7F985878D50D4461E3 /* leo-nervous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-nervous.png"; sourceTree = "<group>"; };
+		6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-guilty.png"; sourceTree = "<group>"; };
+		75F1962D5CC71EE060E5734C /* leo-lick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-lick.png"; sourceTree = "<group>"; };
+		943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterMapView.swift; sourceTree = "<group>"; };
+		B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterSystemViews.swift; sourceTree = "<group>"; };
 		B2026C02B2026C02B2026C02 /* chapter-02-vacuum-hallway.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-02-vacuum-hallway.png"; sourceTree = "<group>"; };
 		B2026C03B2026C03B2026C03 /* chapter-03-under-the-bed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-03-under-the-bed.png"; sourceTree = "<group>"; };
 		B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-04-thunder-tomatoes.png"; sourceTree = "<group>"; };
@@ -92,18 +96,7 @@
 		B2026C08B2026C08B2026C08 /* chapter-08-pool-day.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-08-pool-day.png"; sourceTree = "<group>"; };
 		B2026C09B2026C09B2026C09 /* chapter-09-special-delivery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-09-special-delivery.png"; sourceTree = "<group>"; };
 		B2026C10B2026C10B2026C10 /* chapter-10-birthday-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-10-birthday-pad.png"; sourceTree = "<group>"; };
-		5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-expression-sheet.png"; sourceTree = "<group>"; };
-		6312EA7F985878D50D4461E3 /* leo-nervous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-nervous.png"; sourceTree = "<group>"; };
-		6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-guilty.png"; sourceTree = "<group>"; };
-		75F1962D5CC71EE060E5734C /* leo-lick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-lick.png"; sourceTree = "<group>"; };
-		943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterMapView.swift; sourceTree = "<group>"; };
-		B78A90852C6887B27854472A /* henry-map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "henry-map-marker.png"; sourceTree = "<group>"; };
-		CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HenrysGardenChase.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F186D3BAA33C371B5D9E9106 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
-		F59D290CA682A7C220C2BB08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterSystemViews.swift; sourceTree = "<group>"; };
 		B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuteTheme.swift; sourceTree = "<group>"; };
-		FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SproutAndSmilesApp.swift; sourceTree = "<group>"; };
 		B2027D00B2027D00B2027D00 /* yard-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-background.png"; sourceTree = "<group>"; };
 		B2027D01B2027D01B2027D01 /* yard-flowers-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-1.png"; sourceTree = "<group>"; };
 		B2027D02B2027D02B2027D02 /* yard-flowers-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-2.png"; sourceTree = "<group>"; };
@@ -133,6 +126,17 @@
 		B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-henry.png"; sourceTree = "<group>"; };
 		B2027E01B2027E01B2027E01 /* YardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YardView.swift; sourceTree = "<group>"; };
 		B2027F01B2027F01B2027F01 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
+		B2028B01B2028B01B2028B01 /* blocker-pot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-pot.png"; sourceTree = "<group>"; };
+		B2028B02B2028B02B2028B02 /* blocker-crate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate.png"; sourceTree = "<group>"; };
+		B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate-cracked.png"; sourceTree = "<group>"; };
+		B2028B04B2028B04B2028B04 /* blocker-stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone.png"; sourceTree = "<group>"; };
+		B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone-cracked.png"; sourceTree = "<group>"; };
+		B2028B06B2028B06B2028B06 /* blocker-beetle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-beetle.png"; sourceTree = "<group>"; };
+		B78A90852C6887B27854472A /* henry-map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "henry-map-marker.png"; sourceTree = "<group>"; };
+		CBFA5A342A57562B9F242A3F /* Henry's Garden Chase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Henry's Garden Chase.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F186D3BAA33C371B5D9E9106 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		F59D290CA682A7C220C2BB08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SproutAndSmilesApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -147,7 +151,7 @@
 		34EA68CC98D95972D02772B0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */,
+				CBFA5A342A57562B9F242A3F /* Henry's Garden Chase.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,6 +159,8 @@
 		6DA0318BB56D75320849B513 /* SproutAndSmiles */ = {
 			isa = PBXGroup;
 			children = (
+				B2029A02B2029A02B2029A02 /* PrivacyInfo.xcprivacy */,
+				B2029A01B2029A01B2029A01 /* Resources.xcassets */,
 				B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */,
 				B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */,
 				B2027E01B2027E01B2027E01 /* YardView.swift */,
@@ -205,19 +211,6 @@
 			path = LeoPieces;
 			sourceTree = "<group>";
 		};
-		C2028B00C2028B00C2028B00 /* Blockers */ = {
-			isa = PBXGroup;
-			children = (
-				B2028B01B2028B01B2028B01 /* blocker-pot.png */,
-				B2028B02B2028B02B2028B02 /* blocker-crate.png */,
-				B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */,
-				B2028B04B2028B04B2028B04 /* blocker-stone.png */,
-				B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */,
-				B2028B06B2028B06B2028B06 /* blocker-beetle.png */,
-			);
-			path = Blockers;
-			sourceTree = "<group>";
-		};
 		C2027D00C2027D00C2027D00 /* Yard */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +245,19 @@
 			path = Yard;
 			sourceTree = "<group>";
 		};
+		C2028B00C2028B00C2028B00 /* Blockers */ = {
+			isa = PBXGroup;
+			children = (
+				B2028B01B2028B01B2028B01 /* blocker-pot.png */,
+				B2028B02B2028B02B2028B02 /* blocker-crate.png */,
+				B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */,
+				B2028B04B2028B04B2028B04 /* blocker-stone.png */,
+				B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */,
+				B2028B06B2028B06B2028B06 /* blocker-beetle.png */,
+			);
+			path = Blockers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -270,7 +276,7 @@
 			packageProductDependencies = (
 			);
 			productName = HenrysGardenChase;
-			productReference = CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */;
+			productReference = CBFA5A342A57562B9F242A3F /* Henry's Garden Chase.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -288,6 +294,7 @@
 				};
 			};
 			buildConfigurationList = 285A5CA5E9B86F8FA5D3F65C /* Build configuration list for PBXProject "HenrysGardenChase" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -296,7 +303,6 @@
 			);
 			mainGroup = 221A4050B786BC67B8FE3B13;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 56;
 			productRefGroup = 34EA68CC98D95972D02772B0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -311,6 +317,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2029A01A2029A01A2029A01 /* Resources.xcassets in Resources */,
+				A2029A02A2029A02A2029A02 /* PrivacyInfo.xcprivacy in Resources */,
 				B7FC63443AD33350026501C6 /* chapter-one-garden.png in Resources */,
 				A2026C02A2026C02A2026C02 /* chapter-02-vacuum-hallway.png in Resources */,
 				A2026C03A2026C03A2026C03 /* chapter-03-under-the-bed.png in Resources */,
@@ -517,8 +525,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ENC9L3USAQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Henry's Chase";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -540,8 +550,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ENC9L3USAQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Henry's Chase";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
