@@ -30,6 +30,7 @@ A private, native iPhone match-three garden game starring Leo and Henry. Mischie
 
 ## Project guides
 
+- [Game Content](docs/GAME_CONTENT.md) — JSON-backed chapters and levels, permanent save IDs, and safe expansion steps
 - [Story Bible](docs/STORY_BIBLE.md) — character canon, emotional rules, and the proposed ten-part story arc
 - [Art Bible](docs/ART_BIBLE.md) — visual language, asset specifications, naming, and the artwork queue
 - [Development Roadmap](docs/ROADMAP.md) — gameplay varieties and the path from prototype to complete chapters
@@ -50,4 +51,4 @@ A free Apple ID is enough for personal device testing, although a free signing i
 
 ## Notes
 
-The project targets iOS 17 and supports portrait plus both landscape orientations. Artwork is original and based on family-provided photographs of Leo and Henry.
+The project targets iOS 17 and supports portrait plus both landscape orientations. Chapter and level definitions live in editable JSON files under `SproutAndSmiles/GameContent/`, with permanent IDs that preserve saved progress when content is expanded or reordered. Artwork is original and based on family-provided photographs of Leo and Henry.

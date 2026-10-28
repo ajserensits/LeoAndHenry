@@ -15,7 +15,7 @@ struct ChapterMapView: View {
 
     private var mapChapter: Chapter { GameModel.chapters[game.mapChapterIndex] }
     private var displayedLevels: [Int] { Array(mapChapter.levelRange) }
-    private var chapterCompleted: Int { min(mapChapter.levelRange.count, max(0, game.wins - mapChapter.levelRange.lowerBound)) }
+    private var chapterCompleted: Int { displayedLevels.filter(game.isLevelCompleted).count }
     private var henryLevel: Int {
         min(max(mapChapter.levelRange.lowerBound, game.unlocked - 1), mapChapter.levelRange.upperBound - 1)
     }
@@ -149,7 +149,7 @@ struct ChapterMapView: View {
                         .background(Color.black.opacity(0.74), in: Circle())
                 }
                 .foregroundStyle(.yellow)
-                .accessibilityLabel("Open developer console")
+                .accessibilityLabel("Open level tester")
 #endif
                 Button { game.soundOn.toggle() } label: {
                     Image(systemName: game.soundOn ? "music.note" : "speaker.slash.fill")
@@ -220,7 +220,7 @@ struct ChapterMapView: View {
     @ViewBuilder
     private func trailRow(_ index: Int, row: Int) -> some View {
         let unlocked = index < game.unlocked
-        let completed = index < game.wins
+        let completed = game.isLevelCompleted(index)
         HStack(spacing: 10) {
             if row.isMultiple(of: 2) {
                 levelNode(index, row: row, unlocked: unlocked, completed: completed)
@@ -243,7 +243,7 @@ struct ChapterMapView: View {
             }
         } label: {
             ZStack {
-                if index == henryLevel && index >= game.wins {
+                if index == henryLevel && !game.isLevelCompleted(index) {
                     Circle()
                         .stroke(Color.yellow.opacity(0.86), lineWidth: 5)
                         .frame(width: 85, height: 85)
@@ -287,7 +287,7 @@ struct ChapterMapView: View {
                     .multilineTextAlignment(row.isMultiple(of: 2) ? .leading : .trailing)
                     .lineLimit(2)
                 if unlocked { Text(GameModel.levels[index].stolenItem).font(Cute.font(10, .semibold)).foregroundStyle(Cute.cocoaSoft) }
-                if index == henryLevel && index >= game.wins {
+                if index == henryLevel && !game.isLevelCompleted(index) {
                     CutePill(text: "PLAY NEXT", icon: "play.fill", size: 8)
                         .padding(.top, 2)
                 }
@@ -330,10 +330,10 @@ private struct DeveloperConsoleView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     VStack(alignment: .leading, spacing: 5) {
-                        Label("Development build only", systemImage: "ladybug.fill")
+                        Label("Level testing tools", systemImage: "ladybug.fill")
                             .font(.headline)
                             .foregroundStyle(.yellow)
-                        Text("Previewing bypasses locks and never changes the real saved journey. Every chapter is available below.")
+                        Text("Test play bypasses locks and never changes the saved journey. Every chapter is available below.")
                             .font(.subheadline)
                             .foregroundStyle(.white.opacity(0.75))
                     }
@@ -347,7 +347,7 @@ private struct DeveloperConsoleView: View {
                         consoleMetric("\(game.levelIndex + 1)", label: "CURRENT")
                     }
 
-                    Text("ALL CHAPTERS · TAP ANY LEVEL TO PREVIEW")
+                    Text("ALL CHAPTERS · TAP ANY LEVEL TO TEST")
                         .font(.system(size: 11, weight: .black, design: .rounded))
                         .tracking(1.4)
                         .foregroundStyle(.secondary)
@@ -363,8 +363,8 @@ private struct DeveloperConsoleView: View {
                                             .font(.system(size: 9, weight: .black))
                                             .foregroundStyle(.secondary)
                                         Spacer()
-                                        Image(systemName: index < game.wins ? "checkmark.circle.fill" : index < game.unlocked ? "lock.open.fill" : "eye.fill")
-                                            .foregroundStyle(index < game.wins ? .green : .orange)
+                                        Image(systemName: game.isLevelCompleted(index) ? "checkmark.circle.fill" : index < game.unlocked ? "lock.open.fill" : "eye.fill")
+                                            .foregroundStyle(game.isLevelCompleted(index) ? .green : .orange)
                                     }
                                     HStack(spacing: 8) {
                                         LevelGoalIcon(level: level, size: 34)
@@ -373,7 +373,7 @@ private struct DeveloperConsoleView: View {
                                             .multilineTextAlignment(.leading)
                                             .lineLimit(2)
                                     }
-                                    Label("Preview without saving", systemImage: "play.fill")
+                                    Label("Test without saving", systemImage: "play.fill")
                                         .font(.system(size: 9, weight: .semibold))
                                         .foregroundStyle(Color(red: 0.25, green: 0.47, blue: 0.28))
                                 }
@@ -423,7 +423,7 @@ private struct DeveloperConsoleView: View {
                 .padding(18)
             }
             .background(Color(red: 0.94, green: 0.92, blue: 0.84))
-            .navigationTitle("Developer Console")
+            .navigationTitle("Level Tester")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
             }
@@ -431,7 +431,7 @@ private struct DeveloperConsoleView: View {
                 Button("Cancel", role: .cancel) {}
                 Button("Reset", role: .destructive) { game.developerResetProgress() }
             } message: {
-                Text("This changes the development device's saved progress. It cannot be undone.")
+                Text("This changes this device's saved progress. It cannot be undone.")
             }
         }
     }

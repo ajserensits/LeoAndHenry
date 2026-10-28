@@ -1,0 +1,129 @@
+{
+  "id": "chapter-09-special-delivery",
+  "title": "Special Delivery",
+  "subtitle": "Henry keeps watch while Leo waits somewhere cozy.",
+  "backgroundName": "chapter-09-special-delivery",
+  "symbol": "shippingbox.fill",
+  "levels": [
+    {
+      "id": "chapter-09-level-01",
+      "goal": "tomato",
+      "amount": 22,
+      "moves": 22,
+      "title": "Squeak at the Door",
+      "stolenItem": "Henry's red squeaky bug",
+      "clue": "Leo carried Henry's toy to the front door—just as someone unfamiliar arrived.",
+      "knockEvery": 4,
+      "crateCells": 4,
+      "stoneCells": 2
+    },
+    {
+      "id": "chapter-09-level-02",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 37,
+      "title": "A Box on the Mat",
+      "stolenItem": "first parcel",
+      "clue": "Clear matches beneath each parcel so it can travel safely down to the doormat.",
+      "parcelCount": 2,
+      "knockEvery": 4
+    },
+    {
+      "id": "chapter-09-level-03",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 12,
+      "title": "Knock, Knock!",
+      "stolenItem": "couch-cushion hideout",
+      "clue": "The knock startles Leo. Henry gives a gentle bark from their cozy viewing spot.",
+      "sleepingCells": 7,
+      "knockEvery": 3,
+      "crateCells": 3,
+      "crateDepth": 3,
+      "gooCells": 4
+    },
+    {
+      "id": "chapter-09-level-04",
+      "goal": "pepper",
+      "amount": 0,
+      "moves": 36,
+      "title": "Bring It Inside",
+      "stolenItem": "three little parcels",
+      "clue": "Make room below the boxes while Henry keeps watch by the door.",
+      "parcelCount": 3,
+      "knockEvery": 3
+    },
+    {
+      "id": "chapter-09-level-05",
+      "goal": "eggplant",
+      "amount": 0,
+      "moves": 28,
+      "title": "The Cozy Viewing Spot",
+      "stolenItem": "safe route behind the couch",
+      "clue": "Henry shows Leo where they can watch without standing near the visitor.",
+      "quietRouteSteps": 9,
+      "knockEvery": 4,
+      "stoneCells": 3,
+      "beetleCount": 3,
+      "gooCells": 3
+    },
+    {
+      "id": "chapter-09-level-06",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 46,
+      "title": "Another Delivery",
+      "stolenItem": "stack of boxes",
+      "clue": "More parcels wait outside. Clear beneath them and bring every one to the mat.",
+      "parcelCount": 4,
+      "knockEvery": 3
+    },
+    {
+      "id": "chapter-09-level-07",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 12,
+      "title": "Henry Stays Close",
+      "stolenItem": "shared couch blanket",
+      "clue": "Henry settles beside Leo until the footsteps at the door sound less scary.",
+      "comfortCells": 22,
+      "knockEvery": 3,
+      "beetleCount": 3,
+      "gooCells": 5
+    },
+    {
+      "id": "chapter-09-level-08",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 50,
+      "title": "Packages in the Hall",
+      "stolenItem": "five safe parcels",
+      "clue": "The hallway fills with boxes, but Henry knows exactly where each one belongs.",
+      "parcelCount": 5,
+      "knockEvery": 2
+    },
+    {
+      "id": "chapter-09-level-09",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 13,
+      "title": "The Visitor Leaves",
+      "stolenItem": "quiet front step",
+      "clue": "The footsteps fade. Henry checks the familiar clues that mean everything is safe.",
+      "clueCells": 8,
+      "clueDepth": 2,
+      "knockEvery": 4
+    },
+    {
+      "id": "chapter-09-level-10",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 50,
+      "title": "Special Delivery",
+      "stolenItem": "shared squeaky bug",
+      "clue": "Bring in the last parcels, then Henry and Leo can share the toy by the sunny door.",
+      "parcelCount": 6,
+      "knockEvery": 2
+    }
+  ]
+}

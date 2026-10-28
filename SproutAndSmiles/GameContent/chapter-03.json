@@ -1,0 +1,116 @@
+{
+  "id": "chapter-03-under-the-bed",
+  "title": "Under the Bed",
+  "subtitle": "Henry follows Leo into the coziest hiding place.",
+  "backgroundName": "chapter-03-under-the-bed",
+  "symbol": "bed.double.fill",
+  "levels": [
+    {
+      "id": "chapter-03-level-01",
+      "goal": "tomato",
+      "amount": 18,
+      "moves": 21,
+      "title": "The Noise Upstairs",
+      "stolenItem": "red plush ladybug",
+      "clue": "A sudden thump sends Leo—and Henry's ladybug—under the bed."
+    },
+    {
+      "id": "chapter-03-level-02",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 21,
+      "title": "Dust Under the Bed",
+      "stolenItem": "dusty pawprints",
+      "clue": "Clear the soft dust bunnies so Henry can crawl underneath.",
+      "dustCells": 10,
+      "dustDepth": 1,
+      "potCells": 3
+    },
+    {
+      "id": "chapter-03-level-03",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 16,
+      "title": "Henry Squeezes In",
+      "stolenItem": "first pawsteps",
+      "clue": "Match beside the glowing pawstep to guide Henry toward Leo.",
+      "rescueSteps": 6
+    },
+    {
+      "id": "chapter-03-level-04",
+      "goal": "pepper",
+      "amount": 0,
+      "moves": 24,
+      "title": "Between the Slippers",
+      "stolenItem": "safe route",
+      "clue": "Follow the pawprints around the slippers and boxes.",
+      "rescueSteps": 8,
+      "crateCells": 2
+    },
+    {
+      "id": "chapter-03-level-05",
+      "goal": "eggplant",
+      "amount": 0,
+      "moves": 26,
+      "title": "The Sock Fort",
+      "stolenItem": "striped sock",
+      "clue": "Two layers of fluff stand between the brothers.",
+      "dustCells": 14,
+      "dustDepth": 2
+    },
+    {
+      "id": "chapter-03-level-06",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 21,
+      "title": "Follow My Pawsteps",
+      "stolenItem": "comfort trail",
+      "clue": "Henry keeps crawling, one gentle pawstep at a time.",
+      "rescueSteps": 10,
+      "potCells": 2,
+      "crateCells": 2
+    },
+    {
+      "id": "chapter-03-level-07",
+      "goal": "tomato",
+      "amount": 24,
+      "moves": 24,
+      "title": "The Ladybug Clue",
+      "stolenItem": "red plush ladybug",
+      "clue": "Henry spots a flash of red beside Leo's fluffy paw."
+    },
+    {
+      "id": "chapter-03-level-08",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 28,
+      "title": "Almost There, Leo",
+      "stolenItem": "shared blanket",
+      "clue": "Only a few more careful pawsteps to reach Leo.",
+      "rescueSteps": 12,
+      "crateCells": 4
+    },
+    {
+      "id": "chapter-03-level-09",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 10,
+      "title": "A Gentle Wake-Up",
+      "stolenItem": "cozy hiding place",
+      "clue": "A few quiet woofs let Leo know Henry is close.",
+      "sleepingCells": 8
+    },
+    {
+      "id": "chapter-03-level-10",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 30,
+      "title": "Out From Under",
+      "stolenItem": "red plush ladybug",
+      "clue": "Guide Henry all the way to Leo, then bring the ladybug into the light.",
+      "rescueSteps": 13,
+      "potCells": 2,
+      "crateCells": 3
+    }
+  ]
+}

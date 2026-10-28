@@ -1,0 +1,133 @@
+{
+  "id": "chapter-05-lawnmower-loop",
+  "title": "The Lawnmower Loop",
+  "subtitle": "Henry leads Leo around the quiet side of the yard.",
+  "backgroundName": "chapter-05-lawnmower-loop",
+  "symbol": "leaf.arrow.triangle.circlepath",
+  "levels": [
+    {
+      "id": "chapter-05-level-01",
+      "goal": "carrot",
+      "amount": 20,
+      "moves": 24,
+      "title": "Ball Behind the Marigolds",
+      "stolenItem": "orange outdoor ball",
+      "clue": "Leo borrowed Henry's ball—and the mower just started across the yard.",
+      "mowerEvery": 4,
+      "potCells": 3
+    },
+    {
+      "id": "chapter-05-level-02",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 24,
+      "title": "The Quiet Edge",
+      "stolenItem": "first safe pawsteps",
+      "clue": "Match beside the glowing leaf so Henry can show Leo the quiet way.",
+      "quietRouteSteps": 6,
+      "mowerEvery": 3,
+      "crateCells": 3
+    },
+    {
+      "id": "chapter-05-level-03",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 30,
+      "title": "Past the Flowerpots",
+      "stolenItem": "flowerpot hiding place",
+      "clue": "Henry leads past the marigolds while the mower loops far away.",
+      "quietRouteSteps": 8,
+      "mowerEvery": 3,
+      "stoneCells": 2
+    },
+    {
+      "id": "chapter-05-level-04",
+      "goal": "pepper",
+      "amount": 24,
+      "moves": 26,
+      "title": "Grass-Clipping Gust",
+      "stolenItem": "windblown ball",
+      "clue": "A puff of clippings rolls by. Henry stays between Leo and the noise.",
+      "mowerEvery": 3,
+      "potCells": 2,
+      "crateCells": 2
+    },
+    {
+      "id": "chapter-05-level-05",
+      "goal": "eggplant",
+      "amount": 0,
+      "moves": 30,
+      "title": "Henry Leads the Way",
+      "stolenItem": "shady side path",
+      "clue": "Follow Henry's leafy trail along the quiet side of the lawn.",
+      "quietRouteSteps": 10,
+      "mowerEvery": 2,
+      "potCells": 2,
+      "stoneCells": 2
+    },
+    {
+      "id": "chapter-05-level-06",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 15,
+      "title": "Leo Freezes",
+      "stolenItem": "brave little pause",
+      "clue": "The mower sounds close. Henry gives a gentle bark to get Leo moving.",
+      "sleepingCells": 8,
+      "mowerEvery": 2,
+      "crateCells": 4
+    },
+    {
+      "id": "chapter-05-level-07",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 38,
+      "title": "Around the Hydrangeas",
+      "stolenItem": "hydrangea shortcut",
+      "clue": "The long way is the calm way. Keep following Henry's safe leaves.",
+      "quietRouteSteps": 12,
+      "mowerEvery": 2,
+      "crateCells": 2,
+      "stoneCells": 3
+    },
+    {
+      "id": "chapter-05-level-08",
+      "goal": "carrot",
+      "amount": 28,
+      "moves": 31,
+      "title": "The Orange Ball",
+      "stolenItem": "Henry's outdoor ball",
+      "clue": "The ball tumbles free, but Henry will not leave Leo behind.",
+      "mowerEvery": 3,
+      "potCells": 4,
+      "stoneCells": 2
+    },
+    {
+      "id": "chapter-05-level-09",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 43,
+      "title": "Almost Back to Mom",
+      "stolenItem": "path toward Mom",
+      "clue": "Mom is waiting by the gate. Henry knows the safest loop home.",
+      "quietRouteSteps": 14,
+      "mowerEvery": 2,
+      "crateCells": 4,
+      "stoneCells": 2
+    },
+    {
+      "id": "chapter-05-level-10",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 50,
+      "title": "Home Along the Hedge",
+      "stolenItem": "shared orange ball",
+      "clue": "One last quiet stretch, then the brothers can bring the ball back together.",
+      "quietRouteSteps": 16,
+      "mowerEvery": 2,
+      "potCells": 2,
+      "crateCells": 3,
+      "stoneCells": 3
+    }
+  ]
+}

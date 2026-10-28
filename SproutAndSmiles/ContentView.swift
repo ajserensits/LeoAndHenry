@@ -95,7 +95,7 @@ struct ContentView: View {
         .overlay(alignment: .topLeading) {
 #if DEBUG
             if game.isDeveloperPreview && !showingMap && !showingIntro {
-                Label("DEV PREVIEW · LEVEL \(game.levelIndex + 1)", systemImage: "hammer.fill")
+                Label("TEST PLAY · LEVEL \(game.levelIndex + 1)", systemImage: "hammer.fill")
                     .font(.system(size: 9, weight: .black, design: .rounded))
                     .padding(.horizontal, 9)
                     .padding(.vertical, 5)

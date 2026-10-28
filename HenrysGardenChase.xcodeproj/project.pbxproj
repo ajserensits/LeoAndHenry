@@ -7,134 +7,156 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A2029A01A2029A01A2029A01 /* Resources.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2029A01B2029A01B2029A01 /* Resources.xcassets */; };
-		A2029A02A2029A02A2029A02 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B2029A02B2029A02B2029A02 /* PrivacyInfo.xcprivacy */; };
+		0274DEE4F3DE11C7B0338724 /* yard-toys-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E1112DEAFF34946405C1BD00 /* yard-toys-3.png */; };
+		033EAEAD6C819F2FCDFBEBDE /* chapter-03.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A95158F7B8981DF6654611A /* chapter-03.json */; };
+		09681F97F43892E50498A7D0 /* yard-toys-1.png in Resources */ = {isa = PBXBuildFile; fileRef = BD024D5E1005139ABCD1EF10 /* yard-toys-1.png */; };
+		0F2AEF799E8EA252509764D6 /* yard-nap-1.png in Resources */ = {isa = PBXBuildFile; fileRef = AC6599B6581B0A7C1115BB5A /* yard-nap-1.png */; };
+		0F56D031CA4832210D2ED5E8 /* chapter-02.json in Resources */ = {isa = PBXBuildFile; fileRef = C6CD546D2E320E1FBBA4EFD1 /* chapter-02.json */; };
 		15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */; };
+		16F6A0BC32A301D0EB4DB976 /* chapter-08.json in Resources */ = {isa = PBXBuildFile; fileRef = EC38ACE02F034060EC075B8A /* chapter-08.json */; };
+		1C1A8DD0F3A3369545CF492C /* YardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F3C79F4613810554319716 /* YardView.swift */; };
 		1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F186D3BAA33C371B5D9E9106 /* GameModel.swift */; };
+		1F7C7D001F11A0AA51475D63 /* blocker-crate.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EA88F2DAC1B601C6921B5BF /* blocker-crate.png */; };
+		201AA997F182C9E120196030 /* yard-flowers-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 994FFCEE7C6814D01241EF39 /* yard-flowers-2.png */; };
+		2261950F10C0B93DF04DE165 /* yard-flowers-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 216CE0367CC6913C99A1614D /* yard-flowers-3.png */; };
+		22E9E56BC456538624BB17B1 /* yard-arch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 786636527907BCD7942FC31D /* yard-arch-1.png */; };
+		235BA2B7AC38E7F2F92C2463 /* blocker-pot.png in Resources */ = {isa = PBXBuildFile; fileRef = 92EA681FFCD4A4948EF21265 /* blocker-pot.png */; };
+		264548E3442E523E78179E3D /* blocker-stone.png in Resources */ = {isa = PBXBuildFile; fileRef = 23F8665327109A140BD6C59C /* blocker-stone.png */; };
+		27AC3E32007EC354B8F1F76C /* chapter-03-under-the-bed.png in Resources */ = {isa = PBXBuildFile; fileRef = 7582288753B95702FB10E438 /* chapter-03-under-the-bed.png */; };
 		2C6A4CC6FB0FD8C799B43E41 /* leo-lick.png in Resources */ = {isa = PBXBuildFile; fileRef = 75F1962D5CC71EE060E5734C /* leo-lick.png */; };
-		45AC493C43E2BBC0121B3D31 /* leo-nervous.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312EA7F985878D50D4461E3 /* leo-nervous.png */; };
+		2E8E9D1EECDB5BAC4B1BBED4 /* yard-toys-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CDF62476056E01D61E46B51 /* yard-toys-2.png */; };
+		410AA3ED64FC1E97965EDD7B /* chapter-06.json in Resources */ = {isa = PBXBuildFile; fileRef = CAD15E3F7A58EAB11776A8C2 /* chapter-06.json */; };
+		41150B641824D9789542E0A1 /* blocker-crate-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6A7B0F897B6D5E4D32A6A1 /* blocker-crate-cracked.png */; };
+		413AA68998026C489FB20112 /* chapter-05-lawnmower-loop.png in Resources */ = {isa = PBXBuildFile; fileRef = 7207854AD6EE225DC878D932 /* chapter-05-lawnmower-loop.png */; };
+		4221F34392F2BB27DA45AD0F /* chapters.json in Resources */ = {isa = PBXBuildFile; fileRef = 313696744D1F9F83529CFDD1 /* chapters.json */; };
+		4A187C25BA46E86052387236 /* yard-arch-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F6D976360B6CD0C7E345B2A /* yard-arch-3.png */; };
+		4F9FC91259F6BDAFE42ECE33 /* yard-arch-2.png in Resources */ = {isa = PBXBuildFile; fileRef = F30C070823FD9989B2151C5E /* yard-arch-2.png */; };
+		53D84EC7117691F9651EA323 /* chapter-07-where-is-mom.png in Resources */ = {isa = PBXBuildFile; fileRef = CFC5330FFC9B374DE54C986F /* chapter-07-where-is-mom.png */; };
+		56FDBB0290615663CC458F34 /* leo-nervous.png in Resources */ = {isa = PBXBuildFile; fileRef = A41BFCBB797573DEC081C0A1 /* leo-nervous.png */; };
+		5922078E3082A0997391CD78 /* yard-doghouse-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FA426B447C666B164E2516E /* yard-doghouse-2.png */; };
+		5B335E2C15B00BCAEE5328CE /* yard-bench-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F041B3D7438EA4DD9C24EF3 /* yard-bench-1.png */; };
 		5F8B118CF46B2214365D1DDD /* leo-henry-garden-chase.png in Resources */ = {isa = PBXBuildFile; fileRef = 4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */; };
+		5FD1C2AAA79392FCE675C25B /* chapter-05.json in Resources */ = {isa = PBXBuildFile; fileRef = A9CA93EE6874953C64FE641D /* chapter-05.json */; };
+		61150E946F5961E505FAA90E /* yard-tree-2.png in Resources */ = {isa = PBXBuildFile; fileRef = D7EA16A81F39F733E33CBAAB /* yard-tree-2.png */; };
+		64CA65DDBB2E39199C477639 /* chapter-10.json in Resources */ = {isa = PBXBuildFile; fileRef = 4E3F1C110C2319E82A74C90E /* chapter-10.json */; };
+		6590FD22387915463594C3F2 /* chapter-09.json in Resources */ = {isa = PBXBuildFile; fileRef = 02CB3047B65AF9663D715F94 /* chapter-09.json */; };
 		669F420AD0C180D235D2CCE8 /* leo-side-eye.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */; };
 		66E69415744920F6D037E2CF /* VeggieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */; };
+		67EC6E43A61FD31CADCA4346 /* chapter-06-bags-and-cans.png in Resources */ = {isa = PBXBuildFile; fileRef = 1209FAB34CBAD00BF385F72A /* chapter-06-bags-and-cans.png */; };
+		6FF6E6EA2DC7BF8D6BCAC89B /* yard-splash-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 508C4A7258B84597CEA9E195 /* yard-splash-1.png */; };
+		70D8DCA999483CF0C18D16AA /* CuteTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9805E0D10BA7E6F5B5D70B8E /* CuteTheme.swift */; };
+		7340C10D3B4BEB0346D60B14 /* yard-dog-leo.png in Resources */ = {isa = PBXBuildFile; fileRef = 92A72A020AB97211F472F127 /* yard-dog-leo.png */; };
+		77711BF74555E2DCA4E26CC5 /* BoosterSystemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A40D812A7F97606CE657B /* BoosterSystemViews.swift */; };
+		7A6D8A6B883EB97C71D3601A /* yard-dog-henry.png in Resources */ = {isa = PBXBuildFile; fileRef = D83ADE09695F31728C7CBA8B /* yard-dog-henry.png */; };
+		7CD0961C850AF14A88995D31 /* yard-bench-2.png in Resources */ = {isa = PBXBuildFile; fileRef = CA8E995035B031249B980AE5 /* yard-bench-2.png */; };
 		7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59D290CA682A7C220C2BB08 /* ContentView.swift */; };
+		7F8C590F41076FF792925AB5 /* yard-doghouse-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CBCA45FA16161DE4CD55356 /* yard-doghouse-3.png */; };
+		846AFA58D142406DF586A449 /* chapter-07.json in Resources */ = {isa = PBXBuildFile; fileRef = D476E7F38F47381CBAB31F06 /* chapter-07.json */; };
 		85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */ = {isa = PBXBuildFile; fileRef = B78A90852C6887B27854472A /* henry-map-marker.png */; };
-		A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */; };
-		A2026C02A2026C02A2026C02 /* chapter-02-vacuum-hallway.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C02B2026C02B2026C02 /* chapter-02-vacuum-hallway.png */; };
-		A2026C03A2026C03A2026C03 /* chapter-03-under-the-bed.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C03B2026C03B2026C03 /* chapter-03-under-the-bed.png */; };
-		A2026C04A2026C04A2026C04 /* chapter-04-thunder-tomatoes.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */; };
-		A2026C05A2026C05A2026C05 /* chapter-05-lawnmower-loop.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C05B2026C05B2026C05 /* chapter-05-lawnmower-loop.png */; };
-		A2026C06A2026C06A2026C06 /* chapter-06-bags-and-cans.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C06B2026C06B2026C06 /* chapter-06-bags-and-cans.png */; };
-		A2026C07A2026C07A2026C07 /* chapter-07-where-is-mom.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C07B2026C07B2026C07 /* chapter-07-where-is-mom.png */; };
-		A2026C08A2026C08A2026C08 /* chapter-08-pool-day.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C08B2026C08B2026C08 /* chapter-08-pool-day.png */; };
-		A2026C09A2026C09A2026C09 /* chapter-09-special-delivery.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C09B2026C09B2026C09 /* chapter-09-special-delivery.png */; };
-		A2026C10A2026C10A2026C10 /* chapter-10-birthday-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = B2026C10B2026C10B2026C10 /* chapter-10-birthday-pad.png */; };
-		A2026CA7A2026CA7A2026CA7 /* CuteTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */; };
-		A2027D00A2027D00A2027D00 /* yard-background.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D00B2027D00B2027D00 /* yard-background.png */; };
-		A2027D01A2027D01A2027D01 /* yard-flowers-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D01B2027D01B2027D01 /* yard-flowers-1.png */; };
-		A2027D02A2027D02A2027D02 /* yard-flowers-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D02B2027D02B2027D02 /* yard-flowers-2.png */; };
-		A2027D03A2027D03A2027D03 /* yard-flowers-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D03B2027D03B2027D03 /* yard-flowers-3.png */; };
-		A2027D04A2027D04A2027D04 /* yard-doghouse-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D04B2027D04B2027D04 /* yard-doghouse-1.png */; };
-		A2027D05A2027D05A2027D05 /* yard-doghouse-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D05B2027D05B2027D05 /* yard-doghouse-2.png */; };
-		A2027D06A2027D06A2027D06 /* yard-doghouse-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D06B2027D06B2027D06 /* yard-doghouse-3.png */; };
-		A2027D07A2027D07A2027D07 /* yard-splash-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D07B2027D07B2027D07 /* yard-splash-1.png */; };
-		A2027D08A2027D08A2027D08 /* yard-splash-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D08B2027D08B2027D08 /* yard-splash-2.png */; };
-		A2027D09A2027D09A2027D09 /* yard-splash-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D09B2027D09B2027D09 /* yard-splash-3.png */; };
-		A2027D0AA2027D0AA2027D0A /* yard-nap-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0AB2027D0AB2027D0A /* yard-nap-1.png */; };
-		A2027D0BA2027D0BA2027D0B /* yard-nap-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0BB2027D0BB2027D0B /* yard-nap-2.png */; };
-		A2027D0CA2027D0CA2027D0C /* yard-nap-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0CB2027D0CB2027D0C /* yard-nap-3.png */; };
-		A2027D0DA2027D0DA2027D0D /* yard-toys-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0DB2027D0DB2027D0D /* yard-toys-1.png */; };
-		A2027D0EA2027D0EA2027D0E /* yard-toys-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0EB2027D0EB2027D0E /* yard-toys-2.png */; };
-		A2027D0FA2027D0FA2027D0F /* yard-toys-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D0FB2027D0FB2027D0F /* yard-toys-3.png */; };
-		A2027D10A2027D10A2027D10 /* yard-bench-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D10B2027D10B2027D10 /* yard-bench-1.png */; };
-		A2027D11A2027D11A2027D11 /* yard-bench-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D11B2027D11B2027D11 /* yard-bench-2.png */; };
-		A2027D12A2027D12A2027D12 /* yard-bench-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D12B2027D12B2027D12 /* yard-bench-3.png */; };
-		A2027D13A2027D13A2027D13 /* yard-tree-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D13B2027D13B2027D13 /* yard-tree-1.png */; };
-		A2027D14A2027D14A2027D14 /* yard-tree-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D14B2027D14B2027D14 /* yard-tree-2.png */; };
-		A2027D15A2027D15A2027D15 /* yard-tree-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D15B2027D15B2027D15 /* yard-tree-3.png */; };
-		A2027D16A2027D16A2027D16 /* yard-arch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D16B2027D16B2027D16 /* yard-arch-1.png */; };
-		A2027D17A2027D17A2027D17 /* yard-arch-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D17B2027D17B2027D17 /* yard-arch-2.png */; };
-		A2027D18A2027D18A2027D18 /* yard-arch-3.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D18B2027D18B2027D18 /* yard-arch-3.png */; };
-		A2027D19A2027D19A2027D19 /* yard-dog-leo.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D19B2027D19B2027D19 /* yard-dog-leo.png */; };
-		A2027D1AA2027D1AA2027D1A /* yard-dog-henry.png in Resources */ = {isa = PBXBuildFile; fileRef = B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */; };
-		A2027E01A2027E01A2027E01 /* YardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2027E01B2027E01B2027E01 /* YardView.swift */; };
-		A2027F01A2027F01A2027F01 /* GameAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2027F01B2027F01B2027F01 /* GameAudio.swift */; };
-		A2028B01A2028B01A2028B01 /* blocker-pot.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B01B2028B01B2028B01 /* blocker-pot.png */; };
-		A2028B02A2028B02A2028B02 /* blocker-crate.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B02B2028B02B2028B02 /* blocker-crate.png */; };
-		A2028B03A2028B03A2028B03 /* blocker-crate-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */; };
-		A2028B04A2028B04A2028B04 /* blocker-stone.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B04B2028B04B2028B04 /* blocker-stone.png */; };
-		A2028B05A2028B05A2028B05 /* blocker-stone-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */; };
-		A2028B06A2028B06A2028B06 /* blocker-beetle.png in Resources */ = {isa = PBXBuildFile; fileRef = B2028B06B2028B06B2028B06 /* blocker-beetle.png */; };
+		86EE80B201F5A0ECCE9D8067 /* chapter-04.json in Resources */ = {isa = PBXBuildFile; fileRef = BD4318332EC45529237D111A /* chapter-04.json */; };
+		8E185F9F661A75AA1B732B8F /* GameContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6C9C9AAE5E4C7862866450 /* GameContent.swift */; };
+		91F098ED11737583CB4BDCA2 /* blocker-stone-cracked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C45CDD39411923DA7855B60 /* blocker-stone-cracked.png */; };
+		981BF2B47DA8F5D27BFE3749 /* blocker-beetle.png in Resources */ = {isa = PBXBuildFile; fileRef = 4159C1363C31BF2E3E0A6AD1 /* blocker-beetle.png */; };
+		983A253FE9FA6099AE1EF3EE /* chapter-09-special-delivery.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F60ACDAA921E2496D0E5ED7 /* chapter-09-special-delivery.png */; };
+		9D64D666D46EF823BAB7A016 /* yard-splash-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D48CA10216A520607966D57 /* yard-splash-3.png */; };
+		A779B6B73E922F24C2A2038B /* chapter-04-thunder-tomatoes.png in Resources */ = {isa = PBXBuildFile; fileRef = 35116EF8BC700875787E12F5 /* chapter-04-thunder-tomatoes.png */; };
+		A8946EF5537FAA8A0C4CCE7D /* yard-tree-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B8BCD1447BB558C092930876 /* yard-tree-1.png */; };
+		AE56AE0E54DF9B6134077467 /* GameAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338855E3E9384AE17C1B2DB0 /* GameAudio.swift */; };
 		B3D5516BE3A28B6ABEFA2704 /* SproutAndSmilesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */; };
 		B7FC63443AD33350026501C6 /* chapter-one-garden.png in Resources */ = {isa = PBXBuildFile; fileRef = 45EA98EFD288773DEA44B783 /* chapter-one-garden.png */; };
 		B99465CC4BECECEC3A752EE8 /* leo-happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C766664A10B7B8F39CEA06 /* leo-happy.png */; };
+		B9E73BA7977BA4DACC05551D /* chapter-10-birthday-pad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F5F4DBBA2CA89D701E66EBB /* chapter-10-birthday-pad.png */; };
 		C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */; };
 		C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */; };
+		CA6532274016702208FAEA85 /* yard-nap-3.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EB875591AB528DB21CEBD6 /* yard-nap-3.png */; };
+		CD1A37EA02FBF151E97DB635 /* chapter-02-vacuum-hallway.png in Resources */ = {isa = PBXBuildFile; fileRef = 236ECD7B0FE66BB367DFB979 /* chapter-02-vacuum-hallway.png */; };
+		CD20D6827480906121AA2F65 /* yard-tree-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B6EFC05F1AB1B654D3EAE76 /* yard-tree-3.png */; };
+		CE47DD19D43598B2E6791F49 /* yard-nap-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 72A1F876540188265DFBAE3A /* yard-nap-2.png */; };
+		D7DEF60B51551DD6ED68CD55 /* yard-flowers-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 74749DE5918C794C3A2EE438 /* yard-flowers-1.png */; };
+		DED7D08C2FA1C2178B289EE2 /* chapter-01.json in Resources */ = {isa = PBXBuildFile; fileRef = EE6E6BD26B9FCB451A3A1533 /* chapter-01.json */; };
+		E707E7003711D8AABE5F05F4 /* chapter-08-pool-day.png in Resources */ = {isa = PBXBuildFile; fileRef = 41E69D6E4FF73D7E980A38C3 /* chapter-08-pool-day.png */; };
+		E7AE81B088A1723E364F8B76 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5509BD489AC3AF7383604342 /* PrivacyInfo.xcprivacy */; };
+		E9E0E643EFAD557C17324AE8 /* yard-doghouse-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BA0D78CD9BBA09CCAF9A9BC /* yard-doghouse-1.png */; };
+		F5B965B99772BAA589CCF645 /* yard-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 39C1075059C821C94442E798 /* yard-background.png */; };
+		FAA2B24608166E5CD6AACAD7 /* yard-splash-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F048CCEAC7DEA9C9C4E1B8B /* yard-splash-2.png */; };
+		FBFA889F7D68E5DCA52718C2 /* yard-bench-3.png in Resources */ = {isa = PBXBuildFile; fileRef = E6CD63F7616AB57DF4C3E030 /* yard-bench-3.png */; };
 		FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B2029A01B2029A01B2029A01 /* Resources.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Resources.xcassets; sourceTree = "<group>"; };
-		B2029A02B2029A02B2029A02 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		02CB3047B65AF9663D715F94 /* chapter-09.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-09.json"; sourceTree = "<group>"; };
 		0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-side-eye.png"; sourceTree = "<group>"; };
+		0B6EFC05F1AB1B654D3EAE76 /* yard-tree-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-3.png"; sourceTree = "<group>"; };
+		0CDF62476056E01D61E46B51 /* yard-toys-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-2.png"; sourceTree = "<group>"; };
 		0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-grumpy.png"; sourceTree = "<group>"; };
+		1209FAB34CBAD00BF385F72A /* chapter-06-bags-and-cans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-06-bags-and-cans.png"; sourceTree = "<group>"; };
+		1A95158F7B8981DF6654611A /* chapter-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-03.json"; sourceTree = "<group>"; };
+		1BA0D78CD9BBA09CCAF9A9BC /* yard-doghouse-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-1.png"; sourceTree = "<group>"; };
 		1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeggieView.swift; sourceTree = "<group>"; };
+		1F60ACDAA921E2496D0E5ED7 /* chapter-09-special-delivery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-09-special-delivery.png"; sourceTree = "<group>"; };
+		216CE0367CC6913C99A1614D /* yard-flowers-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-3.png"; sourceTree = "<group>"; };
+		236ECD7B0FE66BB367DFB979 /* chapter-02-vacuum-hallway.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-02-vacuum-hallway.png"; sourceTree = "<group>"; };
+		23F8665327109A140BD6C59C /* blocker-stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone.png"; sourceTree = "<group>"; };
+		2F048CCEAC7DEA9C9C4E1B8B /* yard-splash-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-2.png"; sourceTree = "<group>"; };
+		2F5F4DBBA2CA89D701E66EBB /* chapter-10-birthday-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-10-birthday-pad.png"; sourceTree = "<group>"; };
+		2FA426B447C666B164E2516E /* yard-doghouse-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-2.png"; sourceTree = "<group>"; };
+		313696744D1F9F83529CFDD1 /* chapters.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = chapters.json; sourceTree = "<group>"; };
 		32C766664A10B7B8F39CEA06 /* leo-happy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-happy.png"; sourceTree = "<group>"; };
+		338855E3E9384AE17C1B2DB0 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
+		35116EF8BC700875787E12F5 /* chapter-04-thunder-tomatoes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-04-thunder-tomatoes.png"; sourceTree = "<group>"; };
+		39C1075059C821C94442E798 /* yard-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-background.png"; sourceTree = "<group>"; };
+		3F6D976360B6CD0C7E345B2A /* yard-arch-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-3.png"; sourceTree = "<group>"; };
+		4159C1363C31BF2E3E0A6AD1 /* blocker-beetle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-beetle.png"; sourceTree = "<group>"; };
+		41E69D6E4FF73D7E980A38C3 /* chapter-08-pool-day.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-08-pool-day.png"; sourceTree = "<group>"; };
 		4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-henry-garden-chase.png"; sourceTree = "<group>"; };
 		45EA98EFD288773DEA44B783 /* chapter-one-garden.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-one-garden.png"; sourceTree = "<group>"; };
+		4C45CDD39411923DA7855B60 /* blocker-stone-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone-cracked.png"; sourceTree = "<group>"; };
+		4D48CA10216A520607966D57 /* yard-splash-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-3.png"; sourceTree = "<group>"; };
+		4E3F1C110C2319E82A74C90E /* chapter-10.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-10.json"; sourceTree = "<group>"; };
+		508C4A7258B84597CEA9E195 /* yard-splash-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-1.png"; sourceTree = "<group>"; };
 		5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-expression-sheet.png"; sourceTree = "<group>"; };
-		6312EA7F985878D50D4461E3 /* leo-nervous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-nervous.png"; sourceTree = "<group>"; };
+		5509BD489AC3AF7383604342 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-guilty.png"; sourceTree = "<group>"; };
+		7207854AD6EE225DC878D932 /* chapter-05-lawnmower-loop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-05-lawnmower-loop.png"; sourceTree = "<group>"; };
+		72A1F876540188265DFBAE3A /* yard-nap-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-2.png"; sourceTree = "<group>"; };
+		74749DE5918C794C3A2EE438 /* yard-flowers-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-1.png"; sourceTree = "<group>"; };
+		7582288753B95702FB10E438 /* chapter-03-under-the-bed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-03-under-the-bed.png"; sourceTree = "<group>"; };
 		75F1962D5CC71EE060E5734C /* leo-lick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-lick.png"; sourceTree = "<group>"; };
+		786636527907BCD7942FC31D /* yard-arch-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-1.png"; sourceTree = "<group>"; };
+		8CBCA45FA16161DE4CD55356 /* yard-doghouse-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-3.png"; sourceTree = "<group>"; };
+		8EA88F2DAC1B601C6921B5BF /* blocker-crate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate.png"; sourceTree = "<group>"; };
+		92A72A020AB97211F472F127 /* yard-dog-leo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-leo.png"; sourceTree = "<group>"; };
+		92EA681FFCD4A4948EF21265 /* blocker-pot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-pot.png"; sourceTree = "<group>"; };
 		943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterMapView.swift; sourceTree = "<group>"; };
-		B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterSystemViews.swift; sourceTree = "<group>"; };
-		B2026C02B2026C02B2026C02 /* chapter-02-vacuum-hallway.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-02-vacuum-hallway.png"; sourceTree = "<group>"; };
-		B2026C03B2026C03B2026C03 /* chapter-03-under-the-bed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-03-under-the-bed.png"; sourceTree = "<group>"; };
-		B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-04-thunder-tomatoes.png"; sourceTree = "<group>"; };
-		B2026C05B2026C05B2026C05 /* chapter-05-lawnmower-loop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-05-lawnmower-loop.png"; sourceTree = "<group>"; };
-		B2026C06B2026C06B2026C06 /* chapter-06-bags-and-cans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-06-bags-and-cans.png"; sourceTree = "<group>"; };
-		B2026C07B2026C07B2026C07 /* chapter-07-where-is-mom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-07-where-is-mom.png"; sourceTree = "<group>"; };
-		B2026C08B2026C08B2026C08 /* chapter-08-pool-day.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-08-pool-day.png"; sourceTree = "<group>"; };
-		B2026C09B2026C09B2026C09 /* chapter-09-special-delivery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-09-special-delivery.png"; sourceTree = "<group>"; };
-		B2026C10B2026C10B2026C10 /* chapter-10-birthday-pad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-10-birthday-pad.png"; sourceTree = "<group>"; };
-		B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuteTheme.swift; sourceTree = "<group>"; };
-		B2027D00B2027D00B2027D00 /* yard-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-background.png"; sourceTree = "<group>"; };
-		B2027D01B2027D01B2027D01 /* yard-flowers-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-1.png"; sourceTree = "<group>"; };
-		B2027D02B2027D02B2027D02 /* yard-flowers-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-2.png"; sourceTree = "<group>"; };
-		B2027D03B2027D03B2027D03 /* yard-flowers-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-3.png"; sourceTree = "<group>"; };
-		B2027D04B2027D04B2027D04 /* yard-doghouse-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-1.png"; sourceTree = "<group>"; };
-		B2027D05B2027D05B2027D05 /* yard-doghouse-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-2.png"; sourceTree = "<group>"; };
-		B2027D06B2027D06B2027D06 /* yard-doghouse-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-doghouse-3.png"; sourceTree = "<group>"; };
-		B2027D07B2027D07B2027D07 /* yard-splash-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-1.png"; sourceTree = "<group>"; };
-		B2027D08B2027D08B2027D08 /* yard-splash-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-2.png"; sourceTree = "<group>"; };
-		B2027D09B2027D09B2027D09 /* yard-splash-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-splash-3.png"; sourceTree = "<group>"; };
-		B2027D0AB2027D0AB2027D0A /* yard-nap-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-1.png"; sourceTree = "<group>"; };
-		B2027D0BB2027D0BB2027D0B /* yard-nap-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-2.png"; sourceTree = "<group>"; };
-		B2027D0CB2027D0CB2027D0C /* yard-nap-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-3.png"; sourceTree = "<group>"; };
-		B2027D0DB2027D0DB2027D0D /* yard-toys-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-1.png"; sourceTree = "<group>"; };
-		B2027D0EB2027D0EB2027D0E /* yard-toys-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-2.png"; sourceTree = "<group>"; };
-		B2027D0FB2027D0FB2027D0F /* yard-toys-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-3.png"; sourceTree = "<group>"; };
-		B2027D10B2027D10B2027D10 /* yard-bench-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-1.png"; sourceTree = "<group>"; };
-		B2027D11B2027D11B2027D11 /* yard-bench-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-2.png"; sourceTree = "<group>"; };
-		B2027D12B2027D12B2027D12 /* yard-bench-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-3.png"; sourceTree = "<group>"; };
-		B2027D13B2027D13B2027D13 /* yard-tree-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-1.png"; sourceTree = "<group>"; };
-		B2027D14B2027D14B2027D14 /* yard-tree-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-2.png"; sourceTree = "<group>"; };
-		B2027D15B2027D15B2027D15 /* yard-tree-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-3.png"; sourceTree = "<group>"; };
-		B2027D16B2027D16B2027D16 /* yard-arch-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-1.png"; sourceTree = "<group>"; };
-		B2027D17B2027D17B2027D17 /* yard-arch-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-2.png"; sourceTree = "<group>"; };
-		B2027D18B2027D18B2027D18 /* yard-arch-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-3.png"; sourceTree = "<group>"; };
-		B2027D19B2027D19B2027D19 /* yard-dog-leo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-leo.png"; sourceTree = "<group>"; };
-		B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-henry.png"; sourceTree = "<group>"; };
-		B2027E01B2027E01B2027E01 /* YardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YardView.swift; sourceTree = "<group>"; };
-		B2027F01B2027F01B2027F01 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
-		B2028B01B2028B01B2028B01 /* blocker-pot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-pot.png"; sourceTree = "<group>"; };
-		B2028B02B2028B02B2028B02 /* blocker-crate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate.png"; sourceTree = "<group>"; };
-		B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate-cracked.png"; sourceTree = "<group>"; };
-		B2028B04B2028B04B2028B04 /* blocker-stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone.png"; sourceTree = "<group>"; };
-		B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-stone-cracked.png"; sourceTree = "<group>"; };
-		B2028B06B2028B06B2028B06 /* blocker-beetle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-beetle.png"; sourceTree = "<group>"; };
+		96F3C79F4613810554319716 /* YardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YardView.swift; sourceTree = "<group>"; };
+		9805E0D10BA7E6F5B5D70B8E /* CuteTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuteTheme.swift; sourceTree = "<group>"; };
+		994FFCEE7C6814D01241EF39 /* yard-flowers-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-flowers-2.png"; sourceTree = "<group>"; };
+		9F041B3D7438EA4DD9C24EF3 /* yard-bench-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-1.png"; sourceTree = "<group>"; };
+		A41BFCBB797573DEC081C0A1 /* leo-nervous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leo-nervous.png"; sourceTree = "<group>"; };
+		A9CA93EE6874953C64FE641D /* chapter-05.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-05.json"; sourceTree = "<group>"; };
+		AC6599B6581B0A7C1115BB5A /* yard-nap-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-1.png"; sourceTree = "<group>"; };
+		AE6C9C9AAE5E4C7862866450 /* GameContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameContent.swift; sourceTree = "<group>"; };
 		B78A90852C6887B27854472A /* henry-map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "henry-map-marker.png"; sourceTree = "<group>"; };
-		CBFA5A342A57562B9F242A3F /* Henry's Garden Chase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Henry's Garden Chase.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8BCD1447BB558C092930876 /* yard-tree-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-1.png"; sourceTree = "<group>"; };
+		BD024D5E1005139ABCD1EF10 /* yard-toys-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-1.png"; sourceTree = "<group>"; };
+		BD4318332EC45529237D111A /* chapter-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-04.json"; sourceTree = "<group>"; };
+		C6CD546D2E320E1FBBA4EFD1 /* chapter-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-02.json"; sourceTree = "<group>"; };
+		CA8E995035B031249B980AE5 /* yard-bench-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-2.png"; sourceTree = "<group>"; };
+		CAD15E3F7A58EAB11776A8C2 /* chapter-06.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-06.json"; sourceTree = "<group>"; };
+		CB6A7B0F897B6D5E4D32A6A1 /* blocker-crate-cracked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blocker-crate-cracked.png"; sourceTree = "<group>"; };
+		CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HenrysGardenChase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFC5330FFC9B374DE54C986F /* chapter-07-where-is-mom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter-07-where-is-mom.png"; sourceTree = "<group>"; };
+		D476E7F38F47381CBAB31F06 /* chapter-07.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-07.json"; sourceTree = "<group>"; };
+		D4EB875591AB528DB21CEBD6 /* yard-nap-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-nap-3.png"; sourceTree = "<group>"; };
+		D7EA16A81F39F733E33CBAAB /* yard-tree-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-tree-2.png"; sourceTree = "<group>"; };
+		D83ADE09695F31728C7CBA8B /* yard-dog-henry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-dog-henry.png"; sourceTree = "<group>"; };
+		DD2A40D812A7F97606CE657B /* BoosterSystemViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterSystemViews.swift; sourceTree = "<group>"; };
+		E1112DEAFF34946405C1BD00 /* yard-toys-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-toys-3.png"; sourceTree = "<group>"; };
+		E6CD63F7616AB57DF4C3E030 /* yard-bench-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-bench-3.png"; sourceTree = "<group>"; };
+		EC38ACE02F034060EC075B8A /* chapter-08.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-08.json"; sourceTree = "<group>"; };
+		EE6E6BD26B9FCB451A3A1533 /* chapter-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "chapter-01.json"; sourceTree = "<group>"; };
 		F186D3BAA33C371B5D9E9106 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		F30C070823FD9989B2151C5E /* yard-arch-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yard-arch-2.png"; sourceTree = "<group>"; };
 		F59D290CA682A7C220C2BB08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SproutAndSmilesApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,10 +170,28 @@
 			);
 			sourceTree = "<group>";
 		};
+		24ADF27FC9D3962F2DCC296E /* GameContent */ = {
+			isa = PBXGroup;
+			children = (
+				EE6E6BD26B9FCB451A3A1533 /* chapter-01.json */,
+				C6CD546D2E320E1FBBA4EFD1 /* chapter-02.json */,
+				1A95158F7B8981DF6654611A /* chapter-03.json */,
+				BD4318332EC45529237D111A /* chapter-04.json */,
+				A9CA93EE6874953C64FE641D /* chapter-05.json */,
+				CAD15E3F7A58EAB11776A8C2 /* chapter-06.json */,
+				D476E7F38F47381CBAB31F06 /* chapter-07.json */,
+				EC38ACE02F034060EC075B8A /* chapter-08.json */,
+				02CB3047B65AF9663D715F94 /* chapter-09.json */,
+				4E3F1C110C2319E82A74C90E /* chapter-10.json */,
+				313696744D1F9F83529CFDD1 /* chapters.json */,
+			);
+			path = GameContent;
+			sourceTree = "<group>";
+		};
 		34EA68CC98D95972D02772B0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CBFA5A342A57562B9F242A3F /* Henry's Garden Chase.app */,
+				CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -159,18 +199,19 @@
 		6DA0318BB56D75320849B513 /* SproutAndSmiles */ = {
 			isa = PBXGroup;
 			children = (
-				B2029A02B2029A02B2029A02 /* PrivacyInfo.xcprivacy */,
-				B2029A01B2029A01B2029A01 /* Resources.xcassets */,
-				B2026B57B2026B57B2026B57 /* BoosterSystemViews.swift */,
-				B2026CA7B2026CA7B2026CA7 /* CuteTheme.swift */,
-				B2027E01B2027E01B2027E01 /* YardView.swift */,
-				B2027F01B2027F01B2027F01 /* GameAudio.swift */,
+				DD2A40D812A7F97606CE657B /* BoosterSystemViews.swift */,
 				943C1BE5EBF004D14E1ACB36 /* ChapterMapView.swift */,
 				F59D290CA682A7C220C2BB08 /* ContentView.swift */,
+				9805E0D10BA7E6F5B5D70B8E /* CuteTheme.swift */,
+				338855E3E9384AE17C1B2DB0 /* GameAudio.swift */,
+				AE6C9C9AAE5E4C7862866450 /* GameContent.swift */,
 				F186D3BAA33C371B5D9E9106 /* GameModel.swift */,
+				5509BD489AC3AF7383604342 /* PrivacyInfo.xcprivacy */,
 				FC5DB4C76F1035DB2E169944 /* SproutAndSmilesApp.swift */,
 				1D6DB1DED835BBBC42DC57D9 /* VeggieView.swift */,
+				96F3C79F4613810554319716 /* YardView.swift */,
 				726125BF8F1A5A26854F637D /* Artwork */,
+				24ADF27FC9D3962F2DCC296E /* GameContent */,
 			);
 			path = SproutAndSmiles;
 			sourceTree = "<group>";
@@ -178,82 +219,82 @@
 		726125BF8F1A5A26854F637D /* Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				236ECD7B0FE66BB367DFB979 /* chapter-02-vacuum-hallway.png */,
+				7582288753B95702FB10E438 /* chapter-03-under-the-bed.png */,
+				35116EF8BC700875787E12F5 /* chapter-04-thunder-tomatoes.png */,
+				7207854AD6EE225DC878D932 /* chapter-05-lawnmower-loop.png */,
+				1209FAB34CBAD00BF385F72A /* chapter-06-bags-and-cans.png */,
+				CFC5330FFC9B374DE54C986F /* chapter-07-where-is-mom.png */,
+				41E69D6E4FF73D7E980A38C3 /* chapter-08-pool-day.png */,
+				1F60ACDAA921E2496D0E5ED7 /* chapter-09-special-delivery.png */,
+				2F5F4DBBA2CA89D701E66EBB /* chapter-10-birthday-pad.png */,
 				45EA98EFD288773DEA44B783 /* chapter-one-garden.png */,
-				B2026C02B2026C02B2026C02 /* chapter-02-vacuum-hallway.png */,
-				B2026C03B2026C03B2026C03 /* chapter-03-under-the-bed.png */,
-				B2026C04B2026C04B2026C04 /* chapter-04-thunder-tomatoes.png */,
-				B2026C05B2026C05B2026C05 /* chapter-05-lawnmower-loop.png */,
-				B2026C06B2026C06B2026C06 /* chapter-06-bags-and-cans.png */,
-				B2026C07B2026C07B2026C07 /* chapter-07-where-is-mom.png */,
-				B2026C08B2026C08B2026C08 /* chapter-08-pool-day.png */,
-				B2026C09B2026C09B2026C09 /* chapter-09-special-delivery.png */,
-				B2026C10B2026C10B2026C10 /* chapter-10-birthday-pad.png */,
 				B78A90852C6887B27854472A /* henry-map-marker.png */,
 				5397E85840A3AA1C48EC1BEF /* leo-expression-sheet.png */,
 				4520BFE23BAC8A47464D0154 /* leo-henry-garden-chase.png */,
+				F8E4B0B4819F3618FD25AEB9 /* Blockers */,
 				9144EF00766C5A9982D45C66 /* LeoPieces */,
-				C2027D00C2027D00C2027D00 /* Yard */,
-				C2028B00C2028B00C2028B00 /* Blockers */,
+				773712E2632CA28321147253 /* Yard */,
 			);
 			path = Artwork;
+			sourceTree = "<group>";
+		};
+		773712E2632CA28321147253 /* Yard */ = {
+			isa = PBXGroup;
+			children = (
+				786636527907BCD7942FC31D /* yard-arch-1.png */,
+				F30C070823FD9989B2151C5E /* yard-arch-2.png */,
+				3F6D976360B6CD0C7E345B2A /* yard-arch-3.png */,
+				39C1075059C821C94442E798 /* yard-background.png */,
+				9F041B3D7438EA4DD9C24EF3 /* yard-bench-1.png */,
+				CA8E995035B031249B980AE5 /* yard-bench-2.png */,
+				E6CD63F7616AB57DF4C3E030 /* yard-bench-3.png */,
+				D83ADE09695F31728C7CBA8B /* yard-dog-henry.png */,
+				92A72A020AB97211F472F127 /* yard-dog-leo.png */,
+				1BA0D78CD9BBA09CCAF9A9BC /* yard-doghouse-1.png */,
+				2FA426B447C666B164E2516E /* yard-doghouse-2.png */,
+				8CBCA45FA16161DE4CD55356 /* yard-doghouse-3.png */,
+				74749DE5918C794C3A2EE438 /* yard-flowers-1.png */,
+				994FFCEE7C6814D01241EF39 /* yard-flowers-2.png */,
+				216CE0367CC6913C99A1614D /* yard-flowers-3.png */,
+				AC6599B6581B0A7C1115BB5A /* yard-nap-1.png */,
+				72A1F876540188265DFBAE3A /* yard-nap-2.png */,
+				D4EB875591AB528DB21CEBD6 /* yard-nap-3.png */,
+				508C4A7258B84597CEA9E195 /* yard-splash-1.png */,
+				2F048CCEAC7DEA9C9C4E1B8B /* yard-splash-2.png */,
+				4D48CA10216A520607966D57 /* yard-splash-3.png */,
+				BD024D5E1005139ABCD1EF10 /* yard-toys-1.png */,
+				0CDF62476056E01D61E46B51 /* yard-toys-2.png */,
+				E1112DEAFF34946405C1BD00 /* yard-toys-3.png */,
+				B8BCD1447BB558C092930876 /* yard-tree-1.png */,
+				D7EA16A81F39F733E33CBAAB /* yard-tree-2.png */,
+				0B6EFC05F1AB1B654D3EAE76 /* yard-tree-3.png */,
+			);
+			path = Yard;
 			sourceTree = "<group>";
 		};
 		9144EF00766C5A9982D45C66 /* LeoPieces */ = {
 			isa = PBXGroup;
 			children = (
-				6312EA7F985878D50D4461E3 /* leo-nervous.png */,
 				0D1BFBE0268E621803AA0AC9 /* leo-grumpy.png */,
 				6C572CE23AFFD1A077FE0F78 /* leo-guilty.png */,
 				32C766664A10B7B8F39CEA06 /* leo-happy.png */,
 				75F1962D5CC71EE060E5734C /* leo-lick.png */,
+				A41BFCBB797573DEC081C0A1 /* leo-nervous.png */,
 				0AF6C35ACB5AB3499E90637C /* leo-side-eye.png */,
 			);
 			path = LeoPieces;
 			sourceTree = "<group>";
 		};
-		C2027D00C2027D00C2027D00 /* Yard */ = {
+		F8E4B0B4819F3618FD25AEB9 /* Blockers */ = {
 			isa = PBXGroup;
 			children = (
-				B2027D00B2027D00B2027D00 /* yard-background.png */,
-				B2027D01B2027D01B2027D01 /* yard-flowers-1.png */,
-				B2027D02B2027D02B2027D02 /* yard-flowers-2.png */,
-				B2027D03B2027D03B2027D03 /* yard-flowers-3.png */,
-				B2027D04B2027D04B2027D04 /* yard-doghouse-1.png */,
-				B2027D05B2027D05B2027D05 /* yard-doghouse-2.png */,
-				B2027D06B2027D06B2027D06 /* yard-doghouse-3.png */,
-				B2027D07B2027D07B2027D07 /* yard-splash-1.png */,
-				B2027D08B2027D08B2027D08 /* yard-splash-2.png */,
-				B2027D09B2027D09B2027D09 /* yard-splash-3.png */,
-				B2027D0AB2027D0AB2027D0A /* yard-nap-1.png */,
-				B2027D0BB2027D0BB2027D0B /* yard-nap-2.png */,
-				B2027D0CB2027D0CB2027D0C /* yard-nap-3.png */,
-				B2027D0DB2027D0DB2027D0D /* yard-toys-1.png */,
-				B2027D0EB2027D0EB2027D0E /* yard-toys-2.png */,
-				B2027D0FB2027D0FB2027D0F /* yard-toys-3.png */,
-				B2027D10B2027D10B2027D10 /* yard-bench-1.png */,
-				B2027D11B2027D11B2027D11 /* yard-bench-2.png */,
-				B2027D12B2027D12B2027D12 /* yard-bench-3.png */,
-				B2027D13B2027D13B2027D13 /* yard-tree-1.png */,
-				B2027D14B2027D14B2027D14 /* yard-tree-2.png */,
-				B2027D15B2027D15B2027D15 /* yard-tree-3.png */,
-				B2027D16B2027D16B2027D16 /* yard-arch-1.png */,
-				B2027D17B2027D17B2027D17 /* yard-arch-2.png */,
-				B2027D18B2027D18B2027D18 /* yard-arch-3.png */,
-				B2027D19B2027D19B2027D19 /* yard-dog-leo.png */,
-				B2027D1AB2027D1AB2027D1A /* yard-dog-henry.png */,
-			);
-			path = Yard;
-			sourceTree = "<group>";
-		};
-		C2028B00C2028B00C2028B00 /* Blockers */ = {
-			isa = PBXGroup;
-			children = (
-				B2028B01B2028B01B2028B01 /* blocker-pot.png */,
-				B2028B02B2028B02B2028B02 /* blocker-crate.png */,
-				B2028B03B2028B03B2028B03 /* blocker-crate-cracked.png */,
-				B2028B04B2028B04B2028B04 /* blocker-stone.png */,
-				B2028B05B2028B05B2028B05 /* blocker-stone-cracked.png */,
-				B2028B06B2028B06B2028B06 /* blocker-beetle.png */,
+				4159C1363C31BF2E3E0A6AD1 /* blocker-beetle.png */,
+				CB6A7B0F897B6D5E4D32A6A1 /* blocker-crate-cracked.png */,
+				8EA88F2DAC1B601C6921B5BF /* blocker-crate.png */,
+				92EA681FFCD4A4948EF21265 /* blocker-pot.png */,
+				4C45CDD39411923DA7855B60 /* blocker-stone-cracked.png */,
+				23F8665327109A140BD6C59C /* blocker-stone.png */,
 			);
 			path = Blockers;
 			sourceTree = "<group>";
@@ -276,7 +317,7 @@
 			packageProductDependencies = (
 			);
 			productName = HenrysGardenChase;
-			productReference = CBFA5A342A57562B9F242A3F /* Henry's Garden Chase.app */;
+			productReference = CBFA5A342A57562B9F242A3F /* HenrysGardenChase.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -289,12 +330,12 @@
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					CA8AF26BA3C20BDFBC808241 = {
+						DevelopmentTeam = ENC9L3USAQ;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = 285A5CA5E9B86F8FA5D3F65C /* Build configuration list for PBXProject "HenrysGardenChase" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -317,60 +358,70 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2029A01A2029A01A2029A01 /* Resources.xcassets in Resources */,
-				A2029A02A2029A02A2029A02 /* PrivacyInfo.xcprivacy in Resources */,
+				E7AE81B088A1723E364F8B76 /* PrivacyInfo.xcprivacy in Resources */,
+				981BF2B47DA8F5D27BFE3749 /* blocker-beetle.png in Resources */,
+				41150B641824D9789542E0A1 /* blocker-crate-cracked.png in Resources */,
+				1F7C7D001F11A0AA51475D63 /* blocker-crate.png in Resources */,
+				235BA2B7AC38E7F2F92C2463 /* blocker-pot.png in Resources */,
+				91F098ED11737583CB4BDCA2 /* blocker-stone-cracked.png in Resources */,
+				264548E3442E523E78179E3D /* blocker-stone.png in Resources */,
+				DED7D08C2FA1C2178B289EE2 /* chapter-01.json in Resources */,
+				CD1A37EA02FBF151E97DB635 /* chapter-02-vacuum-hallway.png in Resources */,
+				0F56D031CA4832210D2ED5E8 /* chapter-02.json in Resources */,
+				27AC3E32007EC354B8F1F76C /* chapter-03-under-the-bed.png in Resources */,
+				033EAEAD6C819F2FCDFBEBDE /* chapter-03.json in Resources */,
+				A779B6B73E922F24C2A2038B /* chapter-04-thunder-tomatoes.png in Resources */,
+				86EE80B201F5A0ECCE9D8067 /* chapter-04.json in Resources */,
+				413AA68998026C489FB20112 /* chapter-05-lawnmower-loop.png in Resources */,
+				5FD1C2AAA79392FCE675C25B /* chapter-05.json in Resources */,
+				67EC6E43A61FD31CADCA4346 /* chapter-06-bags-and-cans.png in Resources */,
+				410AA3ED64FC1E97965EDD7B /* chapter-06.json in Resources */,
+				53D84EC7117691F9651EA323 /* chapter-07-where-is-mom.png in Resources */,
+				846AFA58D142406DF586A449 /* chapter-07.json in Resources */,
+				E707E7003711D8AABE5F05F4 /* chapter-08-pool-day.png in Resources */,
+				16F6A0BC32A301D0EB4DB976 /* chapter-08.json in Resources */,
+				983A253FE9FA6099AE1EF3EE /* chapter-09-special-delivery.png in Resources */,
+				6590FD22387915463594C3F2 /* chapter-09.json in Resources */,
+				B9E73BA7977BA4DACC05551D /* chapter-10-birthday-pad.png in Resources */,
+				64CA65DDBB2E39199C477639 /* chapter-10.json in Resources */,
 				B7FC63443AD33350026501C6 /* chapter-one-garden.png in Resources */,
-				A2026C02A2026C02A2026C02 /* chapter-02-vacuum-hallway.png in Resources */,
-				A2026C03A2026C03A2026C03 /* chapter-03-under-the-bed.png in Resources */,
-				A2026C04A2026C04A2026C04 /* chapter-04-thunder-tomatoes.png in Resources */,
-				A2026C05A2026C05A2026C05 /* chapter-05-lawnmower-loop.png in Resources */,
-				A2026C06A2026C06A2026C06 /* chapter-06-bags-and-cans.png in Resources */,
-				A2026C07A2026C07A2026C07 /* chapter-07-where-is-mom.png in Resources */,
-				A2026C08A2026C08A2026C08 /* chapter-08-pool-day.png in Resources */,
-				A2026C09A2026C09A2026C09 /* chapter-09-special-delivery.png in Resources */,
-				A2026C10A2026C10A2026C10 /* chapter-10-birthday-pad.png in Resources */,
-				A2028B01A2028B01A2028B01 /* blocker-pot.png in Resources */,
-				A2028B02A2028B02A2028B02 /* blocker-crate.png in Resources */,
-				A2028B03A2028B03A2028B03 /* blocker-crate-cracked.png in Resources */,
-				A2028B04A2028B04A2028B04 /* blocker-stone.png in Resources */,
-				A2028B05A2028B05A2028B05 /* blocker-stone-cracked.png in Resources */,
-				A2028B06A2028B06A2028B06 /* blocker-beetle.png in Resources */,
-				A2027D00A2027D00A2027D00 /* yard-background.png in Resources */,
-				A2027D01A2027D01A2027D01 /* yard-flowers-1.png in Resources */,
-				A2027D02A2027D02A2027D02 /* yard-flowers-2.png in Resources */,
-				A2027D03A2027D03A2027D03 /* yard-flowers-3.png in Resources */,
-				A2027D04A2027D04A2027D04 /* yard-doghouse-1.png in Resources */,
-				A2027D05A2027D05A2027D05 /* yard-doghouse-2.png in Resources */,
-				A2027D06A2027D06A2027D06 /* yard-doghouse-3.png in Resources */,
-				A2027D07A2027D07A2027D07 /* yard-splash-1.png in Resources */,
-				A2027D08A2027D08A2027D08 /* yard-splash-2.png in Resources */,
-				A2027D09A2027D09A2027D09 /* yard-splash-3.png in Resources */,
-				A2027D0AA2027D0AA2027D0A /* yard-nap-1.png in Resources */,
-				A2027D0BA2027D0BA2027D0B /* yard-nap-2.png in Resources */,
-				A2027D0CA2027D0CA2027D0C /* yard-nap-3.png in Resources */,
-				A2027D0DA2027D0DA2027D0D /* yard-toys-1.png in Resources */,
-				A2027D0EA2027D0EA2027D0E /* yard-toys-2.png in Resources */,
-				A2027D0FA2027D0FA2027D0F /* yard-toys-3.png in Resources */,
-				A2027D10A2027D10A2027D10 /* yard-bench-1.png in Resources */,
-				A2027D11A2027D11A2027D11 /* yard-bench-2.png in Resources */,
-				A2027D12A2027D12A2027D12 /* yard-bench-3.png in Resources */,
-				A2027D13A2027D13A2027D13 /* yard-tree-1.png in Resources */,
-				A2027D14A2027D14A2027D14 /* yard-tree-2.png in Resources */,
-				A2027D15A2027D15A2027D15 /* yard-tree-3.png in Resources */,
-				A2027D16A2027D16A2027D16 /* yard-arch-1.png in Resources */,
-				A2027D17A2027D17A2027D17 /* yard-arch-2.png in Resources */,
-				A2027D18A2027D18A2027D18 /* yard-arch-3.png in Resources */,
-				A2027D19A2027D19A2027D19 /* yard-dog-leo.png in Resources */,
-				A2027D1AA2027D1AA2027D1A /* yard-dog-henry.png in Resources */,
+				4221F34392F2BB27DA45AD0F /* chapters.json in Resources */,
 				85B03FB2213393857C1432C3 /* henry-map-marker.png in Resources */,
-				45AC493C43E2BBC0121B3D31 /* leo-nervous.png in Resources */,
 				C40CE4795B570718820E7488 /* leo-expression-sheet.png in Resources */,
 				FC87C9D06A54AAA33A70C2AE /* leo-grumpy.png in Resources */,
 				C46A108CA41FF839DE2C1D36 /* leo-guilty.png in Resources */,
 				B99465CC4BECECEC3A752EE8 /* leo-happy.png in Resources */,
 				5F8B118CF46B2214365D1DDD /* leo-henry-garden-chase.png in Resources */,
 				2C6A4CC6FB0FD8C799B43E41 /* leo-lick.png in Resources */,
+				56FDBB0290615663CC458F34 /* leo-nervous.png in Resources */,
 				669F420AD0C180D235D2CCE8 /* leo-side-eye.png in Resources */,
+				22E9E56BC456538624BB17B1 /* yard-arch-1.png in Resources */,
+				4F9FC91259F6BDAFE42ECE33 /* yard-arch-2.png in Resources */,
+				4A187C25BA46E86052387236 /* yard-arch-3.png in Resources */,
+				F5B965B99772BAA589CCF645 /* yard-background.png in Resources */,
+				5B335E2C15B00BCAEE5328CE /* yard-bench-1.png in Resources */,
+				7CD0961C850AF14A88995D31 /* yard-bench-2.png in Resources */,
+				FBFA889F7D68E5DCA52718C2 /* yard-bench-3.png in Resources */,
+				7A6D8A6B883EB97C71D3601A /* yard-dog-henry.png in Resources */,
+				7340C10D3B4BEB0346D60B14 /* yard-dog-leo.png in Resources */,
+				E9E0E643EFAD557C17324AE8 /* yard-doghouse-1.png in Resources */,
+				5922078E3082A0997391CD78 /* yard-doghouse-2.png in Resources */,
+				7F8C590F41076FF792925AB5 /* yard-doghouse-3.png in Resources */,
+				D7DEF60B51551DD6ED68CD55 /* yard-flowers-1.png in Resources */,
+				201AA997F182C9E120196030 /* yard-flowers-2.png in Resources */,
+				2261950F10C0B93DF04DE165 /* yard-flowers-3.png in Resources */,
+				0F2AEF799E8EA252509764D6 /* yard-nap-1.png in Resources */,
+				CE47DD19D43598B2E6791F49 /* yard-nap-2.png in Resources */,
+				CA6532274016702208FAEA85 /* yard-nap-3.png in Resources */,
+				6FF6E6EA2DC7BF8D6BCAC89B /* yard-splash-1.png in Resources */,
+				FAA2B24608166E5CD6AACAD7 /* yard-splash-2.png in Resources */,
+				9D64D666D46EF823BAB7A016 /* yard-splash-3.png in Resources */,
+				09681F97F43892E50498A7D0 /* yard-toys-1.png in Resources */,
+				2E8E9D1EECDB5BAC4B1BBED4 /* yard-toys-2.png in Resources */,
+				0274DEE4F3DE11C7B0338724 /* yard-toys-3.png in Resources */,
+				A8946EF5537FAA8A0C4CCE7D /* yard-tree-1.png in Resources */,
+				61150E946F5961E505FAA90E /* yard-tree-2.png in Resources */,
+				CD20D6827480906121AA2F65 /* yard-tree-3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,15 +432,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2026B57A2026B57A2026B57 /* BoosterSystemViews.swift in Sources */,
-				A2026CA7A2026CA7A2026CA7 /* CuteTheme.swift in Sources */,
-				A2027E01A2027E01A2027E01 /* YardView.swift in Sources */,
-				A2027F01A2027F01A2027F01 /* GameAudio.swift in Sources */,
+				77711BF74555E2DCA4E26CC5 /* BoosterSystemViews.swift in Sources */,
 				15716FCFEF1A3BEC6E8EC7E0 /* ChapterMapView.swift in Sources */,
 				7DF830BDF4BB25F11D3101D7 /* ContentView.swift in Sources */,
+				70D8DCA999483CF0C18D16AA /* CuteTheme.swift in Sources */,
+				AE56AE0E54DF9B6134077467 /* GameAudio.swift in Sources */,
+				8E185F9F661A75AA1B732B8F /* GameContent.swift in Sources */,
 				1CE763E4CE947BBA421F6999 /* GameModel.swift in Sources */,
 				B3D5516BE3A28B6ABEFA2704 /* SproutAndSmilesApp.swift in Sources */,
 				66E69415744920F6D037E2CF /* VeggieView.swift in Sources */,
+				1C1A8DD0F3A3369545CF492C /* YardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

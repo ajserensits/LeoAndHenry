@@ -1,0 +1,129 @@
+{
+  "id": "chapter-08-pool-day",
+  "title": "Pool Day",
+  "subtitle": "Henry keeps Leo on the dry side of the pool.",
+  "backgroundName": "chapter-08-pool-day",
+  "symbol": "drop.fill",
+  "levels": [
+    {
+      "id": "chapter-08-level-01",
+      "goal": "tomato",
+      "amount": 22,
+      "moves": 21,
+      "title": "Leo Spots the Pool",
+      "stolenItem": "Henry's pool ring",
+      "clue": "Mom wants everyone outside by the pool. Leo grabbed Henry's ring and froze.",
+      "potCells": 2,
+      "crateCells": 3
+    },
+    {
+      "id": "chapter-08-level-02",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 12,
+      "title": "First Little Splash",
+      "stolenItem": "dry paws",
+      "clue": "Splashes creep from the pool. Match on or beside them before they reach Leo's towel.",
+      "splashCount": 5,
+      "splashEvery": 3
+    },
+    {
+      "id": "chapter-08-level-03",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 24,
+      "title": "The Dry Way",
+      "stolenItem": "dry stepping stones",
+      "clue": "Henry shows Leo the dry stones along the edge of the patio.",
+      "quietRouteSteps": 8,
+      "stoneCells": 3,
+      "beetleCount": 2
+    },
+    {
+      "id": "chapter-08-level-04",
+      "goal": "pepper",
+      "amount": 0,
+      "moves": 14,
+      "title": "Cannonball Next Door",
+      "stolenItem": "splash-free corner",
+      "clue": "A neighbor's cannonball sends drops flying. Henry stays between Leo and the water.",
+      "splashCount": 7,
+      "splashEvery": 3
+    },
+    {
+      "id": "chapter-08-level-05",
+      "goal": "eggplant",
+      "amount": 0,
+      "moves": 16,
+      "title": "Wet Paws, Brave Paws",
+      "stolenItem": "brave little step",
+      "clue": "The splashes come a little faster. Henry nudges back any that get too close.",
+      "splashCount": 8,
+      "splashEvery": 2,
+      "crateCells": 3,
+      "crateDepth": 3,
+      "gooCells": 3
+    },
+    {
+      "id": "chapter-08-level-06",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 10,
+      "title": "Sunny Towel Nap",
+      "stolenItem": "warm towel",
+      "clue": "Leo dozed off on the warm towel. Henry gives gentle woofs to wake him.",
+      "sleepingCells": 8
+    },
+    {
+      "id": "chapter-08-level-07",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 15,
+      "title": "Pool Toy Parade",
+      "stolenItem": "floating duck",
+      "clue": "Pool toys bob by and splash the deck. Keep Leo's towel dry.",
+      "splashCount": 9,
+      "splashEvery": 2,
+      "potCells": 3,
+      "stoneCells": 2,
+      "gooCells": 3
+    },
+    {
+      "id": "chapter-08-level-08",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 25,
+      "title": "Between Leo and the Water",
+      "stolenItem": "path to Mom's chair",
+      "clue": "Henry walks on the pool side so Leo can walk on the dry side.",
+      "quietRouteSteps": 12
+    },
+    {
+      "id": "chapter-08-level-09",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 18,
+      "title": "The Big Splash",
+      "stolenItem": "Mom's sun hat",
+      "clue": "Mom dives in! Clear the big wave of splashes before it reaches Leo.",
+      "splashCount": 11,
+      "splashEvery": 2,
+      "crateCells": 4,
+      "beetleCount": 3
+    },
+    {
+      "id": "chapter-08-level-10",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 20,
+      "title": "Dry and Proud",
+      "stolenItem": "shared pool ring",
+      "clue": "One last splash wave, then Leo hands Henry's ring back beside Mom's chair.",
+      "splashCount": 12,
+      "splashEvery": 2,
+      "stoneCells": 3,
+      "beetleCount": 2,
+      "gooCells": 4
+    }
+  ]
+}

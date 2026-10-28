@@ -101,7 +101,7 @@ Never expose this menu in Release or TestFlight builds intended for normal play.
 ## Technical direction
 
 - Keep gameplay rules separate from SwiftUI presentation.
-- Move level definitions from hard-coded initializers toward Codable data.
+- Keep the implemented Codable chapter and level files under `SproutAndSmiles/GameContent/`, preserving permanent IDs for saved progress.
 - Version persistent progress before the level model changes substantially.
 - Give each objective and obstacle deterministic unit tests.
 - Keep all normal content playable offline.

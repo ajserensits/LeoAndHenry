@@ -1,0 +1,99 @@
+{
+  "id": "chapter-01-garden-chase",
+  "title": "The Bug in the Beans",
+  "subtitle": "Henry follows Leo's pawprints through the garden.",
+  "backgroundName": "chapter-one-garden",
+  "symbol": "leaf.fill",
+  "levels": [
+    {
+      "id": "chapter-01-level-01",
+      "goal": "tomato",
+      "amount": 16,
+      "moves": 21,
+      "title": "The Bug in the Beans",
+      "stolenItem": "red plush bug",
+      "clue": "Leo dashed toward the tomato patch!"
+    },
+    {
+      "id": "chapter-01-level-02",
+      "goal": "carrot",
+      "amount": 20,
+      "moves": 25,
+      "title": "The Missing Biscuit",
+      "stolenItem": "crunchy biscuit",
+      "clue": "A trail of crumbs leads past the carrots."
+    },
+    {
+      "id": "chapter-01-level-03",
+      "goal": "onion",
+      "amount": 22,
+      "moves": 28,
+      "title": "Dinner on the Run",
+      "stolenItem": "dinner bowl",
+      "clue": "Henry heard a suspicious clink by the herbs."
+    },
+    {
+      "id": "chapter-01-level-04",
+      "goal": "pepper",
+      "amount": 25,
+      "moves": 32,
+      "title": "The Squeaky Hedge",
+      "stolenItem": "squeaky toy",
+      "clue": "Squeak! Leo is hiding near the peppers."
+    },
+    {
+      "id": "chapter-01-level-05",
+      "goal": "eggplant",
+      "amount": 27,
+      "moves": 33,
+      "title": "Sock Among the Lavender",
+      "stolenItem": "favorite sock",
+      "clue": "A fluffy brown tail vanished by the gate."
+    },
+    {
+      "id": "chapter-01-level-06",
+      "goal": "pea",
+      "amount": 30,
+      "moves": 35,
+      "title": "The Picnic Pilferer",
+      "stolenItem": "picnic snack",
+      "clue": "Leo left tiny pawprints through the peas."
+    },
+    {
+      "id": "chapter-01-level-07",
+      "goal": "tomato",
+      "amount": 32,
+      "moves": 38,
+      "title": "Ball in the Brambles",
+      "stolenItem": "red ball",
+      "clue": "Henry spotted the ball beyond the tomatoes."
+    },
+    {
+      "id": "chapter-01-level-08",
+      "goal": "carrot",
+      "amount": 34,
+      "moves": 40,
+      "title": "The Great Carrot Caper",
+      "stolenItem": "carrot treat",
+      "clue": "This clue has Leo written all over it."
+    },
+    {
+      "id": "chapter-01-level-09",
+      "goal": "onion",
+      "amount": 36,
+      "moves": 45,
+      "title": "Moonlight Munchies",
+      "stolenItem": "bedtime snack",
+      "clue": "A midnight rustle wakes determined Henry."
+    },
+    {
+      "id": "chapter-01-level-10",
+      "goal": "pea",
+      "amount": 40,
+      "moves": 48,
+      "title": "The Garden Feast",
+      "stolenItem": "celebration supper",
+      "clue": "One last chase before the brothers share."
+    }
+  ]
+}

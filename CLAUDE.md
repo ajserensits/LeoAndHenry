@@ -8,6 +8,7 @@ Before changing story, gameplay, or artwork, read:
 2. `docs/ART_BIBLE.md`
 3. `docs/ROADMAP.md`
 4. `docs/BOOSTER_SYSTEM.md`
+5. `docs/GAME_CONTENT.md`
 
 ## Non-negotiable product rules
 
@@ -28,6 +29,8 @@ Before changing story, gameplay, or artwork, read:
 - Open `HenrysGardenChase.xcodeproj`.
 - App source is under `SproutAndSmiles/`.
 - Current gameplay model is `SproutAndSmiles/GameModel.swift`.
+- Chapter and level definitions are JSON files under `SproutAndSmiles/GameContent/`; preserve every released chapter and level ID when editing or reordering content.
+- `SproutAndSmiles/GameContent.swift` decodes and validates game content. Do not move ordinary level definitions back into Swift source.
 - Main gameplay UI is `SproutAndSmiles/ContentView.swift`.
 - Chapter map is `SproutAndSmiles/ChapterMapView.swift`.
 - Approved raster artwork is under `SproutAndSmiles/Artwork/`.

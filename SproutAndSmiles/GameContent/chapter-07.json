@@ -1,0 +1,132 @@
+{
+  "id": "chapter-07-where-is-mom",
+  "title": "Where Is Mom?",
+  "subtitle": "Henry follows familiar clues and keeps Leo close.",
+  "backgroundName": "chapter-07-where-is-mom",
+  "symbol": "heart.text.clipboard.fill",
+  "levels": [
+    {
+      "id": "chapter-07-level-01",
+      "goal": "carrot",
+      "amount": 22,
+      "moves": 23,
+      "title": "Crumbs at the Gate",
+      "stolenItem": "crumb trail",
+      "clue": "The brothers followed snack crumbs too far—and now they cannot see Mom.",
+      "gooCells": 2
+    },
+    {
+      "id": "chapter-07-level-02",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 10,
+      "title": "Mom's Pink Slipper",
+      "stolenItem": "familiar slipper",
+      "clue": "Match beside the leafy patches. Henry smells something familiar underneath.",
+      "clueCells": 3,
+      "crateCells": 2,
+      "gooCells": 2
+    },
+    {
+      "id": "chapter-07-level-03",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 10,
+      "title": "Keys in the Flowers",
+      "stolenItem": "keys with the paw charm",
+      "clue": "A tiny jingle! Henry searches the flowers while Leo stays close.",
+      "clueCells": 4,
+      "beetleCount": 1,
+      "gooCells": 3
+    },
+    {
+      "id": "chapter-07-level-04",
+      "goal": "pepper",
+      "amount": 0,
+      "moves": 26,
+      "title": "Which Way, Henry?",
+      "stolenItem": "safe garden turn",
+      "clue": "Henry chooses the gentle path and makes sure Leo follows.",
+      "quietRouteSteps": 8,
+      "stoneCells": 2,
+      "gooCells": 2
+    },
+    {
+      "id": "chapter-07-level-05",
+      "goal": "eggplant",
+      "amount": 0,
+      "moves": 14,
+      "title": "Leaves over the Path",
+      "stolenItem": "hidden familiar things",
+      "clue": "Some clues are tucked beneath two layers of leaves.",
+      "clueCells": 6,
+      "clueDepth": 2,
+      "gooCells": 4
+    },
+    {
+      "id": "chapter-07-level-06",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 10,
+      "title": "Leo Starts to Worry",
+      "stolenItem": "a little reassurance",
+      "clue": "Henry gathers comforting signs of home and stays beside Leo.",
+      "comfortCells": 18,
+      "crateCells": 3,
+      "gooCells": 3
+    },
+    {
+      "id": "chapter-07-level-07",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 14,
+      "title": "Familiar Footsteps",
+      "stolenItem": "Mom's footsteps",
+      "clue": "Slipper, keys, pawprints—every clue says they are heading home.",
+      "clueCells": 8,
+      "clueDepth": 2,
+      "beetleCount": 2,
+      "gooCells": 3
+    },
+    {
+      "id": "chapter-07-level-08",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 23,
+      "title": "The Porch Light",
+      "stolenItem": "warm light ahead",
+      "clue": "Henry spots the porch light and leads Leo toward it one pawstep at a time.",
+      "rescueSteps": 11,
+      "stoneCells": 2,
+      "gooCells": 4
+    },
+    {
+      "id": "chapter-07-level-09",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 15,
+      "title": "Almost Home",
+      "stolenItem": "last garden clues",
+      "clue": "The cottage is close. Find the final familiar signs along the path.",
+      "clueCells": 10,
+      "clueDepth": 2,
+      "potCells": 2,
+      "crateCells": 3,
+      "gooCells": 4
+    },
+    {
+      "id": "chapter-07-level-10",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 16,
+      "title": "There You Are, Mom!",
+      "stolenItem": "the way back to Mom",
+      "clue": "Henry follows every clue until Leo sees Mom waiting in the warm window.",
+      "clueCells": 12,
+      "clueDepth": 2,
+      "stoneCells": 2,
+      "beetleCount": 2,
+      "gooCells": 5
+    }
+  ]
+}

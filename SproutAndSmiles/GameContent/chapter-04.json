@@ -1,0 +1,131 @@
+{
+  "id": "chapter-04-thunder-tomatoes",
+  "title": "Thunder over the Tomatoes",
+  "subtitle": "Henry keeps Leo cozy until the storm rolls past.",
+  "backgroundName": "chapter-04-thunder-tomatoes",
+  "symbol": "cloud.bolt.rain.fill",
+  "levels": [
+    {
+      "id": "chapter-04-level-01",
+      "goal": "eggplant",
+      "amount": 20,
+      "moves": 22,
+      "title": "The Cozy Spot Thief",
+      "stolenItem": "cozy blanket spot",
+      "clue": "Leo has claimed Henry's blanket spot—just as the first thunder rumbles.",
+      "thunderEvery": 6,
+      "potCells": 2
+    },
+    {
+      "id": "chapter-04-level-02",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 10,
+      "title": "Tuck In, Leo",
+      "stolenItem": "warm blanket",
+      "clue": "Match beside the blanket to spread it over Leo's shivery side.",
+      "comfortCells": 10,
+      "thunderEvery": 6,
+      "crateCells": 2
+    },
+    {
+      "id": "chapter-04-level-03",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 10,
+      "title": "Henry Brings a Slipper",
+      "stolenItem": "Mom's slipper",
+      "clue": "Henry fetches a slipper that smells like Mom. The blanket grows.",
+      "comfortCells": 16,
+      "thunderEvery": 5,
+      "potCells": 3
+    },
+    {
+      "id": "chapter-04-level-04",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 21,
+      "title": "Ladybug Delivery",
+      "stolenItem": "red plush ladybug",
+      "clue": "Guide Henry across the sunroom to bring Leo his favorite ladybug.",
+      "rescueSteps": 8,
+      "thunderEvery": 5,
+      "potCells": 2,
+      "crateCells": 2
+    },
+    {
+      "id": "chapter-04-level-05",
+      "goal": "pepper",
+      "amount": 0,
+      "moves": 13,
+      "title": "Rain on the Windows",
+      "stolenItem": "quiet corner",
+      "clue": "Raindrops drum on the glass. Keep the blanket spreading.",
+      "comfortCells": 22,
+      "thunderEvery": 5,
+      "crateCells": 3
+    },
+    {
+      "id": "chapter-04-level-06",
+      "goal": "pea",
+      "amount": 26,
+      "moves": 26,
+      "title": "A Snack for Courage",
+      "stolenItem": "storm snack",
+      "clue": "Leo is too nervous to eat—unless Henry shares his snack.",
+      "thunderEvery": 5,
+      "potCells": 4
+    },
+    {
+      "id": "chapter-04-level-07",
+      "goal": "eggplant",
+      "amount": 0,
+      "moves": 16,
+      "title": "The Loudest Clap",
+      "stolenItem": "brave moment",
+      "clue": "The biggest boom yet. Henry pulls the blanket wider.",
+      "comfortCells": 28,
+      "thunderEvery": 4,
+      "potCells": 2,
+      "crateCells": 3
+    },
+    {
+      "id": "chapter-04-level-08",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 23,
+      "title": "Every Comfort Thing",
+      "stolenItem": "pile of toys",
+      "clue": "Henry carries every favorite toy to Leo, one trip at a time.",
+      "rescueSteps": 11,
+      "thunderEvery": 4,
+      "crateCells": 4
+    },
+    {
+      "id": "chapter-04-level-09",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 18,
+      "title": "Rumbles Fading",
+      "stolenItem": "sleepy calm",
+      "clue": "The thunder rolls farther away. Just a little more blanket.",
+      "comfortCells": 34,
+      "thunderEvery": 6,
+      "potCells": 3,
+      "crateCells": 2
+    },
+    {
+      "id": "chapter-04-level-10",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 22,
+      "title": "Sharing the Blanket",
+      "stolenItem": "shared blanket",
+      "clue": "The storm passes. Spread the blanket wide enough for two.",
+      "comfortCells": 40,
+      "thunderEvery": 8,
+      "potCells": 2,
+      "crateCells": 4
+    }
+  ]
+}

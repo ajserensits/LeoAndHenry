@@ -1,0 +1,118 @@
+{
+  "id": "chapter-02-vacuum-awakens",
+  "title": "The Vacuum Awakens",
+  "subtitle": "Henry clears a safe path through the hallway.",
+  "backgroundName": "chapter-02-vacuum-hallway",
+  "symbol": "wind",
+  "levels": [
+    {
+      "id": "chapter-02-level-01",
+      "goal": "carrot",
+      "amount": 18,
+      "moves": 23,
+      "title": "Follow the Crumbs",
+      "stolenItem": "crunchy biscuit",
+      "clue": "Henry spots biscuit crumbs beside the laundry basket."
+    },
+    {
+      "id": "chapter-02-level-02",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 23,
+      "title": "Dust Bunny Detour",
+      "stolenItem": "dusty pawprints",
+      "clue": "Match on the dusty tiles to clear a quiet path.",
+      "dustCells": 8,
+      "dustDepth": 1
+    },
+    {
+      "id": "chapter-02-level-03",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 25,
+      "title": "Behind the Basket",
+      "stolenItem": "hidden biscuit",
+      "clue": "Leo is tucked behind the basket. Clear the dust so Henry can see him.",
+      "dustCells": 12,
+      "dustDepth": 1
+    },
+    {
+      "id": "chapter-02-level-04",
+      "goal": "pepper",
+      "amount": 0,
+      "moves": 30,
+      "title": "The Vacuum Wakes",
+      "stolenItem": "dropped biscuit",
+      "clue": "The vacuum rumbles. Henry stands between it and Leo.",
+      "dustCells": 10,
+      "dustDepth": 2
+    },
+    {
+      "id": "chapter-02-level-05",
+      "goal": "eggplant",
+      "amount": 0,
+      "moves": 36,
+      "title": "A Quiet Corner",
+      "stolenItem": "comfort blanket",
+      "clue": "Clear the thickest dust and make Leo a quiet corner.",
+      "dustCells": 14,
+      "dustDepth": 2,
+      "potCells": 2
+    },
+    {
+      "id": "chapter-02-level-06",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 13,
+      "title": "Nap Behind the Hamper",
+      "stolenItem": "runaway biscuit",
+      "clue": "Make matches beside sleeping Leos so Henry can bark them awake.",
+      "sleepingCells": 6
+    },
+    {
+      "id": "chapter-02-level-07",
+      "goal": "tomato",
+      "amount": 0,
+      "moves": 50,
+      "title": "Two Layers of Trouble",
+      "stolenItem": "favorite toy",
+      "clue": "Some dust bunnies need two good matches before they tumble away.",
+      "dustCells": 18,
+      "dustDepth": 2,
+      "potCells": 3
+    },
+    {
+      "id": "chapter-02-level-08",
+      "goal": "carrot",
+      "amount": 0,
+      "moves": 50,
+      "title": "Henry Takes the Lead",
+      "stolenItem": "safe hallway",
+      "clue": "Henry leads the way one clean pawstep at a time.",
+      "dustCells": 20,
+      "dustDepth": 2
+    },
+    {
+      "id": "chapter-02-level-09",
+      "goal": "onion",
+      "amount": 0,
+      "moves": 17,
+      "title": "The Great Wake-Up Call",
+      "stolenItem": "doorway clue",
+      "clue": "Henry needs one more chorus of barks before everyone heads outside.",
+      "sleepingCells": 12,
+      "potCells": 4
+    },
+    {
+      "id": "chapter-02-level-10",
+      "goal": "pea",
+      "amount": 0,
+      "moves": 50,
+      "title": "Safe in the Sunshine",
+      "stolenItem": "shared biscuit",
+      "clue": "One final cleanup, then Henry and Leo can share the biscuit outside.",
+      "dustCells": 24,
+      "dustDepth": 2
+    }
+  ]
+}

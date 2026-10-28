@@ -227,10 +227,10 @@ struct MusicTheme {
         MusicTheme(name: "Under-the-Bed Music Box", step: 0.36, voice: .musicBox,
                    melody: notes("A5 C6 E6 - D6 C6 B5 - C6 B5 A5 E5 A5 - - . F5 A5 C6 - B5 A5 G5 - E5 G5 B5 C6 A5 - - ."),
                    chords: chords("45m 43 45m 45m 41 43 48 45m"), arpeggio: 0.06, pad: 0.03, gain: 0.8),
-        // 4. Thunder over the Tomatoes: a slow, snug lullaby.
-        MusicTheme(name: "Blanket Lullaby", step: 0.40, voice: .flute,
-                   melody: notes("C5 - F5 - E5 D5 C5 - A4 - C5 - D5 - - . C5 - A5 - G5 F5 E5 - F5 - D5 E5 F5 - - ."),
-                   chords: chords("41 48 41 50m 41 48 46 41"), arpeggio: 0.05, pad: 0.045, gain: 0.5),
+        // 4. Thunder over the Tomatoes: a gentle music-box tune under a shared blanket.
+        MusicTheme(name: "Blanket-Fort Music Box", step: 0.32, voice: .musicBox,
+                   melody: notes("A5 C6 F6 - E6 D6 C6 - Bb5 D6 G6 - F6 E6 C6 . A5 C6 F6 A6 G6 F6 E6 C6 D6 Bb5 C6 A5 F5 - - ."),
+                   chords: chords("53 48 55m 53 46 48 53 53"), arpeggio: 0.045, pad: 0.018, gain: 0.72),
         // 5. The Lawnmower Loop: a jaunty little march.
         MusicTheme(name: "Lawn March", step: 0.24, voice: .pluck,
                    melody: notes("G4 B4 D5 B4 G4 B4 D5 . C5 E5 G5 E5 D5 - . . B4 D5 G5 D5 C5 A4 F#4 A4 G4 B4 D5 F#5 G5 - . ."),
@@ -239,10 +239,10 @@ struct MusicTheme {
         MusicTheme(name: "Brave Breeze", step: 0.26, voice: .steel,
                    melody: notes("D5 - F#5 A5 B5 A5 F#5 - G5 - E5 G5 A5 - . . B5 A5 G5 F#5 E5 F#5 G5 E5 F#5 - E5 C#5 D5 - . ."),
                    chords: chords("50 47m 43 45 43 45 45 50"), arpeggio: 0.07, bass: 0.10, gain: 0.85),
-        // 7. Where Is Mom?: wistful searching that lands somewhere hopeful.
-        MusicTheme(name: "Looking for Mom", step: 0.34, voice: .flute,
-                   melody: notes("E5 - G5 B5 A5 - G5 F#5 E5 - D5 - B4 - - . C5 - E5 G5 F#5 - E5 D5 G5 - A5 B5 G5 - - ."),
-                   chords: chords("52m 50 52m 47 48 50 43 43"), arpeggio: 0.07, pad: 0.03, gain: 0.55),
+        // 7. Where Is Mom?: warm pawprints that begin gently and arrive somewhere hopeful.
+        MusicTheme(name: "Homeward Pawprints", step: 0.30, voice: .pluck,
+                   melody: notes("E5 G5 C6 - B5 G5 E5 - F5 A5 C6 A5 G5 - E5 . D5 F5 A5 - G5 E5 D5 - E5 G5 C6 E6 D6 B5 C6 ."),
+                   chords: chords("48 43 41 48 50m 43 48 48"), arpeggio: 0.055, pad: 0.012, gain: 0.78),
         // 8. Pool Day: bouncy and summery.
         MusicTheme(name: "Pool Day Bounce", step: 0.20, voice: .steel,
                    melody: notes("C6 . G5 C6 . E6 D6 C6 A5 . C6 . G5 - . . F5 A5 C6 . D6 . C6 A5 G5 . E5 G5 C6 - . ."),
